@@ -3,1281 +3,1305 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vocabulary Practice — Eliran's House of Teaching</title>
+  <title>English Vocabulary Practice — Mr. Eliran</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Hebrew:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ═══════════════════════════════════════════════════════
-       VOCABULARY PRACTICE — Eliran's House of Teaching
-       Leitner-box spaced repetition + multiple-choice quiz
-    ═══════════════════════════════════════════════════════ */
-
-    :root {
-      --a1:      #2563EB;   /* blue  — A1 */
-      --a1-bg:   #EFF6FF;
-      --a2:      #7C3AED;   /* purple — A2 */
-      --a2-bg:   #EDE9FE;
-      --green:   #059669;
-      --amber:   #D97706;
-      --red:     #DC2626;
-      --text:    #111827;
-      --muted:   #6B7280;
-      --border:  #E5E7EB;
-      --bg:      #EEF2FF;
-      --white:   #FFFFFF;
-      --lc: var(--a1);      /* active level colour — overridden by JS */
-      --lb: var(--a1-bg);   /* active level bg */
-    }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    :root {
+      --blue:    #2563EB;
+      --blue-d:  #1D4ED8;
+      --blue-lt: #EFF6FF;
+      --green:   #16A34A;
+      --green-lt:#DCFCE7;
+      --red:     #DC2626;
+      --red-lt:  #FEE2E2;
+      --gold:    #D97706;
+      --gold-lt: #FEF3C7;
+      --bg:      #F1F5F9;
+      --white:   #FFFFFF;
+      --border:  #E2E8F0;
+      --text:    #0F172A;
+      --muted:   #64748B;
+      --radius:  12px;
+      --shadow:  0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+    }
     body {
-      font-family: 'Poppins', system-ui, sans-serif;
+      font-family: 'Poppins', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
     }
+    [lang="he"], .he { font-family: 'Noto Sans Hebrew', sans-serif; direction: rtl; unicode-bidi: embed; }
 
-    /* ── HEADER ── */
-    .site-header {
-      background: #1E3A8A;
+    /* ═══ TOP NAV ═══ */
+    .top-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
       position: sticky;
       top: 0;
       z-index: 100;
     }
-    .header-inner {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
-      height: 58px;
+    .nav-back {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-    }
-    .back-link {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      color: rgba(255,255,255,0.75);
+      gap: 0.5rem;
       text-decoration: none;
-      font-size: 0.8rem;
+      color: var(--muted);
+      font-size: 0.85rem;
       font-weight: 500;
       transition: color 0.15s;
     }
-    .back-link:hover { color: #fff; }
-    .header-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-    }
-    .header-he {
-      font-family: 'Noto Sans Hebrew', sans-serif;
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.55);
-      text-align: center;
-      direction: rtl;
-    }
-    .header-spacer { width: 80px; }
+    .nav-back:hover { color: var(--blue); }
+    .nav-brand { font-weight: 700; font-size: 0.95rem; color: var(--text); }
 
-    /* ── MAIN ── */
-    .main {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 1.25rem 1.25rem 4rem;
-    }
-
-    /* ── CONTROLS ── */
-    .controls {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      margin-bottom: 1.1rem;
-    }
-    .ctrl-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .ctrl-label {
-      font-size: 0.68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      min-width: 44px;
-    }
-    .btn-group {
-      display: flex;
+    /* ═══ SET HEADER ═══ */
+    .set-header {
       background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 1.5rem 0;
     }
-    .btn-group button {
-      padding: 0.45rem 0.9rem;
-      border: none;
-      border-right: 1px solid var(--border);
-      background: transparent;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--muted);
+    .set-header-inner { max-width: 860px; margin: 0 auto; }
+    .set-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .set-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.25rem; }
+
+    .level-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .level-btn {
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: var(--white);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
-      white-space: nowrap;
+      color: var(--muted);
     }
-    .btn-group button:last-child { border-right: none; }
-    .btn-group button.active { background: var(--lc); color: #fff; }
-    .btn-group button:hover:not(.active) { background: #F3F4F6; color: var(--text); }
+    .level-btn.active-a1  { border-color: #2563EB; background: #EFF6FF; color: #2563EB; }
+    .level-btn.active-a2  { border-color: #7C3AED; background: #EDE9FE; color: #7C3AED; }
+    .level-btn.active-all { border-color: #0891B2; background: #CFFAFE; color: #0891B2; }
 
-    /* ── PROGRESS BAR ── */
-    .progress-wrap {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 14px;
-      padding: 0.85rem 1.1rem;
-      margin-bottom: 1.1rem;
+    .mode-tabs { display: flex; overflow-x: auto; }
+    .mode-btn {
+      padding: 0.7rem 1.2rem;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--muted);
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s;
+      white-space: nowrap;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.4rem;
     }
-    .progress-labels { flex: 1; }
-    .progress-text {
+    .mode-btn:hover { color: var(--blue); }
+    .mode-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+    /* ═══ MAIN ═══ */
+    main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ═══ FLASHCARDS ═══ */
+    .fc-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+    .fc-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 580px;
+    }
+    .fc-counter { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+    .fc-actions { display: flex; gap: 0.5rem; }
+    .icon-btn {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
       font-size: 0.78rem;
       font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.35rem;
-    }
-    .progress-bar {
-      height: 7px;
-      background: var(--border);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: var(--lc);
-      border-radius: 999px;
-      transition: width 0.4s ease;
-    }
-    .progress-stat { text-align: right; }
-    .progress-num {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--lc);
-      line-height: 1;
-    }
-    .progress-denom { font-size: 0.68rem; color: var(--muted); }
-    .reset-btn {
-      font-size: 1rem;
-      color: #D1D5DB;
-      background: none;
-      border: none;
       cursor: pointer;
-      padding: 0.25rem;
-      line-height: 1;
-      transition: color 0.15s;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.15s;
     }
-    .reset-btn:hover { color: var(--red); }
+    .icon-btn:hover, .icon-btn.on { background: var(--blue-lt); color: var(--blue); border-color: var(--blue); }
 
-    /* ── STUDY: FLASHCARD ── */
-    .card-area {
+    .fc-scene {
+      width: 100%;
+      max-width: 580px;
+      height: 300px;
       perspective: 1200px;
-      margin-bottom: 1rem;
-    }
-    .card-scene {
-      position: relative;
-      height: 280px;
-      transform-style: preserve-3d;
-      transition: transform 0.45s ease;
       cursor: pointer;
     }
-    .card-scene.flipped { transform: rotateY(180deg); }
-    .card-face {
+    .fc-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+    }
+    .fc-card.flipped { transform: rotateY(180deg); }
+    .fc-face {
       position: absolute;
       inset: 0;
       background: var(--white);
-      border: 2px solid var(--border);
-      border-radius: 20px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1.5rem;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,.07);
+      padding: 2rem;
+      text-align: center;
+      user-select: none;
     }
-    .card-back-face { transform: rotateY(180deg); }
-    .card-cat {
-      font-size: 0.62rem;
+    .fc-face-back { transform: rotateY(180deg); }
+    .fc-cat {
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--lc);
-      background: var(--lb);
-      padding: 3px 10px;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      background: var(--blue-lt);
+      padding: 0.2rem 0.7rem;
       border-radius: 999px;
       margin-bottom: 1.25rem;
     }
-    .card-en {
-      font-size: clamp(1.8rem, 7vw, 2.6rem);
-      font-weight: 800;
-      color: var(--text);
-      text-align: center;
-      line-height: 1.2;
-    }
-    .card-hint {
-      font-size: 0.7rem;
-      color: #C4C9D4;
-      margin-top: 0.85rem;
-    }
-    .card-he {
-      font-family: 'Noto Sans Hebrew', sans-serif;
-      font-size: clamp(2rem, 8vw, 3rem);
-      font-weight: 700;
-      color: var(--text);
-      direction: rtl;
-      text-align: center;
-      line-height: 1.3;
-      margin-bottom: 0.3rem;
-    }
-    .card-en-small {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--muted);
-      text-align: center;
+    .fc-word { font-size: 2.4rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.5rem; }
+    .fc-word.he { font-size: 2.2rem; }
+    .fc-sub { font-size: 0.8rem; color: var(--muted); }
+    .fc-flip-hint {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 0.72rem;
+      color: #CBD5E1;
     }
 
-    /* ── STUDY: ANSWER BUTTONS ── */
-    .answer-btns {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 0.85rem;
-    }
-    .answer-btns.hidden { display: none; }
-    .btn-still {
-      flex: 1;
-      padding: 0.9rem 1rem;
-      background: #FEF3C7;
-      color: #92400E;
-      border: 2px solid #FDE68A;
-      border-radius: 12px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn-still:hover { background: #FDE68A; }
-    .btn-gotit {
-      flex: 1;
-      padding: 0.9rem 1rem;
-      background: var(--green);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn-gotit:hover { background: #047857; transform: translateY(-1px); }
-
-    /* ── STUDY: BOX COUNTS ── */
-    .box-counts {
-      display: flex;
-      justify-content: center;
-      gap: 1.25rem;
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
-    }
-    .box-stat {
+    .fc-nav {
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      justify-content: center;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 580px;
     }
-    .dot {
-      width: 8px;
-      height: 8px;
+    .nav-arrow {
+      width: 44px; height: 44px;
       border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .dot-1 { background: #EF4444; }
-    .dot-2 { background: #F59E0B; }
-    .dot-3 { background: #10B981; }
-
-    .deck-counter {
-      text-align: center;
-      font-size: 0.65rem;
-      color: #C4C9D4;
-      margin-top: 0.35rem;
-    }
-
-    /* ── KEYBOARD HINT ── */
-    .key-hint {
-      text-align: center;
-      font-size: 0.62rem;
-      color: #D1D5DB;
-      margin-top: 0.4rem;
-      letter-spacing: 0.04em;
-    }
-
-    /* ── QUIZ MODE ── */
-    .quiz-score-bar {
+      border: 2px solid var(--border);
       background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 0.75rem 1.1rem;
-      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+    .nav-arrow:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-lt); }
+
+    .fc-respond { display: flex; gap: 1rem; width: 100%; max-width: 580px; }
+    .resp-btn {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: 2px solid;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .resp-btn.still { border-color: var(--red);   color: var(--red);   background: var(--white); }
+    .resp-btn.still:hover { background: var(--red-lt); }
+    .resp-btn.know  { border-color: var(--green); color: var(--green); background: var(--white); }
+    .resp-btn.know:hover { background: var(--green-lt); }
+    .resp-btn:disabled { opacity: 0.3; cursor: default; }
+
+    .fc-progress-wrap { width: 100%; max-width: 580px; }
+    .progress-bar-outer {
+      height: 6px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 0.4rem;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: var(--green);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+    .progress-label { font-size: 0.75rem; color: var(--muted); display: flex; justify-content: space-between; }
+
+    /* ═══ DONE / CELEBRATION ═══ */
+    .done-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 3rem 2rem;
+      text-align: center;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .done-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .done-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .done-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .done-stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; }
+    .done-stat-n { font-size: 2rem; font-weight: 800; color: var(--blue); display: block; }
+    .done-stat-l { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+    .primary-btn {
+      padding: 0.75rem 2rem;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .primary-btn:hover { background: var(--blue-d); }
+
+    /* ═══ LEARN MODE ═══ */
+    .learn-wrap { max-width: 680px; margin: 0 auto; }
+    .learn-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 1rem;
     }
-    .qsb-item { text-align: center; }
-    .qsb-n {
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--lc);
-      line-height: 1;
+    .learn-round-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      background: var(--white);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      white-space: nowrap;
     }
-    .qsb-l { font-size: 0.62rem; color: var(--muted); margin-top: 2px; }
-
-    .quiz-prompt {
+    .question-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .q-prompt {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .q-word { font-size: 2rem; font-weight: 800; }
+    .q-word.he { font-size: 1.9rem; }
+    .q-cat { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; }
+    .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .option-btn {
+      padding: 1rem;
       background: var(--white);
       border: 2px solid var(--border);
-      border-radius: 20px;
-      padding: 1.75rem 1.5rem;
-      text-align: center;
-      margin-bottom: 0.85rem;
-      box-shadow: 0 4px 20px rgba(0,0,0,.06);
-    }
-    .quiz-prompt-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-    }
-    .quiz-cat {
-      font-size: 0.62rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--lc);
-      background: var(--lb);
-      padding: 3px 10px;
-      border-radius: 999px;
-      display: inline-block;
-      margin-bottom: 0.75rem;
-    }
-    .quiz-word {
-      font-size: clamp(1.8rem, 7vw, 2.6rem);
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    .quiz-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.6rem;
-      margin-bottom: 0.65rem;
-    }
-    .quiz-opt {
-      background: #F9FAFB;
-      border: 2px solid var(--border);
       border-radius: 12px;
-      padding: 1rem 0.75rem;
-      font-family: 'Noto Sans Hebrew', sans-serif;
-      font-size: 1.1rem;
+      font-family: inherit;
+      font-size: 1rem;
       font-weight: 600;
-      direction: rtl;
       cursor: pointer;
       transition: all 0.15s;
       color: var(--text);
-      line-height: 1.4;
-    }
-    .quiz-opt:hover:not(:disabled) {
-      border-color: var(--lc);
-      background: var(--lb);
-    }
-    .quiz-opt.correct { background: #D1FAE5; border-color: var(--green); color: #065F46; }
-    .quiz-opt.wrong   { background: #FEE2E2; border-color: var(--red);   color: #991B1B; }
-    .quiz-opt:disabled { cursor: default; }
-
-    .quiz-feedback {
-      min-height: 1.5rem;
       text-align: center;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--green);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .quiz-feedback.bad { color: var(--red); }
-
-    .quiz-next-btn {
+    .option-btn.he { font-size: 1.1rem; }
+    .option-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
+    .option-btn.correct { border-color: var(--green); background: var(--green-lt); color: var(--green); }
+    .option-btn.wrong   { border-color: var(--red);   background: var(--red-lt);   color: var(--red); }
+    .option-btn:disabled { cursor: default; }
+    .learn-feedback {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-align: center;
+      display: none;
+    }
+    .learn-feedback.correct { background: var(--green-lt); color: var(--green); }
+    .learn-feedback.wrong   { background: var(--red-lt);   color: var(--red); }
+    .continue-btn {
+      margin-top: 1rem;
       width: 100%;
       padding: 0.9rem;
-      background: var(--lc);
+      background: var(--blue);
       color: #fff;
       border: none;
-      border-radius: 12px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.88rem;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s;
-      margin-top: 0.5rem;
+      display: none;
     }
-    .quiz-next-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .continue-btn:hover { background: var(--blue-d); }
 
-    /* ── BROWSE / LIST VIEW ── */
-    .browse-header {
+    /* ═══ MATCH GAME ═══ */
+    .match-wrap { max-width: 720px; margin: 0 auto; }
+    .match-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 0.85rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
-    .browse-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .browse-legend {
-      display: flex;
-      gap: 0.85rem;
-      font-size: 0.62rem;
-      color: var(--muted);
-    }
-    .browse-legend span {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .cat-section { margin-bottom: 1.25rem; }
-    .cat-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--lc);
-      margin-bottom: 0.4rem;
-      padding-left: 0.25rem;
-    }
-    .word-row {
-      display: flex;
-      align-items: center;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 0.6rem 0.9rem;
+    .match-timer { font-size: 1.3rem; font-weight: 800; color: var(--text); min-width: 60px; }
+    .match-stats { display: flex; gap: 1rem; font-size: 0.85rem; font-weight: 600; }
+    .match-stat.ok  { color: var(--green); }
+    .match-stat.bad { color: var(--red); }
+    .match-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 0.75rem;
-      margin-bottom: 0.3rem;
     }
-    .wr-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-    .wr-en  { font-size: 0.88rem; font-weight: 600; flex: 1; }
-    .wr-he  {
-      font-family: 'Noto Sans Hebrew', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      direction: rtl;
-      color: #374151;
-      min-width: 90px;
-      text-align: right;
-    }
-
-    /* ── SUMMARY / END OF ROUND ── */
-    .summary {
-      text-align: center;
-      padding: 2rem 1rem;
-    }
-    .sum-emoji  { font-size: 3.5rem; display: block; margin-bottom: 0.85rem; }
-    .sum-title  { font-size: 1.5rem; font-weight: 800; color: var(--text); margin-bottom: 0.3rem; }
-    .sum-he     {
-      font-family: 'Noto Sans Hebrew', sans-serif;
-      direction: rtl;
-      font-size: 1rem;
-      color: var(--muted);
-      margin-bottom: 1.75rem;
-    }
-    .sum-stats  { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
-    .sum-card   {
+    .tile {
       background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 0.9rem 1.25rem;
-      text-align: center;
-      min-width: 80px;
-    }
-    .sum-n      { font-size: 2rem; font-weight: 800; color: var(--lc); line-height: 1; }
-    .sum-l      { font-size: 0.62rem; color: var(--muted); margin-top: 0.2rem; }
-    .sum-btns   { display: flex; flex-direction: column; gap: 0.6rem; max-width: 280px; margin: 0 auto; }
-    .sum-btn-p  {
-      padding: 0.9rem;
-      background: var(--lc);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .sum-btn-s  {
-      padding: 0.9rem;
-      background: var(--white);
-      color: var(--text);
       border: 2px solid var(--border);
       border-radius: 12px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.88rem;
+      padding: 0.9rem 0.5rem;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+      line-height: 1.3;
+    }
+    .tile.he { font-family: 'Noto Sans Hebrew', sans-serif; font-size: 1rem; }
+    .tile:hover:not(.matched) { border-color: var(--blue); background: var(--blue-lt); color: var(--blue); }
+    .tile.selected  { border-color: var(--blue); background: var(--blue); color: #fff; }
+    .tile.matched   { border-color: var(--green); background: var(--green-lt); color: var(--green); pointer-events: none; opacity: 0.55; }
+    .tile.wrong-anim { animation: shake 0.45s ease; border-color: var(--red); background: var(--red-lt); color: var(--red); }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      18%     { transform: translateX(-7px); }
+      36%     { transform: translateX(7px); }
+      54%     { transform: translateX(-5px); }
+      72%     { transform: translateX(5px); }
+    }
+    .match-best { text-align: center; margin-top: 1rem; font-size: 0.78rem; color: var(--muted); }
+    .match-best span { color: var(--gold); font-weight: 700; }
+
+    /* ═══ TEST MODE ═══ */
+    .test-wrap { max-width: 640px; margin: 0 auto; }
+    .test-q-num {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+    .test-q-card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .test-prompt { font-size: 0.8rem; color: var(--muted); font-weight: 600; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .test-term { font-size: 1.9rem; font-weight: 800; }
+    .test-term.he { font-size: 1.75rem; }
+    .test-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .test-opt {
+      padding: 1rem;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      text-decoration: none;
-      display: block;
+      transition: all 0.15s;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
     }
+    .test-opt.he { font-family: 'Noto Sans Hebrew', sans-serif; font-size: 1.05rem; }
+    .test-opt:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-lt); }
+    .test-opt.correct { border-color: var(--green); background: var(--green-lt); color: var(--green); }
+    .test-opt.wrong   { border-color: var(--red);   background: var(--red-lt);   color: var(--red); }
+    .test-opt:disabled { cursor: default; }
+    .test-next {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.85rem;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+    }
+    .test-next:hover { background: var(--blue-d); }
 
-    /* ── UTILS ── */
-    .hidden { display: none !important; }
+    /* Test results */
+    .score-ring-wrap { position: relative; width: 120px; height: 120px; margin: 0 auto 1.5rem; }
+    .score-ring-wrap svg { transform: rotate(-90deg); }
+    .score-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      font-size: 1.4rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.1;
+    }
+    .score-pct { font-size: 0.7rem; font-weight: 600; color: var(--muted); display: block; }
+    .review-list { margin-top: 1.5rem; }
+    .review-item {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      border-left: 4px solid var(--red);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .review-en { font-weight: 700; font-size: 0.9rem; }
+    .review-he { font-family: 'Noto Sans Hebrew', sans-serif; color: var(--muted); font-size: 0.88rem; }
+    .review-your { font-size: 0.78rem; color: var(--red); }
 
-    @media (max-width: 460px) {
-      .quiz-options { grid-template-columns: 1fr; }
-      .answer-btns  { flex-direction: column; }
-      .ctrl-label   { display: none; }
-      .key-hint     { display: none; }
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 520px) {
+      .match-grid { grid-template-columns: repeat(3, 1fr); }
+      .options-grid, .test-options { grid-template-columns: 1fr; }
+      .fc-scene { height: 240px; }
+      .fc-word { font-size: 1.8rem; }
+      .set-title { font-size: 1.2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ════════════════════════════════════════════
-       HEADER
-  ════════════════════════════════════════════ -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="../index.html" class="back-link">← All Tools</a>
-      <div>
-        <div class="header-title">Vocabulary Practice</div>
-        <div class="header-he">תרגול אוצר מילים</div>
-      </div>
-      <div class="header-spacer"></div>
-    </div>
-  </header>
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <a class="nav-back" href="../index.html">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4L6 8l4 4"/></svg>
+    All Tools
+  </a>
+  <span class="nav-brand">🏫 Eliran's House of Teaching</span>
+</nav>
 
+<!-- SET HEADER -->
+<div class="set-header">
+  <div class="set-header-inner">
+    <div class="set-title">English Vocabulary Practice</div>
+    <div class="set-sub" id="set-sub">For Hebrew Speakers · 49 words</div>
 
-  <main class="main">
-
-    <!-- ════════════════════════════════════════
-         CONTROLS: LEVEL + MODE
-    ════════════════════════════════════════ -->
-    <div class="controls">
-      <div class="ctrl-row">
-        <span class="ctrl-label">Level</span>
-        <div class="btn-group" id="level-btns">
-          <button onclick="setLevel('A1')">A1 Basics</button>
-          <button onclick="setLevel('A2')">A2 Stories</button>
-          <button onclick="setLevel('ALL')">All</button>
-        </div>
-      </div>
-      <div class="ctrl-row">
-        <span class="ctrl-label">Mode</span>
-        <div class="btn-group" id="mode-btns">
-          <button onclick="setMode('study')">📖 Study</button>
-          <button onclick="setMode('quiz')">✎ Quiz</button>
-          <button onclick="setMode('list')">≡ Browse</button>
-        </div>
-      </div>
+    <div class="level-tabs">
+      <button class="level-btn active-a1" onclick="setLevel('A1')">A1 – Basics</button>
+      <button class="level-btn" onclick="setLevel('A2')">A2 – Stories</button>
+      <button class="level-btn" onclick="setLevel('ALL')">All Levels</button>
     </div>
 
+    <div class="mode-tabs">
+      <button class="mode-btn active" onclick="setMode('fc')"    id="tab-fc">🃏 Flashcards</button>
+      <button class="mode-btn"        onclick="setMode('learn')" id="tab-learn">📖 Learn</button>
+      <button class="mode-btn"        onclick="setMode('match')" id="tab-match">🎯 Match</button>
+      <button class="mode-btn"        onclick="setMode('test')"  id="tab-test">📝 Test</button>
+    </div>
+  </div>
+</div>
 
-    <!-- ════════════════════════════════════════
-         PROGRESS BAR
-    ════════════════════════════════════════ -->
-    <div class="progress-wrap" id="progress-wrap">
-      <div class="progress-labels">
-        <div class="progress-text" id="prog-text">A1 · 0 / 49 mastered</div>
-        <div class="progress-bar">
-          <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+<!-- ═══ MAIN ═══ -->
+<main>
+
+  <!-- ─── FLASHCARDS ─── -->
+  <div class="view active" id="view-fc">
+    <div class="fc-wrap">
+
+      <div class="fc-controls">
+        <span class="fc-counter" id="fc-counter">1 / 49</span>
+        <div class="fc-actions">
+          <button class="icon-btn" id="btn-shuffle" onclick="fcShuffle()">⟳ Shuffle</button>
+          <button class="icon-btn" id="btn-dir"     onclick="fcFlipDir()">↔ Direction</button>
         </div>
       </div>
-      <div class="progress-stat">
-        <div class="progress-num" id="prog-num">0</div>
-        <div class="progress-denom" id="prog-den">of 49</div>
-      </div>
-      <button class="reset-btn" id="reset-btn" onclick="confirmReset()" title="Reset progress">↺</button>
-    </div>
 
-
-    <!-- ════════════════════════════════════════
-         STUDY VIEW
-    ════════════════════════════════════════ -->
-    <div id="study-view">
-
-      <div class="card-area">
-        <div class="card-scene" id="card-scene" onclick="flipCard()">
-
-          <!-- Front: English -->
-          <div class="card-face">
-            <div class="card-cat" id="card-cat">Category</div>
-            <div class="card-en" id="card-en">word</div>
-            <div class="card-hint">tap to reveal Hebrew · לחץ לגילוי</div>
+      <div class="fc-scene" onclick="fcFlip()">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face fc-face-front">
+            <span class="fc-cat" id="fc-cat-f">—</span>
+            <span class="fc-word" id="fc-front">—</span>
+            <span class="fc-sub" id="fc-front-sub"></span>
+            <span class="fc-flip-hint">↕ tap to flip</span>
           </div>
-
-          <!-- Back: Hebrew -->
-          <div class="card-face card-back-face">
-            <div class="card-cat" id="card-cat-b">Category</div>
-            <div class="card-en-small" id="card-en-b">word</div>
-            <div class="card-he" id="card-he">מילה</div>
+          <div class="fc-face fc-face-back">
+            <span class="fc-cat" id="fc-cat-b">—</span>
+            <span class="fc-word" id="fc-back">—</span>
+            <span class="fc-sub" id="fc-back-sub"></span>
           </div>
-
         </div>
       </div>
 
-      <!-- Answer buttons (shown after flip) -->
-      <div class="answer-btns hidden" id="answer-btns">
-        <button class="btn-still" onclick="markStillLearning()">↩ Still learning</button>
-        <button class="btn-gotit"  onclick="markGotIt()">Got it ✓</button>
+      <div class="fc-nav">
+        <button class="nav-arrow" onclick="fcPrev()">←</button>
+        <button class="nav-arrow" onclick="fcNext()">→</button>
       </div>
 
-      <!-- Box status counts -->
-      <div class="box-counts">
-        <span class="box-stat"><span class="dot dot-1"></span> <span id="b1">0</span> new</span>
-        <span class="box-stat"><span class="dot dot-2"></span> <span id="b2">0</span> learning</span>
-        <span class="box-stat"><span class="dot dot-3"></span> <span id="b3">0</span> mastered</span>
+      <div class="fc-respond">
+        <button class="resp-btn still" id="fc-still" onclick="fcRespond(false)" disabled>✗ Still learning</button>
+        <button class="resp-btn know"  id="fc-know"  onclick="fcRespond(true)"  disabled>✓ Know this!</button>
       </div>
-      <div class="deck-counter" id="deck-counter">Card 1 of 0</div>
-      <div class="key-hint">Space = flip &nbsp;·&nbsp; → Got it &nbsp;·&nbsp; ← Still learning</div>
+
+      <div class="fc-progress-wrap">
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="fc-bar" style="width:0%"></div>
+        </div>
+        <div class="progress-label">
+          <span id="fc-pl-left">0 learned</span>
+          <span id="fc-pl-right"></span>
+        </div>
+      </div>
 
     </div>
+  </div>
 
+  <!-- ─── LEARN ─── -->
+  <div class="view" id="view-learn">
 
-    <!-- ════════════════════════════════════════
-         QUIZ VIEW
-    ════════════════════════════════════════ -->
-    <div id="quiz-view" class="hidden">
-
-      <div class="quiz-score-bar">
-        <div class="qsb-item">
-          <div class="qsb-n" id="qs-correct">0</div>
-          <div class="qsb-l">correct</div>
+    <div id="learn-main">
+      <div class="learn-wrap">
+        <div class="learn-header">
+          <div class="fc-progress-wrap" style="flex:1;margin-right:1rem;">
+            <div class="progress-bar-outer">
+              <div class="progress-bar-inner" id="learn-bar" style="width:0%"></div>
+            </div>
+            <div class="progress-label">
+              <span id="learn-pl-left">0 learned</span>
+              <span id="learn-pl-right"></span>
+            </div>
+          </div>
+          <span class="learn-round-badge" id="learn-round-badge">Round 1</span>
         </div>
-        <div class="qsb-item">
-          <div class="qsb-n" id="qs-total">0</div>
-          <div class="qsb-l">answered</div>
+
+        <div class="question-card">
+          <div class="q-prompt" id="learn-prompt">What is the Hebrew for:</div>
+          <div class="q-word"   id="learn-qword">—</div>
+          <div class="q-cat"   id="learn-qcat"></div>
         </div>
-        <div class="qsb-item">
-          <div class="qsb-n" id="qs-streak">0</div>
-          <div class="qsb-l">streak 🔥</div>
-        </div>
-      </div>
 
-      <div class="quiz-prompt">
-        <div class="quiz-prompt-label">What is the Hebrew for:</div>
-        <div class="quiz-cat" id="qz-cat">Category</div>
-        <div class="quiz-word" id="qz-word">word</div>
-      </div>
-
-      <div class="quiz-options" id="qz-options"></div>
-      <div class="quiz-feedback" id="qz-feedback"></div>
-      <button class="quiz-next-btn hidden" id="qz-next" onclick="nextQuizQ()">Next →</button>
-
-    </div>
-
-
-    <!-- ════════════════════════════════════════
-         BROWSE / LIST VIEW
-    ════════════════════════════════════════ -->
-    <div id="list-view" class="hidden">
-      <div class="browse-header">
-        <div class="browse-title" id="browse-title">All A1 words</div>
-        <div class="browse-legend">
-          <span><span class="dot dot-1"></span> New</span>
-          <span><span class="dot dot-2"></span> Learning</span>
-          <span><span class="dot dot-3"></span> Mastered</span>
-        </div>
-      </div>
-      <div id="word-list"></div>
-    </div>
-
-
-    <!-- ════════════════════════════════════════
-         SUMMARY (end of study round)
-    ════════════════════════════════════════ -->
-    <div id="summary-view" class="hidden summary">
-      <span class="sum-emoji" id="sum-emoji">🎉</span>
-      <h2 class="sum-title" id="sum-title">Round complete!</h2>
-      <div class="sum-he" id="sum-he">כל הכבוד!</div>
-      <div class="sum-stats">
-        <div class="sum-card">
-          <div class="sum-n" id="sum-practiced">0</div>
-          <div class="sum-l">practiced</div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-n" id="sum-mastered">0</div>
-          <div class="sum-l">mastered ✓</div>
-        </div>
-        <div class="sum-card">
-          <div class="sum-n" id="sum-left">0</div>
-          <div class="sum-l">to go</div>
-        </div>
-      </div>
-      <div class="sum-btns">
-        <button class="sum-btn-p" onclick="startNewRound()">Keep going →</button>
-        <button class="sum-btn-s" onclick="setMode('list')">Browse all words</button>
-        <a href="../index.html" class="sum-btn-s">← Back to all tools</a>
+        <div class="options-grid" id="learn-options"></div>
+        <div class="learn-feedback" id="learn-fb"></div>
+        <button class="continue-btn" id="learn-cont" onclick="learnNext()">Continue →</button>
       </div>
     </div>
 
-  </main>
+    <div class="done-card" id="learn-done" style="display:none;">
+      <div class="done-icon">🏆</div>
+      <div class="done-title">You've mastered it!</div>
+      <div class="done-sub">All words answered correctly this session.</div>
+      <div class="done-stats">
+        <div><span class="done-stat-n" id="ld-rounds">—</span><span class="done-stat-l">Rounds</span></div>
+        <div><span class="done-stat-n" id="ld-words">—</span><span class="done-stat-l">Words</span></div>
+      </div>
+      <button class="primary-btn" onclick="learnInit()">Study Again</button>
+    </div>
 
+  </div>
 
-  <script>
-  // ═══════════════════════════════════════════════════════
-  //  VOCABULARY DATA
-  //  A1 = basics (49 words)   A2 = stories & actions (75 words)
-  // ═══════════════════════════════════════════════════════
+  <!-- ─── MATCH ─── -->
+  <div class="view" id="view-match">
+    <div class="match-wrap">
 
-  const VOCAB = {
-    A1: [
-      // Pronouns
-      { en:"I",       he:"אני",            cat:"Pronouns" },
-      { en:"you",     he:"אתה / את",        cat:"Pronouns" },
-      { en:"he",      he:"הוא",            cat:"Pronouns" },
-      { en:"she",     he:"היא",            cat:"Pronouns" },
-      { en:"it",      he:"זה",             cat:"Pronouns" },
-      { en:"we",      he:"אנחנו",          cat:"Pronouns" },
-      { en:"they",    he:"הם / הן",        cat:"Pronouns" },
-      // Verbs
-      { en:"go",      he:"ללכת",           cat:"Verbs" },
-      { en:"come",    he:"לבוא",           cat:"Verbs" },
-      { en:"eat",     he:"לאכול",          cat:"Verbs" },
-      { en:"drink",   he:"לשתות",          cat:"Verbs" },
-      { en:"see",     he:"לראות",          cat:"Verbs" },
-      { en:"make",    he:"להכין",          cat:"Verbs" },
-      { en:"take",    he:"לקחת",           cat:"Verbs" },
-      { en:"give",    he:"לתת",            cat:"Verbs" },
-      { en:"find",    he:"למצוא",          cat:"Verbs" },
-      { en:"help",    he:"לעזור",          cat:"Verbs" },
-      // People
-      { en:"man",     he:"גבר",            cat:"People" },
-      { en:"woman",   he:"אישה",           cat:"People" },
-      { en:"child",   he:"ילד / ילדה",     cat:"People" },
-      { en:"friend",  he:"חבר / חברה",     cat:"People" },
-      { en:"teacher", he:"מורה",           cat:"People" },
-      { en:"student", he:"תלמיד / תלמידה", cat:"People" },
-      // Home
-      { en:"house",   he:"בית",            cat:"Home" },
-      { en:"room",    he:"חדר",            cat:"Home" },
-      { en:"door",    he:"דלת",            cat:"Home" },
-      { en:"table",   he:"שולחן",          cat:"Home" },
-      // Food & Drink
-      { en:"food",    he:"אוכל",           cat:"Food & Drink" },
-      { en:"water",   he:"מים",            cat:"Food & Drink" },
-      { en:"apple",   he:"תפוח",           cat:"Food & Drink" },
-      { en:"bread",   he:"לחם",            cat:"Food & Drink" },
-      { en:"milk",    he:"חלב",            cat:"Food & Drink" },
-      // Adjectives
-      { en:"big",     he:"גדול",           cat:"Adjectives" },
-      { en:"small",   he:"קטן",            cat:"Adjectives" },
-      { en:"good",    he:"טוב",            cat:"Adjectives" },
-      { en:"bad",     he:"רע",             cat:"Adjectives" },
-      { en:"new",     he:"חדש",            cat:"Adjectives" },
-      { en:"old",     he:"ישן / זקן",      cat:"Adjectives" },
-      { en:"happy",   he:"שמח",            cat:"Adjectives" },
-      { en:"sad",     he:"עצוב",           cat:"Adjectives" },
-      // Function Words
-      { en:"in",      he:"בתוך",           cat:"Function Words" },
-      { en:"on",      he:"על",             cat:"Function Words" },
-      { en:"under",   he:"מתחת",           cat:"Function Words" },
-      { en:"to",      he:"אל / ל",         cat:"Function Words" },
-      { en:"from",    he:"מ",              cat:"Function Words" },
-      { en:"and",     he:"ו",              cat:"Function Words" },
-      { en:"but",     he:"אבל",            cat:"Function Words" },
-      { en:"yes",     he:"כן",             cat:"Function Words" },
-      { en:"no",      he:"לא",             cat:"Function Words" },
-    ],
+      <div class="match-header">
+        <div class="match-timer" id="match-timer">0:00</div>
+        <div class="match-stats">
+          <span class="match-stat ok"  id="match-ok">✓ 0 matched</span>
+          <span class="match-stat bad" id="match-bad">✗ 0 wrong</span>
+        </div>
+        <button class="icon-btn" onclick="matchStart()">↺ New Round</button>
+      </div>
 
-    A2: [
-      // Character & Values
-      { en:"Hope",         he:"תקווה",             cat:"Character" },
-      { en:"Wise",         he:"חכם / נבון",         cat:"Character" },
-      { en:"Wonderful",    he:"נפלא",              cat:"Character" },
-      { en:"Peaceful",     he:"שקט / שלווה",        cat:"Character" },
-      { en:"Grateful",     he:"מודה / מכיר תודה",   cat:"Character" },
-      { en:"Brave",        he:"אמיץ",              cat:"Character" },
-      { en:"Responsible",  he:"אחראי",             cat:"Character" },
-      { en:"Honest",       he:"ישר / כן",           cat:"Character" },
-      { en:"Kind",         he:"טוב לב",             cat:"Character" },
-      { en:"Forgive",      he:"לסלוח",             cat:"Character" },
-      { en:"Trust",        he:"אמון",              cat:"Character" },
-      { en:"Blessing",     he:"ברכה",              cat:"Character" },
-      { en:"Promise",      he:"הבטחה",             cat:"Character" },
-      // Describing
-      { en:"Heavy",        he:"כבד",               cat:"Describing" },
-      { en:"Fresh",        he:"טרי",               cat:"Describing" },
-      { en:"Deep",         he:"עמוק",              cat:"Describing" },
-      { en:"Wide",         he:"רחב",               cat:"Describing" },
-      { en:"Busy",         he:"עסוק",              cat:"Describing" },
-      { en:"Free",         he:"פנוי",              cat:"Describing" },
-      { en:"Important",    he:"חשוב",              cat:"Describing" },
-      { en:"Different",    he:"שונה",              cat:"Describing" },
-      { en:"Same",         he:"אותו דבר",           cat:"Describing" },
-      { en:"Early",        he:"מוקדם",             cat:"Describing" },
-      { en:"Late",         he:"מאוחר",             cat:"Describing" },
-      { en:"Bored",        he:"משועמם",            cat:"Describing" },
-      // How & When
-      { en:"Gently",       he:"בעדינות",           cat:"How & When" },
-      { en:"Carefully",    he:"בזהירות",           cat:"How & When" },
-      { en:"Always",       he:"תמיד",              cat:"How & When" },
-      { en:"Instead",      he:"במקום",             cat:"How & When" },
-      { en:"Before",       he:"לפני",              cat:"How & When" },
-      { en:"After",        he:"אחרי",              cat:"How & When" },
-      { en:"While",        he:"בזמן ש",            cat:"How & When" },
-      // Story (Biblical / Narrative)
-      { en:"Born",         he:"נולד",              cat:"Story" },
-      { en:"Rest",         he:"מנוחה / לנוח",       cat:"Story" },
-      { en:"Shepherd",     he:"רועה צאן",           cat:"Story" },
-      { en:"Field",        he:"שדה",               cat:"Story" },
-      { en:"Prophet",      he:"נביא",              cat:"Story" },
-      { en:"Famine",       he:"רעב",               cat:"Story" },
-      { en:"Leader",       he:"מנהיג",             cat:"Story" },
-      { en:"Talent",       he:"כשרון",             cat:"Story" },
-      { en:"Gate",         he:"שער",               cat:"Story" },
-      { en:"Passover",     he:"פסח",               cat:"Story" },
-      { en:"Freedom",      he:"חופשיות",           cat:"Story" },
-      { en:"Staff",        he:"מקל הליכה",          cat:"Story" },
-      // Movement & Travel
-      { en:"arrive",       he:"להגיע",             cat:"Movement" },
-      { en:"leave",        he:"לעזוב",             cat:"Movement" },
-      { en:"travel",       he:"לטייל / לנסוע",      cat:"Movement" },
-      { en:"visit",        he:"לבקר",              cat:"Movement" },
-      { en:"stay",         he:"להישאר",            cat:"Movement" },
-      { en:"wait",         he:"לחכות",             cat:"Movement" },
-      { en:"follow",       he:"לעקוב",             cat:"Movement" },
-      { en:"Journey",      he:"מסע",               cat:"Movement" },
-      { en:"Hurry",        he:"זריזות",            cat:"Movement" },
-      { en:"Across",       he:"מעבר",              cat:"Movement" },
-      // Thinking & Learning
-      { en:"choose",       he:"לבחור",             cat:"Thinking" },
-      { en:"decide",       he:"להחליט",            cat:"Thinking" },
-      { en:"begin",        he:"להתחיל",            cat:"Thinking" },
-      { en:"finish",       he:"לסיים",             cat:"Thinking" },
-      { en:"remember",     he:"לזכור",             cat:"Thinking" },
-      { en:"forget",       he:"לשכוח",             cat:"Thinking" },
-      { en:"learn",        he:"ללמוד",             cat:"Thinking" },
-      { en:"teach",        he:"ללמד",              cat:"Thinking" },
-      { en:"practice",     he:"לתרגל",             cat:"Thinking" },
-      { en:"hide",         he:"להסתיר",            cat:"Thinking" },
-      { en:"Skill",        he:"מיומנות",           cat:"Thinking" },
-      // Everyday
-      { en:"clean",        he:"לנקות",             cat:"Everyday" },
-      { en:"cook",         he:"לבשל",              cat:"Everyday" },
-      { en:"wash",         he:"לשטוף / לרחוץ",      cat:"Everyday" },
-      { en:"Beckoned",     he:"לקרוא ל",           cat:"Everyday" },
-      { en:"Noise",        he:"רעש",               cat:"Everyday" },
-      // Nature & Force
-      { en:"Rise",         he:"לתפוח",             cat:"Nature" },
-      { en:"Edge",         he:"קצה",               cat:"Nature" },
-      { en:"Blow",         he:"לנשוב",             cat:"Nature" },
-      { en:"Led",          he:"הוביל",             cat:"Nature" },
-      { en:"Split",        he:"לחצות",             cat:"Nature" },
-    ]
-  };
+      <div class="match-grid" id="match-grid"></div>
+      <div class="match-best" id="match-best"></div>
 
-  // ═══════════════════════════════════════════════════════
-  //  STORAGE  (Leitner boxes 1-3 per word)
-  // ═══════════════════════════════════════════════════════
+      <div class="done-card" id="match-done" style="display:none;margin-top:1.5rem;">
+        <div class="done-icon">🎉</div>
+        <div class="done-title">Round Complete!</div>
+        <div class="done-stats">
+          <div><span class="done-stat-n" id="md-time">—</span><span class="done-stat-l">Time</span></div>
+          <div><span class="done-stat-n" id="md-mistakes">—</span><span class="done-stat-l">Mistakes</span></div>
+        </div>
+        <div id="md-best-msg" style="font-size:0.85rem;color:var(--gold);font-weight:700;margin-bottom:1rem;"></div>
+        <button class="primary-btn" onclick="matchStart()">Next Round →</button>
+      </div>
 
-  const SK = 'ehe-vocab-v2';
+    </div>
+  </div>
 
-  function loadProg() {
-    try { return JSON.parse(localStorage.getItem(SK) || '{}'); }
-    catch(e) { return {}; }
+  <!-- ─── TEST ─── -->
+  <div class="view" id="view-test">
+    <div class="test-wrap">
+
+      <div id="test-active">
+        <div class="fc-progress-wrap" style="margin-bottom:1.25rem;">
+          <div class="progress-bar-outer">
+            <div class="progress-bar-inner" id="test-bar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="test-q-num" id="test-qnum">Question 1 of 10</div>
+        <div class="test-q-card">
+          <div class="test-prompt" id="test-prompt">What is the Hebrew for:</div>
+          <div class="test-term"   id="test-term">—</div>
+        </div>
+        <div class="test-options" id="test-options"></div>
+        <button class="test-next" id="test-next" onclick="testNext()">Next →</button>
+      </div>
+
+      <div id="test-results" style="display:none;">
+        <div class="done-card">
+          <div class="score-ring-wrap">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#E2E8F0" stroke-width="10"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#2563EB" stroke-width="10"
+                stroke-linecap="round" stroke-dasharray="314" id="score-arc" stroke-dashoffset="314"/>
+            </svg>
+            <div class="score-text">
+              <span id="score-num">—</span>
+              <span class="score-pct" id="score-pct">—</span>
+            </div>
+          </div>
+          <div class="done-title" id="score-msg">—</div>
+          <div class="done-sub"   id="score-sub"></div>
+          <button class="primary-btn" style="margin-top:1rem" onclick="testInit()">Try Again</button>
+        </div>
+        <div class="review-list" id="review-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<script>
+/* ════════════════════════════════════════════
+   VOCABULARY DATA
+════════════════════════════════════════════ */
+const VOCAB = {
+  A1: [
+    {e:"I",           h:"אני",              c:"Pronouns"},
+    {e:"you",         h:"אתה / את",         c:"Pronouns"},
+    {e:"he",          h:"הוא",              c:"Pronouns"},
+    {e:"she",         h:"היא",              c:"Pronouns"},
+    {e:"it",          h:"זה",               c:"Pronouns"},
+    {e:"we",          h:"אנחנו",            c:"Pronouns"},
+    {e:"they",        h:"הם / הן",          c:"Pronouns"},
+    {e:"go",          h:"ללכת",             c:"Verbs"},
+    {e:"come",        h:"לבוא",             c:"Verbs"},
+    {e:"eat",         h:"לאכול",            c:"Verbs"},
+    {e:"drink",       h:"לשתות",            c:"Verbs"},
+    {e:"see",         h:"לראות",            c:"Verbs"},
+    {e:"make",        h:"להכין",            c:"Verbs"},
+    {e:"take",        h:"לקחת",             c:"Verbs"},
+    {e:"give",        h:"לתת",              c:"Verbs"},
+    {e:"find",        h:"למצוא",            c:"Verbs"},
+    {e:"help",        h:"לעזור",            c:"Verbs"},
+    {e:"man",         h:"גבר",              c:"People"},
+    {e:"woman",       h:"אישה",             c:"People"},
+    {e:"child",       h:"ילד / ילדה",       c:"People"},
+    {e:"friend",      h:"חבר / חברה",       c:"People"},
+    {e:"teacher",     h:"מורה",             c:"People"},
+    {e:"student",     h:"תלמיד / תלמידה",   c:"People"},
+    {e:"house",       h:"בית",              c:"Home"},
+    {e:"room",        h:"חדר",              c:"Home"},
+    {e:"door",        h:"דלת",              c:"Home"},
+    {e:"table",       h:"שולחן",            c:"Home"},
+    {e:"food",        h:"אוכל",             c:"Food & Drink"},
+    {e:"water",       h:"מים",              c:"Food & Drink"},
+    {e:"apple",       h:"תפוח",             c:"Food & Drink"},
+    {e:"bread",       h:"לחם",              c:"Food & Drink"},
+    {e:"milk",        h:"חלב",              c:"Food & Drink"},
+    {e:"big",         h:"גדול",             c:"Adjectives"},
+    {e:"small",       h:"קטן",              c:"Adjectives"},
+    {e:"good",        h:"טוב",              c:"Adjectives"},
+    {e:"bad",         h:"רע",               c:"Adjectives"},
+    {e:"new",         h:"חדש",              c:"Adjectives"},
+    {e:"old",         h:"ישן / זקן",        c:"Adjectives"},
+    {e:"happy",       h:"שמח",              c:"Adjectives"},
+    {e:"sad",         h:"עצוב",             c:"Adjectives"},
+    {e:"in",          h:"בתוך",             c:"Function Words"},
+    {e:"on",          h:"על",               c:"Function Words"},
+    {e:"under",       h:"מתחת",             c:"Function Words"},
+    {e:"to",          h:"אל / ל",           c:"Function Words"},
+    {e:"from",        h:"מ",                c:"Function Words"},
+    {e:"and",         h:"ו",                c:"Function Words"},
+    {e:"but",         h:"אבל",              c:"Function Words"},
+    {e:"yes",         h:"כן",               c:"Function Words"},
+    {e:"no",          h:"לא",               c:"Function Words"},
+  ],
+  A2: [
+    {e:"hope",        h:"תקווה",             c:"Character"},
+    {e:"wise",        h:"חכם / נבון",        c:"Character"},
+    {e:"wonderful",   h:"נפלא",              c:"Character"},
+    {e:"peaceful",    h:"שקט / שלווה",       c:"Character"},
+    {e:"grateful",    h:"מודה / מכיר תודה",  c:"Character"},
+    {e:"brave",       h:"אמיץ",              c:"Character"},
+    {e:"responsible", h:"אחראי",             c:"Character"},
+    {e:"honest",      h:"ישר / כן",          c:"Character"},
+    {e:"kind",        h:"טוב לב",            c:"Character"},
+    {e:"forgive",     h:"לסלוח",             c:"Character"},
+    {e:"trust",       h:"אמון",              c:"Character"},
+    {e:"blessing",    h:"ברכה",              c:"Character"},
+    {e:"promise",     h:"הבטחה",             c:"Character"},
+    {e:"heavy",       h:"כבד",               c:"Describing"},
+    {e:"fresh",       h:"טרי",               c:"Describing"},
+    {e:"deep",        h:"עמוק",              c:"Describing"},
+    {e:"wide",        h:"רחב",               c:"Describing"},
+    {e:"busy",        h:"עסוק",              c:"Describing"},
+    {e:"free",        h:"פנוי",              c:"Describing"},
+    {e:"important",   h:"חשוב",              c:"Describing"},
+    {e:"different",   h:"שונה",              c:"Describing"},
+    {e:"same",        h:"אותו דבר",          c:"Describing"},
+    {e:"early",       h:"מוקדם",             c:"Describing"},
+    {e:"late",        h:"מאוחר",             c:"Describing"},
+    {e:"bored",       h:"משועמם",            c:"Describing"},
+    {e:"gently",      h:"בעדינות",           c:"How & When"},
+    {e:"carefully",   h:"בזהירות",           c:"How & When"},
+    {e:"always",      h:"תמיד",              c:"How & When"},
+    {e:"instead",     h:"במקום",             c:"How & When"},
+    {e:"before",      h:"לפני",              c:"How & When"},
+    {e:"after",       h:"אחרי",              c:"How & When"},
+    {e:"while",       h:"בזמן ש",            c:"How & When"},
+    {e:"born",        h:"נולד",              c:"Story & Biblical"},
+    {e:"rest",        h:"מנוחה / לנוח",      c:"Story & Biblical"},
+    {e:"shepherd",    h:"רועה צאן",          c:"Story & Biblical"},
+    {e:"field",       h:"שדה",               c:"Story & Biblical"},
+    {e:"prophet",     h:"נביא",              c:"Story & Biblical"},
+    {e:"famine",      h:"רעב",               c:"Story & Biblical"},
+    {e:"leader",      h:"מנהיג",             c:"Story & Biblical"},
+    {e:"talent",      h:"כשרון",             c:"Story & Biblical"},
+    {e:"gate",        h:"שער",               c:"Story & Biblical"},
+    {e:"passover",    h:"פסח",               c:"Story & Biblical"},
+    {e:"freedom",     h:"חופשיות",           c:"Story & Biblical"},
+    {e:"staff",       h:"מקל הליכה",         c:"Story & Biblical"},
+    {e:"arrive",      h:"להגיע",             c:"Movement"},
+    {e:"leave",       h:"לעזוב",             c:"Movement"},
+    {e:"travel",      h:"לטייל / לנסוע",     c:"Movement"},
+    {e:"visit",       h:"לבקר",              c:"Movement"},
+    {e:"stay",        h:"להישאר",            c:"Movement"},
+    {e:"wait",        h:"לחכות",             c:"Movement"},
+    {e:"follow",      h:"לעקוב",             c:"Movement"},
+    {e:"journey",     h:"מסע",               c:"Movement"},
+    {e:"hurry",       h:"זריזות",            c:"Movement"},
+    {e:"across",      h:"מעבר",              c:"Movement"},
+    {e:"choose",      h:"לבחור",             c:"Thinking"},
+    {e:"decide",      h:"להחליט",            c:"Thinking"},
+    {e:"begin",       h:"להתחיל",            c:"Thinking"},
+    {e:"finish",      h:"לסיים",             c:"Thinking"},
+    {e:"remember",    h:"לזכור",             c:"Thinking"},
+    {e:"forget",      h:"לשכוח",             c:"Thinking"},
+    {e:"learn",       h:"ללמוד",             c:"Thinking"},
+    {e:"teach",       h:"ללמד",              c:"Thinking"},
+    {e:"practice",    h:"לתרגל",             c:"Thinking"},
+    {e:"hide",        h:"להסתיר",            c:"Thinking"},
+    {e:"skill",       h:"מיומנות",           c:"Thinking"},
+    {e:"clean",       h:"לנקות",             c:"Everyday"},
+    {e:"cook",        h:"לבשל",              c:"Everyday"},
+    {e:"wash",        h:"לשטוף / לרחוץ",     c:"Everyday"},
+    {e:"beckoned",    h:"לקרוא ל",           c:"Everyday"},
+    {e:"noise",       h:"רעש",               c:"Everyday"},
+    {e:"rise",        h:"לתפוח",             c:"Nature"},
+    {e:"edge",        h:"קצה",               c:"Nature"},
+    {e:"blow",        h:"לנשוב",             c:"Nature"},
+    {e:"led",         h:"הוביל",             c:"Nature"},
+    {e:"split",       h:"לחצות",             c:"Nature"},
+  ]
+};
+
+/* ════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════ */
+let S = {
+  level: 'A1', mode: 'fc',
+  fcWords: [], fcIndex: 0, fcFlipped: false, fcDir: 'en', fcShuffled: false, fcKnown: new Set(),
+  learnWords: [], learnQueue: [], learnIndex: 0, learnRound: 1,
+  learnWrong: [], learnAnswered: false, learnTotalLearned: 0,
+  matchTiles: [], matchSel: null, matchTimer: null, matchSecs: 0,
+  matchStarted: false, matchOk: 0, matchBad: 0,
+  testQuestions: [], testIndex: 0, testScore: 0, testWrong: [], testAnswered: false,
+  _learnDir: true,
+};
+
+function activeWords() {
+  if (S.level === 'A1')  return VOCAB.A1;
+  if (S.level === 'A2')  return VOCAB.A2;
+  return [...VOCAB.A1, ...VOCAB.A2];
+}
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  function saveProg(p) { localStorage.setItem(SK, JSON.stringify(p)); }
-  function wid(lvl, i) { return lvl + '_' + i; }
-  function box(id, p)  { return (p[id] && p[id].b) || 1; }
+  return a;
+}
+function getRandOthers(word, words, n) {
+  return shuffle(words.filter(w => w !== word)).slice(0, n);
+}
 
-  // ═══════════════════════════════════════════════════════
-  //  STATE
-  // ═══════════════════════════════════════════════════════
+/* ════════════════════════════════════════════
+   LEVEL + MODE
+════════════════════════════════════════════ */
+function setLevel(lv) {
+  S.level = lv;
+  document.querySelectorAll('.level-btn').forEach((b, i) => {
+    b.className = 'level-btn';
+    if (['A1','A2','ALL'][i] === lv) b.classList.add('active-' + lv.toLowerCase());
+  });
+  const ws = activeWords();
+  document.getElementById('set-sub').textContent = `For Hebrew Speakers · ${ws.length} words`;
+  startMode(S.mode);
+}
+function setMode(m) {
+  S.mode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + m).classList.add('active');
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + m).classList.add('active');
+  startMode(m);
+}
+function startMode(m) {
+  if (m === 'fc')    fcInit();
+  if (m === 'learn') learnInit();
+  if (m === 'match') matchStart();
+  if (m === 'test')  testInit();
+}
 
-  const S = {
-    level:    'A1',
-    mode:     'study',
-    lc:       '#2563EB',
-    lb:       '#EFF6FF',
-    // Study
-    deck:     [],
-    di:       0,       // deck index
-    flipped:  false,
-    sePracticed:  0,
-    seNewMaster:  0,
-    // Quiz
-    qWords:   [],
-    qi:       0,
-    qCorrect: 0,
-    qTotal:   0,
-    qStreak:  0,
-    qDone:    false,
-  };
+/* ════════════════════════════════════════════
+   FLASHCARDS
+════════════════════════════════════════════ */
+function fcInit() {
+  S.fcWords    = [...activeWords()];
+  S.fcIndex    = 0;
+  S.fcFlipped  = false;
+  S.fcShuffled = false;
+  S.fcKnown    = new Set();
+  document.getElementById('btn-shuffle').classList.remove('on');
+  document.getElementById('btn-dir').classList.remove('on');
+  S.fcDir = 'en';
+  fcRender();
+}
+function fcRender() {
+  const w = S.fcWords[S.fcIndex];
+  const frontIsEn = S.fcDir === 'en';
+  const fWord = frontIsEn ? w.e : w.h;
+  const bWord = frontIsEn ? w.h : w.e;
 
-  // ═══════════════════════════════════════════════════════
-  //  WORD HELPERS
-  // ═══════════════════════════════════════════════════════
+  document.getElementById('fc-cat-f').textContent = w.c;
+  document.getElementById('fc-cat-b').textContent = w.c;
 
-  function activeWords() {
-    if (S.level === 'ALL') return [
-      ...VOCAB.A1.map((w,i)=>({...w,_l:'A1',_id:wid('A1',i)})),
-      ...VOCAB.A2.map((w,i)=>({...w,_l:'A2',_id:wid('A2',i)})),
-    ];
-    return VOCAB[S.level].map((w,i)=>({...w,_l:S.level,_id:wid(S.level,i)}));
+  const fEl = document.getElementById('fc-front');
+  fEl.textContent = fWord;
+  fEl.className   = 'fc-word' + (!frontIsEn ? ' he' : '');
+  document.getElementById('fc-front-sub').textContent = !frontIsEn ? '(Hebrew)' : '';
+
+  const bEl = document.getElementById('fc-back');
+  bEl.textContent = bWord;
+  bEl.className   = 'fc-word' + (frontIsEn ? ' he' : '');
+  document.getElementById('fc-back-sub').textContent = frontIsEn ? '(Hebrew)' : '';
+
+  S.fcFlipped = false;
+  document.getElementById('fc-card').classList.remove('flipped');
+  document.getElementById('fc-still').disabled = true;
+  document.getElementById('fc-know').disabled  = true;
+
+  document.getElementById('fc-counter').textContent = `${S.fcIndex + 1} / ${S.fcWords.length}`;
+
+  const known = S.fcKnown.size;
+  const pct   = S.fcWords.length ? (known / S.fcWords.length * 100) : 0;
+  document.getElementById('fc-bar').style.width      = pct + '%';
+  document.getElementById('fc-pl-left').textContent  = `${known} learned`;
+  document.getElementById('fc-pl-right').textContent = `${S.fcWords.length - known} remaining`;
+}
+function fcFlip() {
+  S.fcFlipped = !S.fcFlipped;
+  document.getElementById('fc-card').classList.toggle('flipped', S.fcFlipped);
+  if (S.fcFlipped) {
+    document.getElementById('fc-still').disabled = false;
+    document.getElementById('fc-know').disabled  = false;
   }
-
-  function shuffle(a) {
-    const b=[...a];
-    for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}
-    return b;
+}
+function fcNext() {
+  if (S.fcIndex < S.fcWords.length - 1) { S.fcIndex++; fcRender(); }
+}
+function fcPrev() {
+  if (S.fcIndex > 0) { S.fcIndex--; fcRender(); }
+}
+function fcRespond(knew) {
+  const key = S.level + '_' + S.fcWords[S.fcIndex].e;
+  if (knew) S.fcKnown.add(key); else S.fcKnown.delete(key);
+  if (S.fcIndex < S.fcWords.length - 1) S.fcIndex++;
+  else {
+    const first = S.fcWords.findIndex(ww => !S.fcKnown.has(S.level + '_' + ww.e));
+    S.fcIndex = first >= 0 ? first : 0;
   }
+  fcRender();
+}
+function fcShuffle() {
+  S.fcShuffled = !S.fcShuffled;
+  S.fcWords = S.fcShuffled ? shuffle(activeWords()) : [...activeWords()];
+  S.fcIndex = 0;
+  document.getElementById('btn-shuffle').classList.toggle('on', S.fcShuffled);
+  fcRender();
+}
+function fcFlipDir() {
+  S.fcDir = S.fcDir === 'en' ? 'he' : 'en';
+  document.getElementById('btn-dir').classList.toggle('on', S.fcDir === 'he');
+  S.fcFlipped = false;
+  document.getElementById('fc-card').classList.remove('flipped');
+  fcRender();
+}
 
-  function buildDeck(p) {
-    const ws = activeWords();
-    const b1 = ws.filter(w=>box(w._id,p)===1);
-    const b2 = ws.filter(w=>box(w._id,p)===2);
-    const b3 = ws.filter(w=>box(w._id,p)===3);
-    const deck = [...b1];
-    b2.forEach(w=>{ if(Math.random()<0.45) deck.push(w); });
-    b3.forEach(w=>{ if(Math.random()<0.12) deck.push(w); });
-    return deck.length ? shuffle(deck) : shuffle([...ws]);
-  }
+/* ════════════════════════════════════════════
+   LEARN MODE
+════════════════════════════════════════════ */
+function learnInit() {
+  const ws = shuffle(activeWords());
+  S.learnWords        = ws;
+  S.learnQueue        = [...ws];
+  S.learnIndex        = 0;
+  S.learnRound        = 1;
+  S.learnWrong        = [];
+  S.learnAnswered     = false;
+  S.learnTotalLearned = 0;
+  document.getElementById('learn-done').style.display = 'none';
+  document.getElementById('learn-main').style.display = '';
+  learnRenderQ();
+}
+function learnRenderQ() {
+  const total = S.learnWords.length;
+  const done  = S.learnTotalLearned;
+  document.getElementById('learn-bar').style.width      = total ? (done / total * 100) + '%' : '0%';
+  document.getElementById('learn-pl-left').textContent  = `${done} learned`;
+  document.getElementById('learn-pl-right').textContent = `${total - done} remaining`;
+  document.getElementById('learn-round-badge').textContent = `Round ${S.learnRound}`;
 
-  function masteredCount(p) {
-    return activeWords().filter(w=>box(w._id,p)===3).length;
-  }
+  const w = S.learnQueue[S.learnIndex];
+  const enFirst = Math.random() > 0.35;
+  S._learnDir = enFirst;
 
-  function boxCounts(p) {
-    const ws=activeWords();
-    return {
-      b1: ws.filter(w=>box(w._id,p)===1).length,
-      b2: ws.filter(w=>box(w._id,p)===2).length,
-      b3: ws.filter(w=>box(w._id,p)===3).length,
-    };
-  }
+  document.getElementById('learn-prompt').textContent = enFirst
+    ? 'What is the Hebrew for:' : 'What does this Hebrew word mean?';
+  const qEl = document.getElementById('learn-qword');
+  qEl.textContent = enFirst ? w.e : w.h;
+  qEl.className   = 'q-word' + (!enFirst ? ' he' : '');
+  document.getElementById('learn-qcat').textContent = w.c;
 
-  // ═══════════════════════════════════════════════════════
-  //  LEVEL & MODE
-  // ═══════════════════════════════════════════════════════
-
-  function setLevel(lvl) {
-    S.level = lvl;
-    const colors = lvl==='A2' ? {c:'#7C3AED',b:'#EDE9FE'} : {c:'#2563EB',b:'#EFF6FF'};
-    S.lc = colors.c; S.lb = colors.b;
-    document.documentElement.style.setProperty('--lc', colors.c);
-    document.documentElement.style.setProperty('--lb', colors.b);
-    const lbls = ['A1','A2','ALL'];
-    document.querySelectorAll('#level-btns button').forEach((btn,i)=>{
-      btn.classList.toggle('active', lbls[i]===lvl);
-    });
-    reloadMode();
-  }
-
-  function setMode(mode) {
-    S.mode = mode;
-    const modes = ['study','quiz','list'];
-    document.querySelectorAll('#mode-btns button').forEach((btn,i)=>{
-      btn.classList.toggle('active', modes[i]===mode);
-    });
-    ['study-view','quiz-view','list-view','summary-view'].forEach(id=>{
-      document.getElementById(id).classList.add('hidden');
-    });
-    document.getElementById('progress-wrap').classList.toggle('hidden', mode==='list');
-
-    if (mode==='study') { document.getElementById('study-view').classList.remove('hidden'); initStudy(); }
-    if (mode==='quiz')  { document.getElementById('quiz-view').classList.remove('hidden');  initQuiz();  }
-    if (mode==='list')  { document.getElementById('list-view').classList.remove('hidden');  renderList(); }
-  }
-
-  function reloadMode() { setMode(S.mode); }
-
-  // ═══════════════════════════════════════════════════════
-  //  STUDY MODE
-  // ═══════════════════════════════════════════════════════
-
-  function initStudy() {
-    const p = loadProg();
-    S.deck = buildDeck(p);
-    S.di = 0;
-    S.sePracticed = 0;
-    S.seNewMaster = 0;
-    showCard();
-    updateProgress();
-  }
-
-  function showCard() {
-    if (S.di >= S.deck.length) { showSummary(); return; }
-    const w = S.deck[S.di];
-    S.flipped = false;
-
-    document.getElementById('card-scene').classList.remove('flipped');
-    document.getElementById('answer-btns').classList.add('hidden');
-
-    document.getElementById('card-cat').textContent   = w.cat;
-    document.getElementById('card-en').textContent    = w.en;
-    document.getElementById('card-cat-b').textContent = w.cat;
-    document.getElementById('card-en-b').textContent  = w.en;
-    document.getElementById('card-he').textContent    = w.he;
-    document.getElementById('deck-counter').textContent =
-      'Card ' + (S.di+1) + ' of ' + S.deck.length;
-
-    updateBoxUI();
-    updateProgress();
-  }
-
-  function flipCard() {
-    if (S.flipped) return;
-    S.flipped = true;
-    document.getElementById('card-scene').classList.add('flipped');
-    document.getElementById('answer-btns').classList.remove('hidden');
-    S.sePracticed++;
-  }
-
-  function markGotIt() {
-    const p = loadProg(); const w = S.deck[S.di];
-    const cur = box(w._id, p); const nxt = Math.min(cur+1, 3);
-    if (!p[w._id]) p[w._id]={};
-    if (nxt===3 && cur<3) S.seNewMaster++;
-    p[w._id].b = nxt;
-    saveProg(p);
-    S.di++;
-    showCard();
-  }
-
-  function markStillLearning() {
-    const p = loadProg(); const w = S.deck[S.di];
-    if (!p[w._id]) p[w._id]={};
-    p[w._id].b = 1;
-    saveProg(p);
-    // Move word back into deck (not immediately — after a few cards)
-    const rest = S.deck.splice(S.di+1);
-    const insertAt = Math.min(3, rest.length);
-    rest.splice(insertAt, 0, w);
-    S.deck.splice(S.di, 1, ...rest);
-    showCard();
-  }
-
-  function updateBoxUI() {
-    const c = boxCounts(loadProg());
-    document.getElementById('b1').textContent = c.b1;
-    document.getElementById('b2').textContent = c.b2;
-    document.getElementById('b3').textContent = c.b3;
-  }
-
-  // ═══════════════════════════════════════════════════════
-  //  QUIZ MODE
-  // ═══════════════════════════════════════════════════════
-
-  function initQuiz() {
-    S.qWords  = shuffle(activeWords());
-    S.qi = S.qCorrect = S.qTotal = S.qStreak = 0;
-    showQuizQ();
-  }
-
-  function showQuizQ() {
-    const ws = activeWords();
-    const q = S.qWords[S.qi % S.qWords.length];
-    S.qDone = false;
-
-    document.getElementById('qz-cat').textContent  = q.cat;
-    document.getElementById('qz-word').textContent = q.en;
-    document.getElementById('qz-feedback').textContent = '';
-    document.getElementById('qz-feedback').className = 'quiz-feedback';
-    document.getElementById('qz-next').classList.add('hidden');
-
-    // 4 options: correct + 3 random distractors
-    const others = shuffle(ws.filter(w=>w._id!==q._id)).slice(0,3);
-    const opts = shuffle([q, ...others]);
-
-    const el = document.getElementById('qz-options');
-    el.innerHTML = '';
-    opts.forEach(opt=>{
-      const btn = document.createElement('button');
-      btn.className = 'quiz-opt';
-      btn.textContent = opt.he;
-      btn.onclick = ()=>answerQuiz(btn, opt, q, el);
-      el.appendChild(btn);
-    });
-
-    updateQuizScore();
-  }
-
-  function answerQuiz(btn, selected, question, container) {
-    if (S.qDone) return;
-    S.qDone = true;
-    S.qTotal++;
-    const correct = selected._id === question._id;
-
-    // Mark all options
-    container.querySelectorAll('.quiz-opt').forEach(b=>{
-      b.disabled = true;
-      if (b.textContent === question.he) b.classList.add('correct');
-    });
-
-    if (correct) {
-      btn.classList.add('correct');
-      S.qCorrect++;
-      S.qStreak++;
-      const fb = document.getElementById('qz-feedback');
-      fb.textContent = '✓ Correct!  כן!';
-      fb.className = 'quiz-feedback';
-    } else {
-      btn.classList.add('wrong');
-      S.qStreak = 0;
-      const fb = document.getElementById('qz-feedback');
-      fb.textContent = '✗  The answer is: ' + question.he;
-      fb.className = 'quiz-feedback bad';
-    }
-
-    updateQuizScore();
-    document.getElementById('qz-next').classList.remove('hidden');
-  }
-
-  function nextQuizQ() {
-    S.qi++;
-    if (S.qi >= S.qWords.length) S.qWords = shuffle(activeWords());
-    showQuizQ();
-  }
-
-  function updateQuizScore() {
-    document.getElementById('qs-correct').textContent = S.qCorrect;
-    document.getElementById('qs-total').textContent   = S.qTotal;
-    document.getElementById('qs-streak').textContent  = S.qStreak;
-  }
-
-  // ═══════════════════════════════════════════════════════
-  //  BROWSE / LIST VIEW
-  // ═══════════════════════════════════════════════════════
-
-  function renderList() {
-    const p = loadProg();
-    const ws = activeWords();
-    const lvlLabel = S.level==='ALL' ? 'All words' : 'Level ' + S.level + ' words';
-    document.getElementById('browse-title').textContent =
-      lvlLabel + ' — ' + ws.length + ' total';
-
-    // Group by category
-    const cats = {};
-    ws.forEach(w=>{
-      if (!cats[w.cat]) cats[w.cat]=[];
-      cats[w.cat].push(w);
-    });
-
-    const container = document.getElementById('word-list');
-    container.innerHTML='';
-    Object.keys(cats).forEach(cat=>{
-      const sec = document.createElement('div');
-      sec.className = 'cat-section';
-      const lbl = document.createElement('div');
-      lbl.className = 'cat-label';
-      lbl.textContent = cat;
-      sec.appendChild(lbl);
-      cats[cat].forEach(w=>{
-        const bx = box(w._id, p);
-        const dotCls = bx===3 ? 'dot-3' : bx===2 ? 'dot-2' : 'dot-1';
-        const row = document.createElement('div');
-        row.className = 'word-row';
-        row.innerHTML =
-          '<span class="wr-dot dot ' + dotCls + '"></span>' +
-          '<span class="wr-en">' + w.en + '</span>' +
-          '<span class="wr-he">' + w.he + '</span>';
-        sec.appendChild(row);
-      });
-      container.appendChild(sec);
-    });
-  }
-
-  // ═══════════════════════════════════════════════════════
-  //  PROGRESS BAR
-  // ═══════════════════════════════════════════════════════
-
-  function updateProgress() {
-    const p = loadProg();
-    const ws = activeWords();
-    const total = ws.length;
-    const mast  = masteredCount(p);
-    const pct   = total ? Math.round(mast/total*100) : 0;
-    const lbl   = S.level==='ALL' ? 'All' : S.level;
-
-    document.getElementById('prog-text').textContent =
-      lbl + ' · ' + mast + ' / ' + total + ' mastered';
-    document.getElementById('prog-fill').style.width = pct + '%';
-    document.getElementById('prog-num').textContent  = mast;
-    document.getElementById('prog-den').textContent  = 'of ' + total;
-  }
-
-  // ═══════════════════════════════════════════════════════
-  //  SUMMARY
-  // ═══════════════════════════════════════════════════════
-
-  function showSummary() {
-    ['study-view'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-    document.getElementById('summary-view').classList.remove('hidden');
-    document.getElementById('progress-wrap').classList.add('hidden');
-
-    const p = loadProg();
-    const ws = activeWords();
-    const mast = masteredCount(p);
-    const left = ws.filter(w=>box(w._id,p)<3).length;
-    const allDone = left === 0;
-
-    document.getElementById('sum-emoji').textContent =
-      allDone ? '🏆' : S.seNewMaster > 0 ? '🎉' : '💪';
-    document.getElementById('sum-title').textContent =
-      allDone ? 'All words mastered!' : 'Round complete!';
-    document.getElementById('sum-he').textContent =
-      allDone ? '!כל המילים הושלמו' : '!כל הכבוד';
-    document.getElementById('sum-practiced').textContent = S.sePracticed;
-    document.getElementById('sum-mastered').textContent  = mast;
-    document.getElementById('sum-left').textContent      = left;
-  }
-
-  function startNewRound() {
-    document.getElementById('summary-view').classList.add('hidden');
-    document.getElementById('progress-wrap').classList.remove('hidden');
-    setMode('study');
-  }
-
-  // ═══════════════════════════════════════════════════════
-  //  RESET
-  // ═══════════════════════════════════════════════════════
-
-  function confirmReset() {
-    const lbl = S.level==='ALL' ? 'all words' : 'Level '+S.level;
-    if (!confirm('Reset your progress for ' + lbl + '? This cannot be undone.')) return;
-    const p = loadProg();
-    activeWords().forEach(w=>{ delete p[w._id]; });
-    saveProg(p);
-    reloadMode();
-  }
-
-  // ═══════════════════════════════════════════════════════
-  //  KEYBOARD SHORTCUTS
-  // ═══════════════════════════════════════════════════════
-
-  document.addEventListener('keydown', e=>{
-    if (S.mode !== 'study') return;
-    if (e.code === 'Space'       && !S.flipped) { e.preventDefault(); flipCard(); }
-    if (e.code === 'ArrowRight'  &&  S.flipped) markGotIt();
-    if (e.code === 'ArrowLeft'   &&  S.flipped) markStillLearning();
+  const distractors = getRandOthers(w, activeWords(), 3);
+  const opts = shuffle([w, ...distractors]);
+  const grid = document.getElementById('learn-options');
+  grid.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className   = 'option-btn' + (enFirst ? ' he' : '');
+    btn.textContent = enFirst ? opt.h : opt.e;
+    btn.onclick     = () => learnAnswer(btn, opt === w, w, enFirst);
+    grid.appendChild(btn);
   });
 
-  // ═══════════════════════════════════════════════════════
-  //  INIT
-  // ═══════════════════════════════════════════════════════
+  document.getElementById('learn-fb').style.display   = 'none';
+  document.getElementById('learn-cont').style.display = 'none';
+  S.learnAnswered = false;
+}
+function learnAnswer(btn, correct, word, enFirst) {
+  if (S.learnAnswered) return;
+  S.learnAnswered = true;
+  document.querySelectorAll('.option-btn').forEach(b => {
+    b.disabled = true;
+    const isRight = enFirst ? (b.textContent === word.h) : (b.textContent === word.e);
+    if (isRight) b.classList.add('correct');
+  });
+  const fb = document.getElementById('learn-fb');
+  if (correct) {
+    btn.classList.add('correct');
+    fb.textContent = '✓ Correct!';
+    fb.className   = 'learn-feedback correct';
+    fb.style.display = 'block';
+    setTimeout(learnNext, 1100);
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = `✗ The answer is: ${enFirst ? word.h : word.e}`;
+    fb.className   = 'learn-feedback wrong';
+    fb.style.display = 'block';
+    S.learnWrong.push(word);
+    document.getElementById('learn-cont').style.display = 'block';
+  }
+}
+function learnNext() {
+  S.learnIndex++;
+  if (S.learnIndex >= S.learnQueue.length) {
+    const uniqueWrong = [...new Set(S.learnWrong)];
+    S.learnTotalLearned = S.learnWords.length - uniqueWrong.length;
+    if (uniqueWrong.length === 0) {
+      document.getElementById('learn-main').style.display = 'none';
+      document.getElementById('learn-done').style.display = 'block';
+      document.getElementById('ld-rounds').textContent = S.learnRound;
+      document.getElementById('ld-words').textContent  = S.learnWords.length;
+      return;
+    }
+    S.learnRound++;
+    S.learnQueue   = shuffle(uniqueWrong);
+    S.learnIndex   = 0;
+    S.learnWrong   = [];
+  }
+  learnRenderQ();
+}
 
-  setLevel('A1');
+/* ════════════════════════════════════════════
+   MATCH GAME
+════════════════════════════════════════════ */
+const MATCH_PAIRS = 6;
+function matchStart() {
+  clearInterval(S.matchTimer);
+  S.matchTimer   = null;
+  S.matchSecs    = 0;
+  S.matchStarted = false;
+  S.matchOk      = 0;
+  S.matchBad     = 0;
+  S.matchSel     = null;
 
-  </script>
+  document.getElementById('match-done').style.display = 'none';
+  document.getElementById('match-grid').style.display = '';
+  document.getElementById('match-timer').textContent  = '0:00';
+  document.getElementById('match-ok').textContent     = '✓ 0 matched';
+  document.getElementById('match-bad').textContent    = '✗ 0 wrong';
+
+  const words = shuffle(activeWords()).slice(0, MATCH_PAIRS);
+  S.matchTiles = shuffle([
+    ...words.map((w, i) => ({ id: i, side: 'en', text: w.e, word: w, matched: false })),
+    ...words.map((w, i) => ({ id: i, side: 'he', text: w.h, word: w, matched: false })),
+  ]);
+
+  const grid = document.getElementById('match-grid');
+  grid.innerHTML = '';
+  S.matchTiles.forEach((tile, idx) => {
+    const div = document.createElement('div');
+    div.className   = 'tile' + (tile.side === 'he' ? ' he' : '');
+    div.textContent = tile.text;
+    div.dataset.idx = idx;
+    div.onclick     = () => matchClick(idx);
+    grid.appendChild(div);
+  });
+  matchShowBest();
+}
+function matchClick(idx) {
+  const tile = S.matchTiles[idx];
+  if (tile.matched) return;
+  if (!S.matchStarted) {
+    S.matchStarted = true;
+    S.matchTimer = setInterval(() => {
+      S.matchSecs++;
+      const m = Math.floor(S.matchSecs / 60), s = S.matchSecs % 60;
+      document.getElementById('match-timer').textContent = m + ':' + String(s).padStart(2,'0');
+    }, 1000);
+  }
+  const el = document.querySelector(`.tile[data-idx="${idx}"]`);
+  if (el.classList.contains('wrong-anim')) return;
+  if (S.matchSel === null) {
+    S.matchSel = idx;
+    el.classList.add('selected');
+    return;
+  }
+  if (S.matchSel === idx) {
+    el.classList.remove('selected');
+    S.matchSel = null;
+    return;
+  }
+  const first   = S.matchTiles[S.matchSel];
+  const firstEl = document.querySelector(`.tile[data-idx="${S.matchSel}"]`);
+  firstEl.classList.remove('selected');
+  el.classList.remove('selected');
+  if (first.id === tile.id && first.side !== tile.side) {
+    firstEl.classList.add('matched'); el.classList.add('matched');
+    first.matched = true; tile.matched = true;
+    S.matchOk++;
+    document.getElementById('match-ok').textContent = `✓ ${S.matchOk} matched`;
+    S.matchSel = null;
+    if (S.matchOk === MATCH_PAIRS) { clearInterval(S.matchTimer); setTimeout(matchDone, 400); }
+  } else {
+    S.matchBad++;
+    document.getElementById('match-bad').textContent = `✗ ${S.matchBad} wrong`;
+    firstEl.classList.add('wrong-anim'); el.classList.add('wrong-anim');
+    S.matchSel = null;
+    setTimeout(() => { firstEl.classList.remove('wrong-anim'); el.classList.remove('wrong-anim'); }, 500);
+  }
+}
+function matchDone() {
+  const ts  = fmtTime(S.matchSecs);
+  document.getElementById('md-time').textContent     = ts;
+  document.getElementById('md-mistakes').textContent = S.matchBad;
+  document.getElementById('match-grid').style.display = 'none';
+  const bk   = 'ehe-match-best-' + S.level;
+  const prev = parseInt(localStorage.getItem(bk) || '99999', 10);
+  const msg  = document.getElementById('md-best-msg');
+  if (S.matchSecs < prev) {
+    localStorage.setItem(bk, S.matchSecs);
+    msg.textContent = prev < 99999 ? `🏆 New best time! (was ${fmtTime(prev)})` : '🏆 First time completed!';
+  } else {
+    msg.textContent = `Best: ${fmtTime(prev)}`;
+  }
+  document.getElementById('match-done').style.display = 'block';
+  matchShowBest();
+}
+function matchShowBest() {
+  const bk   = 'ehe-match-best-' + S.level;
+  const prev = parseInt(localStorage.getItem(bk) || '0', 10);
+  document.getElementById('match-best').innerHTML = prev
+    ? `Best time (${S.level}): <span>${fmtTime(prev)}</span>` : '';
+}
+function fmtTime(s) {
+  return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+}
+
+/* ════════════════════════════════════════════
+   TEST MODE
+════════════════════════════════════════════ */
+const TEST_COUNT = 10;
+function testInit() {
+  document.getElementById('test-active').style.display  = '';
+  document.getElementById('test-results').style.display = 'none';
+  const ws = shuffle(activeWords());
+  S.testQuestions = ws.slice(0, TEST_COUNT).map(w => {
+    const enFirst = Math.random() > 0.4;
+    return { word: w, enFirst, opts: shuffle([w, ...getRandOthers(w, activeWords(), 3)]) };
+  });
+  S.testIndex = 0; S.testScore = 0; S.testWrong = []; S.testAnswered = false;
+  testRenderQ();
+}
+function testRenderQ() {
+  const q     = S.testQuestions[S.testIndex];
+  const total = S.testQuestions.length;
+  document.getElementById('test-qnum').textContent      = `Question ${S.testIndex + 1} of ${total}`;
+  document.getElementById('test-bar').style.width       = (S.testIndex / total * 100) + '%';
+  document.getElementById('test-prompt').textContent    = q.enFirst ? 'What is the Hebrew for:' : 'What does this mean?';
+  const tEl = document.getElementById('test-term');
+  tEl.textContent = q.enFirst ? q.word.e : q.word.h;
+  tEl.className   = 'test-term' + (!q.enFirst ? ' he' : '');
+  const optsEl = document.getElementById('test-options');
+  optsEl.innerHTML = '';
+  q.opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className   = 'test-opt' + (q.enFirst ? ' he' : '');
+    btn.textContent = q.enFirst ? opt.h : opt.e;
+    btn.onclick     = () => testAnswer(btn, opt === q.word, q);
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('test-next').style.display = 'none';
+  S.testAnswered = false;
+}
+function testAnswer(btn, correct, q) {
+  if (S.testAnswered) return;
+  S.testAnswered = true;
+  document.querySelectorAll('.test-opt').forEach(b => {
+    b.disabled = true;
+    const isRight = q.enFirst ? (b.textContent === q.word.h) : (b.textContent === q.word.e);
+    if (isRight) b.classList.add('correct');
+  });
+  if (!correct) { btn.classList.add('wrong'); S.testWrong.push({ q, yourAns: btn.textContent }); }
+  else S.testScore++;
+  const nx = document.getElementById('test-next');
+  nx.style.display = 'block';
+  nx.textContent   = S.testIndex < S.testQuestions.length - 1 ? 'Next Question →' : 'See Results →';
+}
+function testNext() {
+  S.testIndex++;
+  if (S.testIndex >= S.testQuestions.length) testShowResults(); else testRenderQ();
+}
+function testShowResults() {
+  document.getElementById('test-active').style.display  = 'none';
+  document.getElementById('test-results').style.display = 'block';
+  const pct = Math.round(S.testScore / S.testQuestions.length * 100);
+  document.getElementById('score-num').textContent = `${S.testScore}/${S.testQuestions.length}`;
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('test-bar').style.width  = '100%';
+  const circ  = 2 * Math.PI * 50;
+  const arc   = document.getElementById('score-arc');
+  arc.style.stroke           = pct >= 80 ? 'var(--green)' : pct >= 50 ? 'var(--blue)' : 'var(--red)';
+  arc.style.strokeDashoffset = circ * (1 - pct / 100);
+  const [[,title,sub]] = [[80,'⭐ Excellent!','Outstanding — you really know these words!'],[60,'👍 Good job!','Solid effort — review the missed words below.'],[40,'📚 Keep going!','Practice makes perfect — try again!'],[0,'🔄 Keep practicing!','Review the flashcards and then try again.']].filter(([t])=>pct>=t);
+  document.getElementById('score-msg').textContent = title;
+  document.getElementById('score-sub').textContent = sub;
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  if (S.testWrong.length) {
+    const h = document.createElement('div');
+    h.style.cssText = 'font-weight:700;margin-bottom:0.5rem;color:var(--red);';
+    h.textContent   = `${S.testWrong.length} to review:`;
+    list.appendChild(h);
+    S.testWrong.forEach(({ q, yourAns }) => {
+      const item = document.createElement('div');
+      item.className = 'review-item';
+      item.innerHTML = `<span class="review-en">${q.word.e}</span><span class="review-he he">${q.word.h}</span><span class="review-your">Your answer: ${yourAns}</span>`;
+      list.appendChild(item);
+    });
+  }
+}
+
+/* ════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (S.mode !== 'fc') return;
+  if (e.code === 'Space')      { e.preventDefault(); fcFlip(); }
+  if (e.code === 'ArrowRight') fcNext();
+  if (e.code === 'ArrowLeft')  fcPrev();
+  if (e.code === 'ArrowUp'   && S.fcFlipped) fcRespond(true);
+  if (e.code === 'ArrowDown' && S.fcFlipped) fcRespond(false);
+});
+
+/* ════════════════════════════════════════════
+   BOOT
+════════════════════════════════════════════ */
+fcInit();
+</script>
 </body>
 </html>
