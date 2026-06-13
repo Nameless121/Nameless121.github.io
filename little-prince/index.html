@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Little Prince — Interactive Study Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Sans+Hebrew:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --deep: #0d0d24; --gold: #f0c96b; --rose: #e8837a;
@@ -132,6 +132,7 @@
   .vocab-pos { font-size:.7em; text-transform:uppercase; letter-spacing:1px; color:var(--lavender); margin-bottom:6px; }
   .vocab-def { font-size:.83em; line-height:1.6; color:var(--dim); }
   .vocab-example { font-size:.8em; color:rgba(232,224,208,.5); margin-top:6px; font-style:italic; }
+  .vocab-hebrew  { font-family:'Noto Sans Hebrew',serif; direction:rtl; font-size:.92em; color:var(--lavender); margin-bottom:5px; letter-spacing:0; }
 
   /* VOCAB QUIZ */
   .vocab-quiz-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:24px 26px; margin-bottom:16px; }
@@ -376,7 +377,11 @@ function showInner(setId, tabId, btn) {
 // ═══════════════════════════════════════════════════════════════
 //  QUESTION ENGINE
 // ═══════════════════════════════════════════════════════════════
-const state = { s1: { answered: new Set(), count: 0, total: 17 }, s2: { answered: new Set(), count: 0, total: 17 } };
+const STORAGE_KEY = 'lp-guide-v1';
+const state = {
+  s1: { answered: new Set(), count: 0, total: 17, attempts: {} },
+  s2: { answered: new Set(), count: 0, total: 17, attempts: {} }
+};
 
 function updateProgress(setKey) {
   const s = state[setKey];
@@ -403,21 +408,28 @@ const FB = {
   reflect: { cls:'reflect', label:'🌟 Reflection received' }
 };
 
-function buildFeedbackHTML(q, level) {
+function buildFeedbackHTML(q, level, showModel) {
   const f = FB[level];
   const msgs = {
     good:    "Well done — your answer covers the key points clearly. Read the model answer below to see if there is anything extra you could add.",
     partial: "You've picked up on some of the right ideas, but your answer is missing a few important details. Read the model answer carefully and see what you could improve.",
-    improve: "Your answer needs more development. Make sure you support your ideas with details from the text. The model answer below will show you what to aim for.",
-    reflect: "Thank you for sharing your thoughts! Personal reflection questions don't have a single right answer. Review the model response below for ideas on how to develop your thinking further."
+    improve: showModel
+      ? "Your answer needs more development. Make sure you support your ideas with details from the text. The model answer below will show you what to aim for."
+      : "Not quite there yet — read the text again carefully and give it another try.",
+    reflect: "Thank you for sharing your thoughts! Personal reflection questions have no single right answer. Review the model response below for ideas on how to develop your thinking further."
   };
+  const modelBlock = (showModel || level === 'good' || level === 'partial' || level === 'reflect')
+    ? `<div class="fb-answer"><b>Model Answer:</b> ${q.model}</div>` : '';
+  const retryBtn = (level === 'improve' && !showModel)
+    ? `<button class="btn-retry" onclick="retryQ('${q.id}','${q.setKey}')">↺ Try Again</button>`
+    : `<button class="btn-retry" onclick="retryQ('${q.id}','${q.setKey}')">↺ Edit &amp; Try Again</button>`;
   return `
     <div class="feedback-box">
       <div class="fb-header ${f.cls}">${f.label}</div>
       <div class="fb-body">${msgs[level]}</div>
-      <div class="fb-answer"><b>Model Answer:</b> ${q.model}</div>
+      ${modelBlock}
     </div>
-    <button class="btn-retry" onclick="retryQ('${q.id}','${q.setKey}')">↺ Edit &amp; Try Again</button>`;
+    ${retryBtn}`;
 }
 
 function submitQ(qid, setKey) {
@@ -427,24 +439,82 @@ function submitQ(qid, setKey) {
   const fb = document.getElementById('qfb-' + qid);
   const card = document.getElementById('qcard-' + qid);
   const level = scoreAnswer(q, ta.value.trim());
-  fb.innerHTML = buildFeedbackHTML(q, level);
-  ta.disabled = true;
-  btn.style.display = 'none';
-  card.classList.add(q.group === 'reflection' ? 'done-reflection' : 'done');
-  if (!state[setKey].answered.has(qid)) {
-    state[setKey].answered.add(qid);
-    state[setKey].count++;
-    updateProgress(setKey);
+
+  if (level === 'improve') {
+    state[setKey].attempts[qid] = (state[setKey].attempts[qid] || 0) + 1;
+  }
+  const showModel = level !== 'improve' || (state[setKey].attempts[qid] || 0) >= 2;
+
+  fb.innerHTML = buildFeedbackHTML(q, level, showModel);
+
+  if (showModel) {
+    ta.disabled = true;
+    btn.style.display = 'none';
+    card.classList.add(q.group === 'reflection' ? 'done-reflection' : 'done');
+    if (!state[setKey].answered.has(qid)) {
+      state[setKey].answered.add(qid);
+      state[setKey].count++;
+      updateProgress(setKey);
+    }
+    saveAnswer(qid, setKey, ta.value.trim(), level, state[setKey].attempts[qid] || 0, true);
+  } else {
+    saveAnswer(qid, setKey, ta.value.trim(), level, state[setKey].attempts[qid] || 0, false);
   }
 }
 
 function retryQ(qid, setKey) {
-  const ta = document.getElementById('qta-' + qid);
+  const ta  = document.getElementById('qta-' + qid);
   const btn = document.getElementById('qbtn-' + qid);
-  const fb = document.getElementById('qfb-' + qid);
+  const fb  = document.getElementById('qfb-' + qid);
   const card = document.getElementById('qcard-' + qid);
-  ta.disabled = false; btn.style.display = ''; btn.disabled = ta.value.trim().length < 10;
-  fb.innerHTML = ''; card.classList.remove('done','done-reflection');
+  ta.disabled = false;
+  btn.style.display = '';
+  btn.disabled = ta.value.trim().length < 10;
+  fb.innerHTML = '';
+  card.classList.remove('done', 'done-reflection');
+  // attempt count preserved across retries
+}
+
+// ── STORAGE: save answers + progress between sessions ──────────
+function saveAnswer(qid, setKey, text, level, attempts, done) {
+  const store = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  store[qid] = { text, level, attempts, done, setKey };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+}
+
+function restoreFromStorage() {
+  const store = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  Object.entries(store).forEach(([qid, saved]) => {
+    const { text, level, attempts, done, setKey } = saved;
+    const ta   = document.getElementById('qta-'  + qid);
+    const btn  = document.getElementById('qbtn-' + qid);
+    const fb   = document.getElementById('qfb-'  + qid);
+    const card = document.getElementById('qcard-'+ qid);
+    if (!ta || !btn || !fb || !card) return;
+    const q = ALL_QUESTIONS[setKey] && ALL_QUESTIONS[setKey].find(x => x.id === qid);
+    if (!q) return;
+
+    state[setKey].attempts[qid] = attempts || 0;
+    ta.value = text || '';
+    const cc = document.getElementById('qcc-' + qid);
+    if (cc) cc.textContent = (text||'').length + ' character' + ((text||'').length !== 1 ? 's' : '');
+    btn.disabled = (text||'').length < 10;
+
+    if (done) {
+      fb.innerHTML = buildFeedbackHTML(q, level, true);
+      ta.disabled = true;
+      btn.style.display = 'none';
+      card.classList.add(q.group === 'reflection' ? 'done-reflection' : 'done');
+      if (!state[setKey].answered.has(qid)) {
+        state[setKey].answered.add(qid);
+        state[setKey].count++;
+      }
+    } else if (level === 'improve') {
+      fb.innerHTML = buildFeedbackHTML(q, level, false);
+    }
+  });
+  updateProgress('s1');
+  updateProgress('s2');
 }
 
 function onType(qid, el) {
@@ -487,7 +557,7 @@ function buildVocabForSet(setKey, vocabData) {
   vocabData.forEach(v => {
     const d = document.createElement('div');
     d.className = 'vocab-card';
-    d.innerHTML = `<div class="vocab-word">${v.word}</div><div class="vocab-pos">${v.pos}</div><div class="vocab-def">${v.def}</div><div class="vocab-example">${v.example}</div>`;
+    d.innerHTML = `<div class="vocab-word">${v.word}</div><div class="vocab-hebrew">${v.he || ''}</div><div class="vocab-pos">${v.pos}</div><div class="vocab-def">${v.def}</div><div class="vocab-example">${v.example}</div>`;
     refGrid.appendChild(d);
   });
   // Quiz
@@ -715,6 +785,7 @@ buildVocabForSet('s1', VOCAB_S1);
 buildVocabForSet('s2', VOCAB_S2);
 updateProgress('s1');
 updateProgress('s2');
+restoreFromStorage();
 </script>
 </body>
 </html>
