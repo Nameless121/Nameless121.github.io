@@ -1,3 +1,720 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Coming soon</title></head>
-<body><p>Study guide coming soon.</p></body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Little Prince — Interactive Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0d0d24; --gold: #f0c96b; --rose: #e8837a;
+    --lavender: #a78bca; --mint: #7ec8b8; --cream: #f5efe0;
+    --text: #e8e0d0; --dim: #9993b8; --green: #6fcf97;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background-color:var(--deep); color:var(--text); font-family:'Lora',Georgia,serif; min-height:100vh; overflow-x:hidden;
+    background-image: radial-gradient(ellipse at 20% 10%,rgba(100,80,180,.18) 0%,transparent 50%), radial-gradient(ellipse at 80% 80%,rgba(232,131,122,.12) 0%,transparent 50%); }
+  body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image: radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.7) 0%,transparent 100%), radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.5) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 40% 8%,rgba(255,255,255,.8) 0%,transparent 100%), radial-gradient(1px 1px at 55% 25%,rgba(255,255,255,.4) 0%,transparent 100%),
+      radial-gradient(1px 1px at 70% 12%,rgba(255,255,255,.7) 0%,transparent 100%), radial-gradient(1.5px 1.5px at 85% 35%,rgba(255,255,255,.6) 0%,transparent 100%),
+      radial-gradient(1px 1px at 92% 7%,rgba(255,255,255,.5) 0%,transparent 100%), radial-gradient(1px 1px at 5% 60%,rgba(255,255,255,.4) 0%,transparent 100%),
+      radial-gradient(1px 1px at 35% 75%,rgba(255,255,255,.3) 0%,transparent 100%), radial-gradient(1.5px 1.5px at 65% 55%,rgba(255,255,255,.6) 0%,transparent 100%),
+      radial-gradient(1px 1px at 78% 70%,rgba(255,255,255,.4) 0%,transparent 100%), radial-gradient(1px 1px at 18% 85%,rgba(255,255,255,.5) 0%,transparent 100%),
+      radial-gradient(1px 1px at 50% 90%,rgba(255,255,255,.3) 0%,transparent 100%), radial-gradient(1.5px 1.5px at 88% 88%,rgba(255,255,255,.6) 0%,transparent 100%); }
+  .container { max-width:860px; margin:0 auto; padding:60px 30px 80px; position:relative; z-index:1; }
+
+  /* HEADER */
+  header { text-align:center; margin-bottom:44px; }
+  .planet-icon { font-size:64px; display:block; margin-bottom:20px; animation:float 6s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  header h1 { font-family:'Playfair Display',serif; font-size:2.8em; font-weight:700; color:var(--gold); line-height:1.1; }
+  header h1 em { font-style:italic; color:var(--cream); }
+  header .subtitle { margin-top:12px; font-size:1em; color:var(--dim); letter-spacing:2px; text-transform:uppercase; }
+  header .byline { margin-top:8px; font-size:.85em; color:var(--lavender); font-style:italic; }
+  @media(max-width:600px){ header h1{font-size:2em} }
+
+  /* CHAPTER SET PICKER */
+  .set-picker { display:flex; gap:10px; justify-content:center; margin-bottom:10px; flex-wrap:wrap; }
+  .set-btn { font-family:'Playfair Display',serif; font-size:.95em; font-style:italic; padding:10px 24px; border-radius:30px; cursor:pointer; transition:all .25s; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04); color:var(--dim); }
+  .set-btn:hover { border-color:var(--gold); color:var(--gold); }
+  .set-btn.active { background:rgba(240,201,107,.18); border-color:var(--gold); color:var(--gold); box-shadow:0 0 18px rgba(240,201,107,.12); }
+  .set-btn.locked { opacity:.35; cursor:not-allowed; }
+  .set-btn.locked:hover { border-color:rgba(255,255,255,.12); color:var(--dim); }
+  .set-picker-label { text-align:center; font-size:.7em; color:var(--dim); letter-spacing:2px; text-transform:uppercase; margin-bottom:28px; }
+
+  /* INNER TABS */
+  .nav-tabs { display:flex; gap:8px; justify-content:center; margin-bottom:44px; flex-wrap:wrap; }
+  .nav-tab { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--dim); font-family:'Lora',serif; font-size:.78em; text-transform:uppercase; letter-spacing:2px; padding:8px 18px; border-radius:20px; cursor:pointer; transition:all .2s; }
+  .nav-tab:hover { border-color:var(--gold); color:var(--gold); }
+  .nav-tab.active { background:rgba(240,201,107,.15); border-color:var(--gold); color:var(--gold); }
+
+  /* CHAPTER SET PANELS */
+  .chapter-set { display:none; }
+  .chapter-set.active { display:block; animation:fadeIn .4s ease; }
+
+  /* INNER SECTIONS */
+  .inner-section { display:none; }
+  .inner-section.active { display:block; animation:fadeIn .35s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .section-label { display:inline-block; font-family:'Lora',serif; font-size:.7em; text-transform:uppercase; letter-spacing:3px; color:var(--gold); border:1px solid rgba(240,201,107,.3); padding:4px 14px; border-radius:20px; margin-bottom:16px; }
+  h2 { font-family:'Playfair Display',serif; font-size:1.7em; color:var(--cream); margin-bottom:8px; font-weight:700; }
+  .divider { text-align:center; margin:40px 0; color:var(--gold); font-size:1.2em; opacity:.5; letter-spacing:8px; }
+
+  /* SUMMARY */
+  .summary-block { background:rgba(255,255,255,.04); border:1px solid rgba(240,201,107,.2); border-left:3px solid var(--gold); border-radius:12px; padding:30px 34px; margin-bottom:30px; }
+  .summary-block p { font-size:.97em; line-height:1.85; color:var(--text); margin-bottom:14px; }
+  .summary-block p:last-child { margin-bottom:0; }
+
+  /* CHAPTER CARDS */
+  .chapters-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:40px; }
+  @media(max-width:600px){ .chapters-grid{grid-template-columns:1fr} }
+  .chapter-card { background:rgba(255,255,255,.04); border:1px solid rgba(167,139,202,.2); border-radius:12px; padding:20px 22px; transition:border-color .2s,background .2s; }
+  .chapter-card:hover { border-color:rgba(167,139,202,.5); background:rgba(167,139,202,.06); }
+  .ch-number { font-size:.7em; text-transform:uppercase; letter-spacing:2px; color:var(--lavender); margin-bottom:6px; }
+  .ch-title { font-family:'Playfair Display',serif; font-size:1em; color:var(--cream); margin-bottom:10px; font-style:italic; }
+  .chapter-card p { font-size:.85em; line-height:1.7; color:var(--dim); }
+
+  /* PROGRESS */
+  .progress-wrap { margin-bottom:36px; }
+  .progress-label { display:flex; justify-content:space-between; font-size:.78em; color:var(--dim); margin-bottom:8px; }
+  .progress-label .pg-right { color:var(--gold); font-family:'Playfair Display',serif; }
+  .progress-bar { height:6px; background:rgba(255,255,255,.08); border-radius:10px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--lavender),var(--gold)); border-radius:10px; transition:width .5s ease; width:0%; }
+
+  /* QUESTION GROUPS */
+  .question-group { margin-bottom:36px; }
+  .question-group-title { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+  .q-icon { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.95em; flex-shrink:0; }
+  .q-icon.comprehension { background:rgba(126,200,184,.2); color:var(--mint); border:1px solid rgba(126,200,184,.3); }
+  .q-icon.analysis { background:rgba(232,131,122,.2); color:var(--rose); border:1px solid rgba(232,131,122,.3); }
+  .q-icon.reflection { background:rgba(167,139,202,.2); color:var(--lavender); border:1px solid rgba(167,139,202,.3); }
+  .q-group-label { font-size:.75em; text-transform:uppercase; letter-spacing:2px; color:var(--dim); }
+
+  .question-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:22px 24px; margin-bottom:14px; transition:border-color .3s; }
+  .question-card.done { border-color:rgba(111,207,151,.3); background:rgba(111,207,151,.02); }
+  .question-card.done-reflection { border-color:rgba(167,139,202,.3); background:rgba(167,139,202,.02); }
+  .q-header { display:flex; gap:14px; align-items:flex-start; margin-bottom:14px; }
+  .q-badge { font-size:.72em; color:var(--dim); font-style:italic; white-space:nowrap; padding-top:3px; min-width:22px; }
+  .q-text { font-size:.94em; line-height:1.65; color:var(--text); }
+  textarea.q-input { width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:10px; color:var(--cream); font-family:'Lora',Georgia,serif; font-size:.88em; line-height:1.65; padding:12px 14px; resize:vertical; min-height:85px; transition:border-color .2s; outline:none; }
+  textarea.q-input:focus { border-color:rgba(240,201,107,.4); }
+  textarea.q-input::placeholder { color:var(--dim); opacity:.6; }
+  textarea.q-input:disabled { opacity:.6; cursor:default; }
+  .q-footer { display:flex; align-items:center; justify-content:space-between; margin-top:12px; gap:10px; flex-wrap:wrap; }
+  .char-count { font-size:.72em; color:var(--dim); }
+  .btn-submit { background:linear-gradient(135deg,rgba(240,201,107,.15),rgba(167,139,202,.15)); border:1px solid rgba(240,201,107,.35); color:var(--gold); font-family:'Lora',serif; font-size:.78em; text-transform:uppercase; letter-spacing:2px; padding:8px 20px; border-radius:20px; cursor:pointer; transition:all .2s; }
+  .btn-submit:hover:not(:disabled) { background:rgba(240,201,107,.25); border-color:var(--gold); }
+  .btn-submit:disabled { opacity:.35; cursor:not-allowed; }
+
+  /* FEEDBACK */
+  .feedback-box { margin-top:16px; border-radius:10px; overflow:hidden; animation:slideDown .35s ease; }
+  @keyframes slideDown { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+  .fb-header { display:flex; align-items:center; gap:8px; padding:10px 16px; font-size:.75em; text-transform:uppercase; letter-spacing:2px; font-family:'Lora',serif; font-weight:600; }
+  .fb-header.good    { background:rgba(111,207,151,.13); color:var(--green);    border:1px solid rgba(111,207,151,.25); border-bottom:none; }
+  .fb-header.partial { background:rgba(240,201,107,.10); color:var(--gold);     border:1px solid rgba(240,201,107,.25); border-bottom:none; }
+  .fb-header.improve { background:rgba(232,131,122,.10); color:var(--rose);     border:1px solid rgba(232,131,122,.25); border-bottom:none; }
+  .fb-header.reflect { background:rgba(167,139,202,.13); color:var(--lavender); border:1px solid rgba(167,139,202,.25); border-bottom:none; }
+  .fb-body { padding:16px 18px; font-size:.875em; line-height:1.8; color:var(--text); background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-top:none; }
+  .fb-body b { color:var(--gold); }
+  .fb-answer { padding:14px 18px; font-size:.85em; line-height:1.75; background:rgba(240,201,107,.05); border:1px solid rgba(240,201,107,.15); border-top:none; border-radius:0 0 10px 10px; color:var(--cream); }
+  .fb-answer b { color:var(--gold); }
+  .btn-retry { display:inline-block; margin-top:12px; background:none; border:1px solid rgba(255,255,255,.13); color:var(--dim); font-family:'Lora',serif; font-size:.75em; letter-spacing:1px; padding:5px 14px; border-radius:15px; cursor:pointer; transition:all .2s; }
+  .btn-retry:hover { border-color:var(--lavender); color:var(--lavender); }
+
+  /* VOCAB */
+  .vocab-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:40px; }
+  @media(max-width:600px){ .vocab-grid{grid-template-columns:1fr} }
+  .vocab-card { background:rgba(255,255,255,.03); border:1px solid rgba(240,201,107,.15); border-radius:10px; padding:16px 18px; transition:border-color .2s; }
+  .vocab-card:hover { border-color:rgba(240,201,107,.35); }
+  .vocab-word { font-family:'Playfair Display',serif; font-size:1.05em; color:var(--gold); margin-bottom:4px; }
+  .vocab-pos { font-size:.7em; text-transform:uppercase; letter-spacing:1px; color:var(--lavender); margin-bottom:6px; }
+  .vocab-def { font-size:.83em; line-height:1.6; color:var(--dim); }
+  .vocab-example { font-size:.8em; color:rgba(232,224,208,.5); margin-top:6px; font-style:italic; }
+
+  /* VOCAB QUIZ */
+  .vocab-quiz-card { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:14px; padding:24px 26px; margin-bottom:16px; }
+  .vq-word { font-family:'Playfair Display',serif; font-size:1.3em; color:var(--gold); margin-bottom:6px; }
+  .vq-prompt { font-size:.85em; color:var(--dim); margin-bottom:16px; font-style:italic; }
+  .vocab-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media(max-width:500px){ .vocab-options{grid-template-columns:1fr} }
+  .vocab-opt { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); color:var(--text); font-family:'Lora',serif; font-size:.84em; line-height:1.5; padding:10px 14px; border-radius:10px; cursor:pointer; text-align:left; transition:all .18s; }
+  .vocab-opt:hover:not(:disabled) { border-color:var(--lavender); color:var(--lavender); background:rgba(167,139,202,.08); }
+  .vocab-opt.correct { border-color:var(--green)!important; background:rgba(111,207,151,.12)!important; color:var(--green)!important; }
+  .vocab-opt.wrong   { border-color:var(--rose)!important;  background:rgba(232,131,122,.08)!important; color:var(--rose)!important; }
+  .vocab-opt:disabled { cursor:default; }
+  .vq-feedback { margin-top:14px; font-size:.83em; line-height:1.6; padding:10px 14px; border-radius:8px; display:none; }
+  .vq-feedback.show { display:block; animation:fadeIn .3s ease; }
+  .vq-feedback.correct { background:rgba(111,207,151,.1); color:var(--green); border:1px solid rgba(111,207,151,.2); }
+  .vq-feedback.wrong   { background:rgba(232,131,122,.08); color:var(--rose);  border:1px solid rgba(232,131,122,.2); }
+
+  /* THEMES */
+  .themes-block { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:50px; }
+  @media(max-width:600px){ .themes-block{grid-template-columns:1fr} }
+  .theme-pill { background:rgba(255,255,255,.04); border-radius:10px; padding:16px 18px; text-align:center; border:1px solid rgba(255,255,255,.08); }
+  .t-icon { font-size:1.6em; margin-bottom:8px; }
+  .t-name { font-family:'Playfair Display',serif; font-size:.92em; color:var(--cream); margin-bottom:5px; }
+  .t-desc { font-size:.77em; color:var(--dim); line-height:1.5; }
+
+  /* QUOTE */
+  .quote-block { border:1px solid rgba(240,201,107,.2); border-radius:12px; padding:30px 36px; margin-bottom:40px; text-align:center; background:rgba(240,201,107,.04); position:relative; }
+  .quote-block::before { content:'\201C'; position:absolute; top:-18px; left:30px; font-family:'Playfair Display',serif; font-size:5em; color:var(--gold); opacity:.25; line-height:1; }
+  .quote-block p { font-family:'Playfair Display',serif; font-size:1.15em; font-style:italic; color:var(--cream); line-height:1.7; }
+  .quote-block cite { display:block; margin-top:12px; font-size:.8em; color:var(--gold); letter-spacing:1px; }
+
+  footer { text-align:center; color:var(--dim); font-size:.8em; padding-top:30px; border-top:1px solid rgba(255,255,255,.06); font-style:italic; margin-top:20px; }
+</style>
+</head>
+<body>
+<a href="../index.html" style="position:fixed;top:14px;left:16px;z-index:100;font-family:'Lora',Georgia,serif;font-size:.78em;color:#a78bca;text-decoration:none;letter-spacing:1px;padding:6px 14px;border:1px solid rgba(167,139,202,.3);border-radius:20px;background:rgba(13,13,36,.85);backdrop-filter:blur(6px);transition:all .2s;" onmouseover="this.style.color='#f0c96b';this.style.borderColor='rgba(240,201,107,.5)'" onmouseout="this.style.color='#a78bca';this.style.borderColor='rgba(167,139,202,.3)'">← All Tools</a>
+<div class="container">
+
+  <header>
+    <span class="planet-icon">🌍</span>
+    <h1><em>The Little Prince</em></h1>
+    <p class="subtitle">Complete Interactive Study Guide</p>
+    <p class="byline">Antoine de Saint-Exupéry</p>
+  </header>
+
+  <!-- CHAPTER SET PICKER -->
+  <div class="set-picker">
+    <button class="set-btn active" onclick="showSet('set1', this)">Chapters 1–6</button>
+    <button class="set-btn" onclick="showSet('set2', this)">Chapters 7–12</button>
+    <button class="set-btn locked" title="Coming soon">Chapters 13–18</button>
+    <button class="set-btn locked" title="Coming soon">Chapters 19–27</button>
+  </div>
+  <p class="set-picker-label">Select a chapter set to study</p>
+
+  <!-- ████████████████████████ CHAPTER SET 1 (Ch 1–6) ████████████████████████ -->
+  <div id="set1" class="chapter-set active">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showInner('set1','summary',this)">📖 Summary</button>
+      <button class="nav-tab" onclick="showInner('set1','questions',this)">📝 Questions</button>
+      <button class="nav-tab" onclick="showInner('set1','vocab',this)">📚 Vocabulary</button>
+      <button class="nav-tab" onclick="showInner('set1','themes',this)">🎭 Themes</button>
+    </div>
+
+    <!-- SUMMARY -->
+    <div id="set1-summary" class="inner-section active">
+      <div class="section-label">📖 Story Summary</div>
+      <h2>Chapters 1–6: What Happened</h2>
+      <div class="summary-block" style="margin-top:16px;">
+        <p>The story begins with the narrator — a pilot — reflecting on his childhood. At age six, he drew a picture of a boa constrictor swallowing an elephant, but every grown-up he showed it to thought it was just a hat. Disappointed that adults couldn't use their imagination, he gave up drawing and became a pilot instead.</p>
+        <p>Years later, the narrator's plane breaks down in the Sahara Desert, far from any help. He is completely alone — until a strange little boy appears and asks him to draw a sheep. This is the Little Prince. The narrator is confused: how did this child get to the middle of the desert? But the Prince never answers questions directly; he only asks his own.</p>
+        <p>Through their conversations, we learn that the Little Prince comes from a tiny planet — Asteroid B-612 — barely bigger than a house. On his planet, he had three volcanoes (two active, one extinct) which he cleaned every day, and a very special rose that one day grew there on its own. The rose was beautiful but vain and demanding. Eventually, feeling confused and hurt, the Prince decided to leave and explore other worlds.</p>
+        <p>Before leaving, the Little Prince carefully cleaned his volcanoes and uprooted the baobab seedlings that threatened to destroy the planet. He said a difficult goodbye to his rose and set off on his journey through the universe.</p>
+      </div>
+      <div class="chapters-grid">
+        <div class="chapter-card"><div class="ch-number">Chapter 1</div><div class="ch-title">The Boa Constrictor Drawing</div><p>The narrator draws a snake eating an elephant. Adults see only a hat. He gives up on imagination and becomes a pilot.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 2</div><div class="ch-title">The Crash &amp; the Prince</div><p>The narrator's plane crashes in the Sahara. A mysterious little boy appears and asks him to draw a sheep.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 3</div><div class="ch-title">Where Did He Come From?</div><p>The narrator learns the Prince comes from a tiny planet. The Prince asks many questions but avoids answering any.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 4</div><div class="ch-title">Asteroid B-612</div><p>The narrator describes the Prince's home planet and criticises how grown-ups only understand things in numbers.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 5</div><div class="ch-title">The Baobab Danger</div><p>The Prince explains that baobab trees must be uprooted as seedlings or they will destroy a small planet.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 6</div><div class="ch-title">The Sunsets</div><p>The Prince reveals he loves watching sunsets — on his tiny planet, he once watched 44 in a single sad day.</p></div>
+      </div>
+      <div class="quote-block"><p>"All grown-ups were once children — although few of them remember it."</p><cite>— Antoine de Saint-Exupéry</cite></div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="set1-questions" class="inner-section">
+      <div class="section-label">📝 Questions</div>
+      <h2 style="margin-bottom:6px;">Chapters 1–6</h2>
+      <p style="color:var(--dim);font-size:.85em;margin-bottom:24px;font-style:italic;">Type your answer and click "Check Answer" to see feedback and the model answer.</p>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progress</span><span class="pg-right" id="s1-prog-text">0 / 17 answered</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="s1-prog-fill"></div></div>
+      </div>
+      <div class="question-group">
+        <div class="question-group-title"><div class="q-icon comprehension">🔍</div><span class="q-group-label">Recall Questions</span></div>
+        <div id="s1-recall"></div>
+      </div>
+      <div class="question-group">
+        <div class="question-group-title"><div class="q-icon analysis">💡</div><span class="q-group-label">Analysis &amp; Inference</span></div>
+        <div id="s1-analysis"></div>
+      </div>
+      <div class="question-group">
+        <div class="question-group-title"><div class="q-icon reflection">🌟</div><span class="q-group-label">Personal Reflection</span></div>
+        <div id="s1-reflection"></div>
+      </div>
+    </div>
+
+    <!-- VOCAB -->
+    <div id="set1-vocab" class="inner-section">
+      <div class="section-label">📚 Vocabulary</div>
+      <h2 style="margin-bottom:6px;">Key Words — Chapters 1–6</h2>
+      <p style="color:var(--dim);font-size:.85em;margin-bottom:28px;font-style:italic;">Review the words, then test yourself with the quiz below.</p>
+      <div class="vocab-grid" id="s1-vocab-ref"></div>
+      <div class="divider">· · · ✦ · · ·</div>
+      <div class="section-label">🧠 Vocabulary Quiz</div>
+      <h2 style="margin-bottom:6px;">Test Your Words</h2>
+      <p style="color:var(--dim);font-size:.85em;margin-bottom:24px;font-style:italic;">Choose the correct definition for each word.</p>
+      <div id="s1-vocab-quiz"></div>
+    </div>
+
+    <!-- THEMES -->
+    <div id="set1-themes" class="inner-section">
+      <div class="section-label">🎭 Themes</div>
+      <h2 style="margin-bottom:18px;">Big Ideas in Chapters 1–6</h2>
+      <div class="themes-block">
+        <div class="theme-pill"><div class="t-icon">👁️</div><div class="t-name">Imagination vs. Logic</div><div class="t-desc">Adults see a hat; the narrator sees a snake. The story celebrates seeing beyond the obvious.</div></div>
+        <div class="theme-pill"><div class="t-icon">🌱</div><div class="t-name">Responsibility</div><div class="t-desc">The Prince tends his planet daily. Small, consistent care prevents big disasters.</div></div>
+        <div class="theme-pill"><div class="t-icon">💔</div><div class="t-name">Loneliness &amp; Longing</div><div class="t-desc">The sunsets reveal the Prince's sadness. Even in a universe of planets, he feels alone.</div></div>
+        <div class="theme-pill"><div class="t-icon">🌹</div><div class="t-name">Love &amp; Hurt</div><div class="t-desc">The rose is beautiful but causes pain. Love is complicated from the very start.</div></div>
+        <div class="theme-pill"><div class="t-icon">🔢</div><div class="t-name">Numbers vs. Meaning</div><div class="t-desc">Grown-ups describe things in numbers; the Prince and narrator look for what truly matters.</div></div>
+        <div class="theme-pill"><div class="t-icon">🚀</div><div class="t-name">Curiosity &amp; Wonder</div><div class="t-desc">The Prince explores other worlds seeking understanding — driven by questions, not answers.</div></div>
+      </div>
+      <div class="quote-block"><p>"It is only with the heart that one can see rightly; what is essential is invisible to the eye."</p><cite>— Antoine de Saint-Exupéry</cite></div>
+    </div>
+  </div><!-- /set1 -->
+
+  <!-- ████████████████████████ CHAPTER SET 2 (Ch 7–12) ████████████████████████ -->
+  <div id="set2" class="chapter-set">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showInner('set2','summary',this)">📖 Summary</button>
+      <button class="nav-tab" onclick="showInner('set2','questions',this)">📝 Questions</button>
+      <button class="nav-tab" onclick="showInner('set2','vocab',this)">📚 Vocabulary</button>
+      <button class="nav-tab" onclick="showInner('set2','themes',this)">🎭 Themes</button>
+    </div>
+
+    <!-- SUMMARY -->
+    <div id="set2-summary" class="inner-section active">
+      <div class="section-label">📖 Story Summary</div>
+      <h2>Chapters 7–12: What Happened</h2>
+      <div class="summary-block" style="margin-top:16px;">
+        <p>In Chapter 7, the Little Prince asks the narrator a puzzling question: if sheep eat bushes, do they eat flowers with thorns too? He becomes very upset when the narrator dismisses the question as unimportant — because the rose on his planet has thorns, and he fears for her safety. This is our first real clue about how deeply he cares for the rose, even though she troubled him.</p>
+        <p>Chapters 8 and 9 reveal the full story of the rose. She arrived on the Prince's planet as a mysterious seed and bloomed into a proud, dramatic flower who demanded water, a glass dome for shelter, and constant attention. Though the Prince loved her, he was too inexperienced to see through her vanity and understand her love. Feeling confused and hurt, he decided to leave — saying only a formal goodbye, and instantly regretting it.</p>
+        <p>In Chapters 10 through 12, the Little Prince begins his journey through the neighbouring asteroids, each inhabited by a single adult. First he visits a King who rules over nothing but insists on commanding even the stars. Then a Conceited Man who only wants to be admired. Then a Drunkard who drinks to forget the shame of drinking — trapped in a hopeless circle. Next, a Businessman who obsessively counts the stars, believing that owning them will make him wealthy. Then a Lamplighter on a tiny planet where night and day alternate every minute — the only one the Prince feels any sympathy for, because at least he is faithful to something beyond himself. Finally, a Geographer who has never actually explored his own planet.</p>
+        <p>Each adult represents a flaw the author sees in the grown-up world: vanity, obsession, avoidance, greed, duty without meaning, and knowledge without experience.</p>
+      </div>
+      <div class="chapters-grid">
+        <div class="chapter-card"><div class="ch-number">Chapter 7</div><div class="ch-title">The Sheep &amp; the Flower</div><p>The Prince asks desperately whether sheep eat flowers with thorns. His distress reveals how much he still loves his rose.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 8</div><div class="ch-title">The Rose Arrives</div><p>The rose grows on the Prince's planet — beautiful but vain, demanding his constant care and attention.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 9</div><div class="ch-title">The Farewell</div><p>The Prince leaves his planet with a cold goodbye, only to immediately regret it. He should have seen through the rose's pride to her love.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 10</div><div class="ch-title">The King</div><p>The Prince visits a king who commands everything — but his authority is an illusion, and he rules over no one.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 11</div><div class="ch-title">The Conceited Man</div><p>A man who only wants admiration. He can only hear praise — making any real conversation impossible.</p></div>
+        <div class="chapter-card"><div class="ch-number">Chapter 12</div><div class="ch-title">The Drunkard</div><p>A man who drinks to forget the shame of drinking — a sad, circular trap that the Prince finds very puzzling.</p></div>
+      </div>
+      <div class="quote-block"><p>"Grown-ups love figures. When you tell them that you have made a new friend, they never ask you any questions about essential matters."</p><cite>— Antoine de Saint-Exupéry</cite></div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="set2-questions" class="inner-section">
+      <div class="section-label">📝 Questions</div>
+      <h2 style="margin-bottom:6px;">Chapters 7–12</h2>
+      <p style="color:var(--dim);font-size:.85em;margin-bottom:24px;font-style:italic;">Type your answer and click "Check Answer" to see feedback and the model answer.</p>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progress</span><span class="pg-right" id="s2-prog-text">0 / 17 answered</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="s2-prog-fill"></div></div>
+      </div>
+      <div class="question-group">
+        <div class="question-group-title"><div class="q-icon comprehension">🔍</div><span class="q-group-label">Recall Questions</span></div>
+        <div id="s2-recall"></div>
+      </div>
+      <div class="question-group">
+        <div class="question-group-title"><div class="q-icon analysis">💡</div><span class="q-group-label">Analysis &amp; Inference</span></div>
+        <div id="s2-analysis"></div>
+      </div>
+      <div class="question-group">
+        <div class="question-group-title"><div class="q-icon reflection">🌟</div><span class="q-group-label">Personal Reflection</span></div>
+        <div id="s2-reflection"></div>
+      </div>
+    </div>
+
+    <!-- VOCAB -->
+    <div id="set2-vocab" class="inner-section">
+      <div class="section-label">📚 Vocabulary</div>
+      <h2 style="margin-bottom:6px;">Key Words — Chapters 7–12</h2>
+      <p style="color:var(--dim);font-size:.85em;margin-bottom:28px;font-style:italic;">Review the words, then test yourself with the quiz below.</p>
+      <div class="vocab-grid" id="s2-vocab-ref"></div>
+      <div class="divider">· · · ✦ · · ·</div>
+      <div class="section-label">🧠 Vocabulary Quiz</div>
+      <h2 style="margin-bottom:6px;">Test Your Words</h2>
+      <p style="color:var(--dim);font-size:.85em;margin-bottom:24px;font-style:italic;">Choose the correct definition for each word.</p>
+      <div id="s2-vocab-quiz"></div>
+    </div>
+
+    <!-- THEMES -->
+    <div id="set2-themes" class="inner-section">
+      <div class="section-label">🎭 Themes</div>
+      <h2 style="margin-bottom:18px;">Big Ideas in Chapters 7–12</h2>
+      <div class="themes-block">
+        <div class="theme-pill"><div class="t-icon">🌹</div><div class="t-name">Love &amp; Misunderstanding</div><div class="t-desc">The Prince loved his rose but couldn't see past her pride. Love requires patience and wisdom to understand.</div></div>
+        <div class="theme-pill"><div class="t-icon">👑</div><div class="t-name">Power Without Purpose</div><div class="t-desc">The King commands everything but rules nothing. Authority that serves no one is meaningless.</div></div>
+        <div class="theme-pill"><div class="t-icon">🪞</div><div class="t-name">Vanity &amp; Self-Obsession</div><div class="t-desc">The Conceited Man only hears praise. When you only see yourself, you miss the whole universe.</div></div>
+        <div class="theme-pill"><div class="t-icon">🔄</div><div class="t-name">Cycles of Avoidance</div><div class="t-desc">The Drunkard drinks to forget shame. Avoiding problems only deepens them.</div></div>
+        <div class="theme-pill"><div class="t-icon">💰</div><div class="t-name">Ownership vs. Belonging</div><div class="t-desc">The Businessman thinks owning the stars makes him rich. But you cannot truly possess what you don't care for.</div></div>
+        <div class="theme-pill"><div class="t-icon">📚</div><div class="t-name">Knowledge vs. Experience</div><div class="t-desc">The Geographer records but never explores. Real understanding comes from living, not just studying.</div></div>
+      </div>
+      <div class="quote-block"><p>"You become responsible, forever, for what you have tamed."</p><cite>— Antoine de Saint-Exupéry</cite></div>
+    </div>
+  </div><!-- /set2 -->
+
+  <footer>Interactive study guide &middot; <em>The Little Prince</em> by Antoine de Saint-Exupéry (1943)</footer>
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════════════════════════
+function showSet(id, btn) {
+  if (btn.classList.contains('locked')) return;
+  document.querySelectorAll('.chapter-set').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.set-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showInner(setId, tabId, btn) {
+  const set = document.getElementById(setId);
+  set.querySelectorAll('.inner-section').forEach(s => s.classList.remove('active'));
+  set.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(setId + '-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  QUESTION ENGINE
+// ═══════════════════════════════════════════════════════════════
+const state = { s1: { answered: new Set(), count: 0, total: 17 }, s2: { answered: new Set(), count: 0, total: 17 } };
+
+function updateProgress(setKey) {
+  const s = state[setKey];
+  const pct = Math.round((s.count / s.total) * 100);
+  document.getElementById(setKey + '-prog-fill').style.width = pct + '%';
+  document.getElementById(setKey + '-prog-text').textContent = s.count + ' / ' + s.total + ' answered';
+}
+
+function scoreAnswer(q, userText) {
+  if (q.group === 'reflection') return 'reflect';
+  const lower = userText.toLowerCase();
+  if (!q.keywords || q.keywords.length === 0) return 'reflect';
+  const hits = q.keywords.filter(kw => lower.includes(kw.toLowerCase())).length;
+  const ratio = hits / q.keywords.length;
+  if (ratio >= 0.55) return 'good';
+  if (ratio >= 0.25) return 'partial';
+  return 'improve';
+}
+
+const FB = {
+  good:    { cls:'good',    label:'✓ Excellent answer' },
+  partial: { cls:'partial', label:'◎ Partially correct' },
+  improve: { cls:'improve', label:'△ Needs more detail' },
+  reflect: { cls:'reflect', label:'🌟 Reflection received' }
+};
+
+function buildFeedbackHTML(q, level) {
+  const f = FB[level];
+  const msgs = {
+    good:    "Well done — your answer covers the key points clearly. Read the model answer below to see if there is anything extra you could add.",
+    partial: "You've picked up on some of the right ideas, but your answer is missing a few important details. Read the model answer carefully and see what you could improve.",
+    improve: "Your answer needs more development. Make sure you support your ideas with details from the text. The model answer below will show you what to aim for.",
+    reflect: "Thank you for sharing your thoughts! Personal reflection questions don't have a single right answer. Review the model response below for ideas on how to develop your thinking further."
+  };
+  return `
+    <div class="feedback-box">
+      <div class="fb-header ${f.cls}">${f.label}</div>
+      <div class="fb-body">${msgs[level]}</div>
+      <div class="fb-answer"><b>Model Answer:</b> ${q.model}</div>
+    </div>
+    <button class="btn-retry" onclick="retryQ('${q.id}','${q.setKey}')">↺ Edit &amp; Try Again</button>`;
+}
+
+function submitQ(qid, setKey) {
+  const q = ALL_QUESTIONS[setKey].find(x => x.id === qid);
+  const ta = document.getElementById('qta-' + qid);
+  const btn = document.getElementById('qbtn-' + qid);
+  const fb = document.getElementById('qfb-' + qid);
+  const card = document.getElementById('qcard-' + qid);
+  const level = scoreAnswer(q, ta.value.trim());
+  fb.innerHTML = buildFeedbackHTML(q, level);
+  ta.disabled = true;
+  btn.style.display = 'none';
+  card.classList.add(q.group === 'reflection' ? 'done-reflection' : 'done');
+  if (!state[setKey].answered.has(qid)) {
+    state[setKey].answered.add(qid);
+    state[setKey].count++;
+    updateProgress(setKey);
+  }
+}
+
+function retryQ(qid, setKey) {
+  const ta = document.getElementById('qta-' + qid);
+  const btn = document.getElementById('qbtn-' + qid);
+  const fb = document.getElementById('qfb-' + qid);
+  const card = document.getElementById('qcard-' + qid);
+  ta.disabled = false; btn.style.display = ''; btn.disabled = ta.value.trim().length < 10;
+  fb.innerHTML = ''; card.classList.remove('done','done-reflection');
+}
+
+function onType(qid, el) {
+  const len = el.value.trim().length;
+  document.getElementById('qcc-' + qid).textContent = len + ' character' + (len !== 1 ? 's' : '');
+  document.getElementById('qbtn-' + qid).disabled = len < 10;
+}
+
+function buildQuestionsForSet(setKey, questions) {
+  const targets = { recall: setKey+'-recall', analysis: setKey+'-analysis', reflection: setKey+'-reflection' };
+  questions.forEach(q => {
+    q.setKey = setKey;
+    const container = document.getElementById(targets[q.group]);
+    const hints = q.hints.map(h => `<li style="margin-bottom:4px;">${h}</li>`).join('');
+    const div = document.createElement('div');
+    div.className = 'question-card';
+    div.id = 'qcard-' + q.id;
+    div.innerHTML = `
+      <div class="q-header"><span class="q-badge">${q.num}.</span><span class="q-text">${q.text}</span></div>
+      <details style="margin-bottom:12px;">
+        <summary style="font-size:.78em;color:var(--dim);cursor:pointer;user-select:none;letter-spacing:1px;">💡 Show hints</summary>
+        <ul style="margin-top:8px;padding-left:18px;font-size:.8em;color:var(--dim);line-height:1.7;">${hints}</ul>
+      </details>
+      <textarea class="q-input" id="qta-${q.id}" placeholder="Write your answer here…" rows="3" oninput="onType('${q.id}',this)"></textarea>
+      <div class="q-footer">
+        <span class="char-count" id="qcc-${q.id}">0 characters</span>
+        <button class="btn-submit" id="qbtn-${q.id}" onclick="submitQ('${q.id}','${setKey}')" disabled>Check Answer ✦</button>
+      </div>
+      <div id="qfb-${q.id}"></div>`;
+    container.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  VOCAB ENGINE
+// ═══════════════════════════════════════════════════════════════
+function buildVocabForSet(setKey, vocabData) {
+  // Reference
+  const refGrid = document.getElementById(setKey + '-vocab-ref');
+  vocabData.forEach(v => {
+    const d = document.createElement('div');
+    d.className = 'vocab-card';
+    d.innerHTML = `<div class="vocab-word">${v.word}</div><div class="vocab-pos">${v.pos}</div><div class="vocab-def">${v.def}</div><div class="vocab-example">${v.example}</div>`;
+    refGrid.appendChild(d);
+  });
+  // Quiz
+  const quizContainer = document.getElementById(setKey + '-vocab-quiz');
+  const shuffled = [...vocabData].sort(() => Math.random() - 0.5);
+  shuffled.forEach((v, i) => {
+    const uid = setKey + '-' + i;
+    const opts = [...v.wrong.slice(0,3), v.def].sort(() => Math.random() - 0.5);
+    const correctIdx = opts.indexOf(v.def);
+    const d = document.createElement('div');
+    d.className = 'vocab-quiz-card';
+    const buttons = opts.map((opt, j) => {
+      const esc = opt.replace(/'/g, "\\'");
+      return `<button class="vocab-opt" id="vopt-${uid}-${j}" onclick="checkVocab('${uid}',${j},${j===correctIdx},${correctIdx})">${opt}</button>`;
+    }).join('');
+    d.innerHTML = `<div class="vq-word">${v.word}</div><div class="vq-prompt">Which definition is correct?</div><div class="vocab-options">${buttons}</div><div class="vq-feedback" id="vqfb-${uid}"></div>`;
+    quizContainer.appendChild(d);
+  });
+}
+
+function checkVocab(uid, btnIdx, isCorrect, correctIdx) {
+  const allBtns = document.querySelectorAll(`[id^="vopt-${uid}-"]`);
+  allBtns.forEach(b => b.disabled = true);
+  document.getElementById(`vopt-${uid}-${btnIdx}`).classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) document.getElementById(`vopt-${uid}-${correctIdx}`).classList.add('correct');
+  const fb = document.getElementById('vqfb-' + uid);
+  fb.className = 'vq-feedback ' + (isCorrect ? 'correct' : 'wrong') + ' show';
+  fb.textContent = isCorrect ? '✓ Correct! Well done.' : '✗ Not quite — the correct answer is highlighted in green.';
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  DATA — CHAPTERS 1–6
+// ═══════════════════════════════════════════════════════════════
+const ALL_QUESTIONS = {};
+
+ALL_QUESTIONS.s1 = [
+  // RECALL
+  { id:'s1q1',  num:1,  group:'recall',     text:"What did the narrator draw when he was six years old, and why were grown-ups unable to understand it?",
+    hints:["Think about what the drawing looked like from the outside.","What did grown-ups say it was? What was it really?"],
+    model:"He drew a boa constrictor that had swallowed an elephant whole. From the outside, the drawing looked like a simple hat shape. Grown-ups lacked the imagination to see beyond the surface — they couldn't picture what was inside — so they all assumed it was a hat.",
+    keywords:["boa","constrictor","elephant","hat","imagination","inside"] },
+  { id:'s1q2',  num:2,  group:'recall',     text:"Where does the narrator's plane break down, and why is this situation serious?",
+    hints:["Think about where in the world this is.","What would happen if he couldn't fix his plane?"],
+    model:"The plane breaks down in the Sahara Desert. The situation is serious because he is thousands of miles from any inhabited land, completely alone, with no mechanic and barely enough water to survive for about a week.",
+    keywords:["sahara","desert","alone","water","survive","week"] },
+  { id:'s1q3',  num:3,  group:'recall',     text:"What is the very first thing the Little Prince asks the narrator to do?",
+    hints:["It is a simple, unexpected request.","It involves drawing something."],
+    model:"The very first thing the Little Prince asks is for the narrator to draw him a sheep.",
+    keywords:["draw","sheep"] },
+  { id:'s1q4',  num:4,  group:'recall',     text:"Why does the narrator finally draw a box with holes instead of a sheep?",
+    hints:["Think about how many times he tried to draw a sheep.","Why did none of his drawings satisfy the Prince?"],
+    model:"After several failed attempts — the sheep looked too sick, too old, or too much like a ram — the narrator gave up and drew a simple crate (a box with holes), saying the sheep was inside. The Prince loved it because he could imagine his own perfect sheep inside.",
+    keywords:["box","crate","holes","inside","imagine","failed","attempts"] },
+  { id:'s1q5',  num:5,  group:'recall',     text:"What is the name or number of the Little Prince's home planet?",
+    hints:["It has a letter and a number.","An astronomer discovered it."],
+    model:"The Little Prince's home is Asteroid B-612.",
+    keywords:["b-612","asteroid","b612"] },
+  { id:'s1q6',  num:6,  group:'recall',     text:"What are the three volcanoes on the Prince's planet used for, and how does he take care of them?",
+    hints:["Think about what the Prince uses the volcanoes for practically.","What does he do to them each morning?"],
+    model:"The Prince uses his two active volcanoes as cooking stoves to heat his breakfast. He cleans all three volcanoes — including the extinct one — every morning by sweeping out the ash. He tends the extinct one too, because 'you never know.'",
+    keywords:["cooking","stoves","clean","sweep","ash","extinct","breakfast"] },
+  { id:'s1q7',  num:7,  group:'recall',     text:"Why are baobab trees so dangerous to a small planet like the Prince's?",
+    hints:["Think about what happens if you let them grow too big.","What do their roots do?"],
+    model:"If baobab seedlings are not pulled out while they are still small, they grow enormous roots that eventually crack and split the entire planet apart. On a tiny planet, a single baobab left to grow unchecked could destroy the whole world.",
+    keywords:["roots","split","crack","destroy","seedlings","grow"] },
+  { id:'s1q8',  num:8,  group:'recall',     text:"How many sunsets did the Little Prince watch in one day, and why did he watch so many?",
+    hints:["There is a specific number mentioned in the text.","What emotion was he feeling that day?"],
+    model:"He watched 44 sunsets in a single day, moving his chair just a little at a time on his tiny planet. He watched so many because he was feeling very sad — watching sunsets was his way of comforting himself when sorrowful.",
+    keywords:["44","forty","sad","sadness","chair","comfort","sorrow"] },
+  // ANALYSIS
+  { id:'s1q9',  num:9,  group:'analysis',   text:"Why do you think the narrator gave up drawing after the grown-ups misunderstood his picture? What does this tell us about the difference between children and adults in the story?",
+    hints:["How did being misunderstood make him feel?","What does this suggest about the imagination of adults?"],
+    model:"The narrator gave up because no grown-up ever validated his creative vision — repeated rejection taught him that imagination was not valued. This reveals one of the story's central contrasts: children see with wonder and curiosity, while adults have been conditioned to see only what is practical and literal.",
+    keywords:["imagination","misunderstood","rejected","children","adults","practical","literal","wonder"] },
+  { id:'s1q10', num:10, group:'analysis',   text:"The narrator draws a box and says 'the sheep you want is inside.' Why does the Prince accept this answer happily? What does this suggest about his character?",
+    hints:["Why doesn't the Prince need to actually see the sheep?","How is this different from how an adult might react?"],
+    model:"The Prince accepts the box joyfully because he has enough imagination to picture his own perfect sheep inside it. He doesn't need to see everything literally — he trusts in what he cannot see. This reveals that the Prince is deeply imaginative and childlike in the best sense.",
+    keywords:["imagination","imagine","trust","inside","literal","childlike","inner"] },
+  { id:'s1q11', num:11, group:'analysis',   text:"Why does the narrator say that grown-ups 'love numbers'? Give an example from the text.",
+    hints:["Think about how adults react when the narrator describes a house or a friend.","What do numbers replace for adults?"],
+    model:"Adults are only impressed by quantifiable facts — they want to know a person's age, a house's price, a father's income. For example, adults only took Asteroid B-612 seriously once a Turkish astronomer presented it formally with official measurements. Numbers replace genuine understanding.",
+    keywords:["numbers","age","price","facts","astronomer","serious","understand"] },
+  { id:'s1q12', num:12, group:'analysis',   text:"What do the baobab trees symbolize or represent? What lesson is the author trying to teach?",
+    hints:["Think about what happens if you ignore a small problem for too long.","What kinds of real-life problems might baobabs represent?"],
+    model:"The baobab trees symbolize problems or bad habits that seem small at first but become impossible to fix if neglected for too long. The lesson is: deal with difficulties while they are still manageable, because ignoring them allows them to take root and eventually destroy everything you care about.",
+    keywords:["symbol","problems","habits","neglect","small","grow","destroy","ignore"] },
+  { id:'s1q13', num:13, group:'analysis',   text:"What does the Prince's habit of watching sunsets tell us about how he is feeling? What emotion is connected to sunsets in the story?",
+    hints:["When does the Prince watch many sunsets in a row?","What does he do when he is sad?"],
+    model:"Sunsets in the story are connected to sadness, longing, and loneliness. When the Prince is most sorrowful, he moves his chair to watch the sun set again and again — it is his private way of processing grief. This tells us he is a sensitive, emotional character who turns to beauty for comfort.",
+    keywords:["sad","sadness","lonely","loneliness","comfort","beauty","grief","emotion"] },
+  { id:'s1q14', num:14, group:'analysis',   text:"The narrator says he never tells his story to adults because 'they never understand.' Is he right? Is it fair to make this assumption about all adults?",
+    hints:["Has he actually tested every adult?","Is there any evidence that some adults could understand?"],
+    model:"The narrator's frustration is understandable given his experiences, but his conclusion is a generalisation. Not all adults are incapable of imagination; many have simply been shaped by a world that rewards practicality. The book itself is written for adults willing to look inward, suggesting they can still understand if they choose to try.",
+    keywords:["generalisation","generalize","unfair","all adults","some","imagination","choose","try","remember"] },
+  // REFLECTION
+  { id:'s1q15', num:15, group:'reflection', text:"Have you ever felt that adults didn't understand something important to you? How does that connect to the narrator's experience?",
+    hints:["Think of a real moment when you felt misunderstood.","How did it make you feel?"],
+    model:"This is a personal reflection — any honest, thoughtful answer is valid. A strong response connects a genuine personal experience of feeling misunderstood to the narrator's childhood sadness, and reflects on what that experience reveals about how adults and young people sometimes communicate past each other.",
+    keywords:[] },
+  { id:'s1q16', num:16, group:'reflection', text:"If you lived on a tiny planet all alone, what one thing would you want to have there with you, and why?",
+    hints:["Think beyond practical needs — what brings you joy or comfort?","Why would that thing matter most?"],
+    model:"This is a creative reflection — there is no single correct answer. A strong response names something specific and gives a thoughtful, personal reason — focusing on what brings meaning, joy, or connection, rather than just utility.",
+    keywords:[] },
+  { id:'s1q17', num:17, group:'reflection', text:"The Prince took care of his volcanoes every single day. What daily responsibility do you have that feels small but is actually important?",
+    hints:["Think about habits or tasks you do every day without much thought.","Why does it matter, even if it seems minor?"],
+    model:"This is a personal reflection — any genuine answer is valid. A strong response identifies a real daily habit and explains why, even if it feels routine, it actually contributes to something larger — connecting to the idea that consistent small actions prevent bigger problems.",
+    keywords:[] }
+];
+
+// ═══════════════════════════════════════════════════════════════
+//  DATA — CHAPTERS 7–12
+// ═══════════════════════════════════════════════════════════════
+ALL_QUESTIONS.s2 = [
+  // RECALL
+  { id:'s2q1',  num:1,  group:'recall',     text:"In Chapter 7, why does the Little Prince get so upset when the narrator dismisses his question about sheep eating flowers?",
+    hints:["What flower is he thinking about?","Why does it matter so much to him whether sheep eat thorny flowers?"],
+    model:"He is upset because he is thinking about his rose, which has thorns. If sheep eat flowers with thorns, then his rose — the one he left behind on his planet — could be destroyed. The question reveals how deeply he still loves and worries about her, even though he left.",
+    keywords:["rose","thorns","sheep","eat","worried","love","flower","planet"] },
+  { id:'s2q2',  num:2,  group:'recall',     text:"How did the rose first arrive on the Prince's planet, and what made her different from the other plants there?",
+    hints:["Think about how she appeared — was she always there?","What did she look like, and how did she behave from the start?"],
+    model:"The rose grew from a mysterious seed that had blown onto the planet from somewhere unknown. She was unlike any other plant the Prince had seen — she took a very long time to prepare herself before blooming, and when she finally appeared, she was strikingly beautiful but immediately began making demands, asking for water and a glass dome to protect her.",
+    keywords:["seed","blown","mysterious","bloomed","beautiful","demands","water","dome","prepared"] },
+  { id:'s2q3',  num:3,  group:'recall',     text:"Why does the Prince regret the way he said goodbye to his rose before leaving his planet?",
+    hints:["How did he say goodbye — warmly or coldly?","What did he later realise about the rose's behaviour?"],
+    model:"The Prince said only a stiff, formal goodbye rather than expressing his real feelings. He later realised that he should have seen through her dramatic behaviour and vanity to understand that she actually loved him. Her coughs and complaints were not manipulation — they were her clumsy way of showing affection, and he should have been more tender.",
+    keywords:["formal","cold","regret","love","vanity","behaviour","tender","affection","understand"] },
+  { id:'s2q4',  num:4,  group:'recall',     text:"Describe the King the Prince visits in Chapter 10. What does he rule over, and what does he command the Prince to do?",
+    hints:["Does the King actually have any subjects?","What does he order the Prince to do just as the Prince wants to leave?"],
+    model:"The King rules over an empty planet with no subjects at all — he commands the stars and the sun, but only by ordering them to do what they were already going to do anyway. When the Prince wants to leave, the King tries to keep him by appointing him as his Ambassador, and then commands the Prince to 'go and look at the stars again.'",
+    keywords:["king","rules","empty","stars","sun","command","ambassador","subjects","planet"] },
+  { id:'s2q5',  num:5,  group:'recall',     text:"What does the Conceited Man want from the Prince, and why does the Prince quickly grow tired of him?",
+    hints:["What is the only thing the Conceited Man wants to hear?","Can he have a real conversation?"],
+    model:"The Conceited Man only wants to be admired — he asks the Prince to clap for him and tell him he is the most handsome, best-dressed, and richest man on the planet. He cannot hear anything except praise, making any real exchange impossible. The Prince grows bored because admiring someone endlessly is exhausting and meaningless.",
+    keywords:["admire","admiration","praise","clap","handsome","bored","conversation","impossible","rich"] },
+  { id:'s2q6',  num:6,  group:'recall',     text:"Explain the Drunkard's situation in Chapter 12. Why does the Prince find it so puzzling?",
+    hints:["What is the Drunkard trying to forget, and why is that ironic?","Can he ever escape the cycle?"],
+    model:"The Drunkard drinks to forget that he is ashamed of drinking — a completely circular, self-defeating trap. He is ashamed of his drinking, so he drinks to forget the shame, which gives him more reason to be ashamed. The Prince finds this deeply puzzling because the man's solution makes his problem worse, and there seems to be no way out.",
+    keywords:["drink","ashamed","shame","forget","cycle","circular","puzzling","trap","worse"] },
+  { id:'s2q7',  num:7,  group:'recall',     text:"Who is the only person the Prince meets on his journey through the asteroids that he feels sympathy for, and why?",
+    hints:["Think about which adult is actually doing something for others or for a purpose beyond themselves.","What does this person do, and why is it exhausting?"],
+    model:"The Prince feels sympathy for the Lamplighter, who lights and extinguishes a lamp every minute because his tiny planet spins so fast. Although his job is exhausting and seems pointless, the Lamplighter is faithful to his orders and thinks of something beyond himself. He is the only one the Prince admires because he has a sense of duty that isn't purely selfish.",
+    keywords:["lamplighter","lamp","light","minute","faithful","duty","sympathy","admire","selfish","exhausting"] },
+  { id:'s2q8',  num:8,  group:'recall',     text:"What is the Geographer's job, and why does the Prince find him disappointing?",
+    hints:["What does a geographer do, and what does this one actually know about his own planet?","Has he ever explored it?"],
+    model:"The Geographer records oceans, rivers, mountains, and deserts in great books. However, he has never explored his own planet — he relies entirely on explorers to bring him information. He cannot even tell the Prince about his own world. The Prince is disappointed because the man has knowledge as a job but no real experience or curiosity.",
+    keywords:["geographer","records","explores","explorers","knowledge","experience","books","planet","disappointed"] },
+  // ANALYSIS
+  { id:'s2q9',  num:9,  group:'analysis',   text:"The rose is vain and demanding, yet the Prince loves her. What does this tell us about the nature of love according to the story?",
+    hints:["Think about why we love the things we love — is it because they are perfect?","What made the rose special to the Prince?"],
+    model:"The story suggests that love is not about perfection but about the time, care, and attention we give to something. The Prince loved the rose not because she was the most beautiful or the kindest, but because she was his — he watered her, sheltered her, and listened to her. Love, in this story, is created through responsibility and devotion, not through the qualities of the other person alone.",
+    keywords:["love","perfection","care","time","responsibility","devotion","special","his","beautiful","qualities"] },
+  { id:'s2q10', num:10, group:'analysis',   text:"Each adult the Prince visits has a flaw. What do all of these flaws have in common? What is the author saying about grown-up society?",
+    hints:["Think about whether any of them are truly happy.","What are they all missing?"],
+    model:"Every adult the Prince meets is trapped in a self-made prison: they are obsessed with power, vanity, avoidance, ownership, mechanical duty, or secondhand knowledge. None of them are truly happy, and none of them connect meaningfully with the world around them. The author is saying that adult society values the wrong things — status, control, and possessions — and has forgotten how to simply wonder, feel, and relate to others.",
+    keywords:["trapped","power","vanity","obsession","ownership","happy","connect","society","status","wonder","possessions"] },
+  { id:'s2q11', num:11, group:'analysis',   text:"The King says he can only give reasonable commands — 'If I ordered a general to fly from one flower to another, and if the general did not obey me, that would not be the fault of the general.' What point is the author making about authority?",
+    hints:["What makes a command reasonable or unreasonable?","Is the King's power real or an illusion?"],
+    model:"The author is suggesting that true authority must be grounded in reality and must serve a genuine purpose. The King's 'power' is an illusion — he simply adjusts his commands to match whatever will happen anyway, so he can never be wrong. This is a satire of leaders who claim power and control without actually doing anything meaningful or taking real responsibility.",
+    keywords:["authority","power","illusion","reasonable","command","reality","purpose","satire","leaders","responsibility"] },
+  { id:'s2q12', num:12, group:'analysis',   text:"Why do you think the Lamplighter is the only adult the Prince feels real sympathy for? What makes him different from the others?",
+    hints:["Is the Lamplighter serving himself, or is he serving something else?","Does he complain about his situation?"],
+    model:"The Lamplighter is different because he is faithful to something outside himself — his duty — even when it is exhausting and seemingly pointless. Unlike the King, the Conceited Man, or the Businessman, he doesn't pursue power, admiration, or wealth. His flaw is that his orders have become meaningless, but his spirit of commitment distinguishes him. The Prince respects devotion even when it lacks wisdom.",
+    keywords:["faithful","duty","outside","commitment","devotion","exhausting","pointless","admiration","power","wealth","respect"] },
+  { id:'s2q13', num:13, group:'analysis',   text:"The Geographer tells the Prince that his rose is 'ephemeral' and therefore not worth recording. How does this affect the Prince, and what does it make him realise?",
+    hints:["What does 'ephemeral' mean?","How does knowing the rose won't last forever change how the Prince feels about leaving her?"],
+    model:"Hearing that his rose is ephemeral — that she is fragile and will not last forever — fills the Prince with regret. He realises for the first time that leaving her was a mistake. She is temporary and vulnerable, which makes his love for her more urgent and his departure more painful. It is this realisation that truly begins to drive his journey back toward her.",
+    keywords:["ephemeral","fragile","temporary","regret","mistake","leaving","love","vulnerable","painful","journey"] },
+  { id:'s2q14', num:14, group:'analysis',   text:"The rose demanded constant attention and told the Prince small lies. Yet the Prince ultimately blames himself for not understanding her better. Do you think he is right to blame himself? Why or why not?",
+    hints:["Was the rose being deliberately cruel, or was she showing love in a clumsy way?","What could the Prince have done differently?"],
+    model:"There is truth in the Prince's self-blame — he was too inexperienced to see through the rose's vanity and understand that her dramatics were a form of love. However, the rose also failed to communicate clearly. The story suggests that love requires both parties to make an effort: the Prince needed more patience, and the rose needed more honesty. Blaming only himself shows the Prince's sensitivity, but the situation was more complex than that.",
+    keywords:["blame","inexperienced","vanity","love","patience","honesty","communicate","complex","sensitivity","understand"] },
+  // REFLECTION
+  { id:'s2q15', num:15, group:'reflection', text:"The Prince left the rose even though he loved her. Have you ever walked away from something or someone important to you? What made it difficult?",
+    hints:["Think about a time you left something behind — a place, a friendship, a habit.","Did you regret it, or was it the right choice?"],
+    model:"This is a personal reflection — any honest, thoughtful answer is valid. A strong response describes a real experience of leaving something meaningful behind, explores the mixed feelings involved, and connects it to the Prince's situation — the tension between love and the need to grow or move on.",
+    keywords:[] },
+  { id:'s2q16', num:16, group:'reflection', text:"Which of the adults the Prince visits do you think is the saddest, and why? Do you see any of their flaws in the world around you today?",
+    hints:["Think about which character seems most trapped or most unaware of their own problem.","Can you think of modern examples of similar behaviour?"],
+    model:"This is an open reflection — all answers are valid if supported by reasoning. A strong response names one character and explains specifically why they are the saddest, then connects their flaw (vanity, avoidance, greed, etc.) to something observable in the modern world, showing the story's continued relevance.",
+    keywords:[] },
+  { id:'s2q17', num:17, group:'reflection', text:"The Lamplighter has a job that has become meaningless — but he does it faithfully anyway. Have you ever had to keep doing something that no longer seemed to make sense? How did that feel?",
+    hints:["Think about rules, routines, or tasks you follow even when the reason isn't clear.","Is there value in faithfulness even without understanding?"],
+    model:"This is a personal reflection. A strong answer identifies a real situation — a rule at school, a routine at home, a task that became repetitive — and honestly explores how it felt to continue without clear purpose. The best answers also consider whether there is any hidden value in faithfulness itself, even when we don't understand the reason.",
+    keywords:[] }
+];
+
+// ═══════════════════════════════════════════════════════════════
+//  VOCAB DATA — Ch 1–6
+// ═══════════════════════════════════════════════════════════════
+const VOCAB_S1 = [
+  { word:"Boa constrictor", pos:"Noun", def:"A very large snake that kills prey by squeezing it tightly.", example:'"I drew a boa constrictor digesting an elephant."', wrong:["A type of desert plant","A species of large African lizard","A method of navigation used by pilots"] },
+  { word:"Masterpiece",     pos:"Noun", def:"A work of art considered the greatest achievement of its creator.", example:"The narrator called his childhood drawing his first masterpiece.", wrong:["A drawing adults misunderstand","A puzzle with no solution","A type of map used by geographers"] },
+  { word:"Inhabited",       pos:"Adj/Verb", def:"Lived in by people or creatures; to live in a place.", example:"The Prince's tiny asteroid was inhabited by only him.", wrong:["Completely empty and abandoned","Covered in sand and rock","Visited but never lived in"] },
+  { word:"Conceited",       pos:"Adjective", def:"Too proud of oneself; excessively pleased with one's own appearance or abilities.", example:"The rose was beautiful but conceited and demanding.", wrong:["Shy and introverted","Kind and generous to everyone","Confused about one's identity"] },
+  { word:"Baobab",          pos:"Noun", def:"A very large African tree; in the story, a dangerous plant if not removed early.", example:"The Prince uprooted the baobab seedlings every morning.", wrong:["A type of shooting star","A volcanic rock formation","A small yellow desert flower"] },
+  { word:"Asteroid",        pos:"Noun", def:"A small rocky body orbiting the sun; in the story, a tiny planet-like world.", example:"The Prince lived on Asteroid B-612.", wrong:["A distant star in a far galaxy","A cloud of gas in outer space","A type of telescope used by astronomers"] },
+  { word:"Extinct",         pos:"Adjective", def:"No longer active or existing (used for volcanoes or species).", example:"One of the Prince's three volcanoes was extinct.", wrong:["Recently discovered for the first time","Extremely dangerous and unpredictable","Very small in size and volume"] },
+  { word:"Melancholy",      pos:"Noun/Adj", def:"A deep, quiet sadness; feeling gloomy or sorrowful.", example:"The Prince felt melancholy and watched 44 sunsets in one day.", wrong:["A state of extreme excitement","A feeling of anger and frustration","A sense of pride and accomplishment"] },
+  { word:"Geographer",      pos:"Noun", def:"A person who studies the physical features of the earth and its people.", example:"One of the grown-ups the Prince meets is a geographer.", wrong:["A person who draws portraits","A scientist who studies weather","A traveller who visits new planets"] },
+  { word:"Ephemeral",       pos:"Adjective", def:"Lasting for only a short time; not permanent.", example:'The geographer says the rose is "ephemeral" — it will not last forever.', wrong:["Strong and long-lasting over centuries","Invisible to the naked eye","Existing only in the imagination"] }
+];
+
+// ═══════════════════════════════════════════════════════════════
+//  VOCAB DATA — Ch 7–12
+// ═══════════════════════════════════════════════════════════════
+const VOCAB_S2 = [
+  { word:"Vain",            pos:"Adjective", def:"Having too high an opinion of one's own appearance or abilities; excessively proud.", example:"The rose was vain and demanded constant attention and admiration.", wrong:["Modest and self-effacing","Deeply sad and withdrawn","Generous and caring toward others"] },
+  { word:"Conceited",       pos:"Adjective", def:"Excessively proud of oneself, especially of one's appearance or achievements.", example:"The Conceited Man could only hear praise and admiration.", wrong:["Willing to listen to criticism","Shy and embarrassed by attention","Curious about other people's opinions"] },
+  { word:"Obedient",        pos:"Adjective", def:"Complying or willing to comply with orders or requests; dutiful.", example:"The Lamplighter was obedient to his orders, lighting the lamp every minute.", wrong:["Refusing all commands and instructions","Unable to understand simple directions","Acting only for personal gain"] },
+  { word:"Sovereign",       pos:"Noun/Adj", def:"A supreme ruler, especially a monarch; having complete power and authority.", example:"The King considered himself sovereign over all the stars.", wrong:["A person with no authority or power","A servant who follows orders","A traveller moving between planets"] },
+  { word:"Tippler",         pos:"Noun", def:"A person who drinks alcohol regularly or habitually, often to excess.", example:"The Drunkard (tippler) drank to forget his shame of drinking.", wrong:["A person who tells exaggerated stories","Someone who travels very quickly","A craftsman who makes drinking cups"] },
+  { word:"Astronomer",      pos:"Noun", def:"A scientist who studies stars, planets, and other objects in space.", example:"A Turkish astronomer discovered Asteroid B-612 and presented it to other scientists.", wrong:["A person who studies weather patterns","A scientist who maps the ocean floor","Someone who predicts the future using stars"] },
+  { word:"Admiration",      pos:"Noun", def:"Respect and warm approval for someone or something.", example:"The Conceited Man lived only for the admiration of others.", wrong:["A feeling of deep disgust or contempt","Confusion caused by complicated ideas","A wish to explore new places"] },
+  { word:"Faithful",        pos:"Adjective", def:"Remaining loyal and steadfast; continuing to fulfil duties reliably.", example:"The Lamplighter remained faithful to his duty even as it became pointless.", wrong:["Changing one's mind frequently and unpredictably","Ignoring all responsibilities and commitments","Feeling uncertain about the right course of action"] },
+  { word:"Ephemeral",       pos:"Adjective", def:"Lasting for only a short time; transitory and not permanent.", example:'The Geographer told the Prince that his rose was "ephemeral" — she would not last forever.', wrong:["Strong and built to endure for centuries","Perfectly shaped and symmetrical","Invisible without special equipment"] },
+  { word:"Ambassador",      pos:"Noun", def:"An official representative sent by one authority to another; a spokesperson or envoy.", example:"The King appointed the Little Prince as his Ambassador before he left.", wrong:["A judge who decides legal disputes","A merchant who trades between planets","A soldier who protects a kingdom's border"] }
+];
+
+// ═══════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════
+buildQuestionsForSet('s1', ALL_QUESTIONS.s1);
+buildQuestionsForSet('s2', ALL_QUESTIONS.s2);
+buildVocabForSet('s1', VOCAB_S1);
+buildVocabForSet('s2', VOCAB_S2);
+updateProgress('s1');
+updateProgress('s2');
+</script>
+</body>
+</html>
