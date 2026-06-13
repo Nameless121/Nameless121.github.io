@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Eliran's House of Teaching</title>
+  <meta name="description" content="Interactive study guides and learning tools for students — by Mr. Eliran" />
+
+  <!-- ★ Shared stylesheet (colors, fonts, stars, header/footer) -->
+  <link rel="stylesheet" href="assets/style.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.ico" />
+
+  <style>
+    /* ══════════════════════════════════════════
+       HOMEPAGE-ONLY STYLES
+       (styles shared across ALL pages live in assets/style.css)
+    ══════════════════════════════════════════ */
+
+    /* ─── HERO / WELCOME SECTION ─── */
+    .hero {
+      text-align: center;
+      padding: 4.5rem 1.5rem 3rem;
+    }
+
+    .hero-icon {
+      font-size: 3.2rem;
+      display: block;
+      margin-bottom: 1.2rem;
+      /* subtle float animation */
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero p {
+      max-width: 580px;
+      margin: 0 auto;
+      color: var(--text);
+      font-size: 1.05rem;
+      line-height: 1.85;
+    }
+
+    .hero .teacher-name {
+      color: var(--lavender);
+      font-style: italic;
+    }
+
+    /* ─── SECTION DIVIDER ─── */
+    .section-label {
+      text-align: center;
+      padding: 0.5rem 0 2.5rem;
+    }
+
+    .section-label h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--dim);
+      font-family: var(--font-body);
+      font-weight: 400;
+    }
+
+    .section-label h2::before,
+    .section-label h2::after {
+      content: '  ✦  ';
+      color: var(--gold);
+      opacity: 0.5;
+      letter-spacing: 0;
+    }
+
+
+    /* ══════════════════════════════════════════
+       TOOL CARDS GRID
+    ══════════════════════════════════════════ */
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.4rem;
+      padding-bottom: 5rem;
+    }
+
+    /* Each card is a clickable <a> tag */
+    .tool-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      background: var(--card-hover);
+      border-color: rgba(240,201,107,0.40);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 45px rgba(0,0,0,0.35);
+      color: inherit;
+    }
+
+    /* The big emoji at the top of each card */
+    .tool-card-icon {
+      font-size: 2.4rem;
+      display: block;
+      margin-bottom: 0.5rem;
+      transition: transform 0.2s ease;
+    }
+    .tool-card:hover .tool-card-icon {
+      transform: scale(1.1);
+    }
+
+    /* Small label above the title (e.g. "English Literature") */
+    .tool-card-subject {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--lavender);
+      font-family: var(--font-body);
+    }
+
+    /* Card title */
+    .tool-card-title {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      color: var(--cream);
+      line-height: 1.35;
+      margin-top: 0.1rem;
+    }
+
+    /* Short description text */
+    .tool-card-desc {
+      font-size: 0.88rem;
+      color: var(--dim);
+      line-height: 1.65;
+      flex: 1; /* pushes the button to the bottom */
+      margin-top: 0.3rem;
+    }
+
+    /* "Open →" button inside each card */
+    .tool-card-btn {
+      display: inline-block;
+      margin-top: 1.1rem;
+      padding: 0.42rem 1.15rem;
+      background: transparent;
+      border: 1px solid rgba(240,201,107,0.5);
+      border-radius: 999px;
+      color: var(--gold);
+      font-size: 0.82rem;
+      font-family: var(--font-body);
+      letter-spacing: 0.05em;
+      align-self: flex-start;
+      transition: all 0.2s ease;
+    }
+
+    .tool-card:hover .tool-card-btn {
+      background: var(--gold);
+      color: var(--deep);
+      border-color: var(--gold);
+    }
+
+    /* ─── COMING SOON variant ─── */
+    /* Remove this class from the <a> once you upload the real file */
+    .tool-card.coming-soon {
+      opacity: 0.4;
+      pointer-events: none; /* not clickable */
+    }
+
+    .tool-card.coming-soon .tool-card-btn {
+      border-color: var(--dim);
+      color: var(--dim);
+    }
+
+
+    /* ─── MOBILE ─── */
+    @media (max-width: 600px) {
+      .hero { padding: 2.5rem 1rem 2rem; }
+      .tools-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+       HEADER  (edit site name / tagline here)
+  ══════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="site-title">✦ Eliran's House of Teaching</div>
+    <div class="site-subtitle">Interactive tools for curious learners</div>
+  </header>
+
+
+  <!-- ══════════════════════════════════════════
+       WELCOME MESSAGE  (edit freely)
+  ══════════════════════════════════════════ -->
+  <section class="hero container">
+    <span class="hero-icon" role="img" aria-label="star">🌟</span>
+    <h1>Welcome, Students</h1>
+    <p>
+      This is your learning space — built by <span class="teacher-name">Mr. Eliran</span>
+      to make English and Maths feel less like a chore and more like an adventure.
+      Pick a tool below and let's get started.
+    </p>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════
+       TOOLS GRID
+  ══════════════════════════════════════════ -->
+  <main class="container">
+
+    <div class="section-label">
+      <h2>Study Tools</h2>
+    </div>
+
+    <!-- ┌─────────────────────────────────────────┐
+         │  HOW TO ADD A NEW TOOL CARD             │
+         │                                         │
+         │  1. Copy the block between ▼ and ▲      │
+         │  2. Paste it before the closing </div>  │
+         │     of .tools-grid (see the marker ↓)  │
+         │  3. Change:                             │
+         │     · href="..."    → your folder path  │
+         │     · tool-card-icon → emoji of choice  │
+         │     · tool-card-subject → subject label │
+         │     · tool-card-title → tool name       │
+         │     · tool-card-desc → short blurb      │
+         │  4. Save & upload — that's it!          │
+         └─────────────────────────────────────────┘ -->
+
+    <div class="tools-grid">
+
+
+      <!-- ▼ ── CARD TEMPLATE (copy everything between these lines) ──────── ▼
+
+      <a class="tool-card" href="FOLDER-NAME/index.html">
+        <span class="tool-card-icon" role="img" aria-label="icon">📖</span>
+        <span class="tool-card-subject">Subject · Level</span>
+        <h2 class="tool-card-title">Tool Title Here</h2>
+        <p class="tool-card-desc">
+          One or two sentences describing what the student will do here.
+        </p>
+        <span class="tool-card-btn">Open →</span>
+      </a>
+
+      ▲ ────────────────────────────────────────────────────────────────── ▲ -->
+
+
+      <!-- ════════════════════════════════════
+           CARD 1 — Little Prince Study Guide
+      ════════════════════════════════════ -->
+      <a class="tool-card" href="little-prince/index.html">
+        <span class="tool-card-icon" role="img" aria-label="rose">🌹</span>
+        <span class="tool-card-subject">English Literature</span>
+        <h2 class="tool-card-title">The Little Prince<br>Study Guide</h2>
+        <p class="tool-card-desc">
+          Explore chapters 1–12 with summaries, character insights,
+          key quotes, and comprehension questions.
+        </p>
+        <span class="tool-card-btn">Open →</span>
+      </a>
+
+
+      <!-- ════════════════════════════════════
+           CARD 2 — Vocabulary Trainer
+           IMPORTANT: Remove "coming-soon" from
+           the class once you upload the file!
+      ════════════════════════════════════ -->
+      <a class="tool-card coming-soon" href="vocabulary/index.html">
+        <span class="tool-card-icon" role="img" aria-label="book">📗</span>
+        <span class="tool-card-subject">English · ESL</span>
+        <h2 class="tool-card-title">Vocabulary Trainer</h2>
+        <p class="tool-card-desc">
+          Build your word bank with interactive flashcards and practice quizzes.
+        </p>
+        <span class="tool-card-btn">Coming Soon</span>
+      </a>
+
+
+      <!-- ════════════════════════════════════
+           ↓ ADD NEW CARDS ABOVE THIS LINE ↓
+      ════════════════════════════════════ -->
+
+
+    </div><!-- end .tools-grid -->
+
+  </main>
+
+
+  <!-- ══════════════════════════════════════════
+       FOOTER  (edit contact info here)
+  ══════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <p>Built with care by Mr. Eliran</p>
+    <p style="margin-top: 0.5rem; font-size: 0.78rem; opacity: 0.7;">
+      ✦ &nbsp; Keep learning, keep wondering &nbsp; ✦
+    </p>
+  </footer>
+
+</body>
+</html>
