@@ -1,0 +1,212 @@
+/* =============================================
+   ELIRAN'S HOUSE OF TEACHING — SHARED STYLES
+   Import this on every page with:
+   <link rel="stylesheet" href="../assets/style.css" />
+   (use href="assets/style.css" on the homepage itself)
+   ============================================= */
+
+/* ─── GOOGLE FONTS ─── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ─── COLOR PALETTE ─────────────────────────
+   Change these variables to retheme the entire site at once.
+   ─────────────────────────────────────────── */
+:root {
+  --deep:       #0d0d24;               /* main background — deep navy */
+  --deep-mid:   #13132e;               /* slightly lighter navy for cards */
+  --gold:       #f0c96b;               /* warm gold — headings, accents */
+  --lavender:   #a78bca;               /* soft purple — labels, secondary */
+  --rose:       #e8a4a4;               /* muted rose — optional accent */
+  --mint:       #7ecdc4;               /* soft teal — optional accent */
+  --cream:      #f5efe0;               /* warm cream — main headings */
+  --text:       #e8e0d0;               /* body text */
+  --dim:        #8a7f9a;               /* muted / placeholder text */
+  --green:      #6bbf8e;               /* success / positive */
+  --border:     rgba(240,201,107,0.15);/* subtle gold border */
+  --card-bg:    rgba(255,255,255,0.04);/* card background */
+  --card-hover: rgba(255,255,255,0.08);/* card on hover */
+
+  /* ─── SPACING & SHAPE ─── */
+  --radius:    12px;
+  --radius-lg: 20px;
+  --gap:       1.5rem;
+
+  /* ─── FONT STACKS ─── */
+  --font-head: 'Playfair Display', Georgia, serif;
+  --font-body: 'Lora', Georgia, serif;
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--deep);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+  font-size: 16px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ─── STARRY BACKGROUND ─── */
+/* The soft glow blobs behind everything */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(167,139,202,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(240,201,107,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 10%, rgba(126,205,196,0.04) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* The tiny star dots */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  12%, rgba(255,255,255,0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(2px 2px at 38%  8%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(1px 1px at 51% 62%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 67% 22%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    radial-gradient(2px 2px at 78% 72%, rgba(255,255,255,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 44%, rgba(255,255,255,0.60) 0%, transparent 100%),
+    radial-gradient(1px 1px at 14% 78%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 88%, rgba(255,255,255,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 52%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    radial-gradient(2px 2px at  4% 48%, rgba(255,255,255,0.40) 0%, transparent 100%),
+    radial-gradient(1px 1px at 95%  8%, rgba(255,255,255,0.50) 0%, transparent 100%),
+    /* Gold and lavender stars for warmth */
+    radial-gradient(1px 1px at 43% 28%, rgba(240,201,107,0.50) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 52%, rgba(167,139,202,0.45) 0%, transparent 100%),
+    radial-gradient(1px 1px at 18% 92%, rgba(240,201,107,0.35) 0%, transparent 100%),
+    radial-gradient(1px 1px at 86% 30%, rgba(167,139,202,0.40) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Everything sits above the starfield */
+body > * { position: relative; z-index: 1; }
+
+/* ─── TYPOGRAPHY ─── */
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  color: var(--cream);
+  line-height: 1.3;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover { color: var(--cream); }
+
+/* ─── LAYOUT CONTAINER ─── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ─── SHARED SITE HEADER ─── */
+.site-header {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header .site-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.3rem;
+}
+
+.site-header .site-subtitle {
+  color: var(--dim);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+/* ─── SHARED SITE FOOTER ─── */
+.site-footer {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--dim);
+  font-size: 0.85rem;
+  margin-top: 4rem;
+}
+
+.site-footer a { color: var(--lavender); }
+.site-footer a:hover { color: var(--gold); }
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--deep);
+  font-weight: 600;
+}
+.btn-gold:hover {
+  background: var(--cream);
+  color: var(--deep);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+}
+.btn-outline:hover {
+  background: var(--gold);
+  color: var(--deep);
+}
+
+/* ─── TOOL CARDS (shared across pages) ─── */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  background: var(--card-hover);
+  border-color: rgba(240,201,107,0.35);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 600px) {
+  .site-header { padding: 2rem 1rem 1.5rem; }
+  .container { padding: 0 1rem; }
+}
