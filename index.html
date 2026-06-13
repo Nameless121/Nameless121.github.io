@@ -5,203 +5,234 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Eliran's House of Teaching</title>
   <meta name="description" content="English learning tools for Hebrew speakers — Mr. Eliran's classroom" />
-
-  <!-- Google Fonts: Poppins (English) + Noto Sans Hebrew -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Hebrew:wght@400;600;700&display=swap" rel="stylesheet" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Hebrew:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
     /* ═══════════════════════════════════════════════════════
        ELIRAN'S HOUSE OF TEACHING — HOMEPAGE
-       Clean & modern. Each tool keeps its own visual style.
     ═══════════════════════════════════════════════════════ */
 
     :root {
-      --bg:           #F0F4FF;
-      --white:        #FFFFFF;
-      --blue:         #2563EB;
-      --blue-dark:    #1D4ED8;
-      --blue-light:   #EFF6FF;
-      --blue-mid:     #DBEAFE;
-      --text:         #0F172A;
-      --text-mid:     #334155;
-      --text-muted:   #64748B;
-      --border:       #E2E8F0;
-      --border-hover: #BFDBFE;
+      --bg:          #EEF2FF;
+      --white:       #FFFFFF;
+      --blue:        #2563EB;
+      --blue-d:      #1E3A8A;
+      --blue-l:      #EFF6FF;
+      --blue-m:      #DBEAFE;
+      --text:        #111827;
+      --text-md:     #374151;
+      --text-mu:     #6B7280;
+      --border:      #E5E7EB;
+      --border-h:    #A5B4FC;
 
-      /* Section accent colours — one per category */
-      --c-literature: #7C3AED;   /* purple  — Study Guides   */
-      --c-vocab:      #059669;   /* green   — Vocabulary     */
-      --c-activity:   #0891B2;   /* teal    — Activities     */
-      --c-maths:      #DC2626;   /* red     — Maths          */
+      /* Section / card accent colours */
+      --c-lit:       #7C3AED;
+      --c-lit-bg:    #EDE9FE;
+      --c-lit-bdr:   #C4B5FD;
+      --c-voc:       #059669;
+      --c-voc-bg:    #D1FAE5;
+      --c-voc-bdr:   #6EE7B7;
+      --c-act:       #0891B2;
+      --c-act-bg:    #CFFAFE;
+      --c-act-bdr:   #67E8F9;
+      --c-mat:       #DC2626;
+      --c-mat-bg:    #FEE2E2;
+      --c-mat-bdr:   #FCA5A5;
 
       --radius:      12px;
-      --radius-lg:   16px;
-      --shadow:      0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.05);
-      --shadow-up:   0 4px 8px rgba(0,0,0,.07), 0 12px 32px rgba(37,99,235,.12);
+      --radius-lg:   18px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Poppins', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      font-size: 16px;
-      line-height: 1.6;
     }
 
-    /* ── STICKY HEADER ───────────────────────────────────── */
+    /* ── HEADER ─────────────────────────────────────────── */
     .site-header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
+      background: var(--blue-d);
       position: sticky;
       top: 0;
       z-index: 100;
     }
-
     .header-inner {
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 1.5rem;
-      height: 64px;
+      height: 62px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
     }
-
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.65rem;
     }
-
-    .brand-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--blue);
-      flex-shrink: 0;
-    }
-
+    .brand-icon { font-size: 1.35rem; }
     .brand-en {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      color: var(--blue-dark);
-      letter-spacing: -0.02em;
+      color: #fff;
+      letter-spacing: -0.01em;
       white-space: nowrap;
     }
-
     .brand-sep {
       width: 1px;
       height: 18px;
-      background: var(--border);
+      background: rgba(255,255,255,0.22);
+      flex-shrink: 0;
     }
-
     .brand-he {
       font-family: 'Noto Sans Hebrew', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 600;
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.65);
       direction: rtl;
       white-space: nowrap;
     }
-
     .header-pill {
-      font-size: 0.7rem;
+      font-size: 0.67rem;
       font-weight: 600;
-      color: var(--blue);
-      background: var(--blue-light);
-      border: 1px solid var(--blue-mid);
-      padding: 4px 12px;
-      border-radius: 999px;
       letter-spacing: 0.04em;
+      color: var(--blue-d);
+      background: rgba(255,255,255,0.92);
+      padding: 4px 13px;
+      border-radius: 999px;
       white-space: nowrap;
     }
 
     /* ── HERO ────────────────────────────────────────────── */
     .hero {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 4rem 1.5rem 3.5rem;
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 55%, #3B82F6 100%);
+      position: relative;
+      padding: 5rem 1.5rem 8rem;
       text-align: center;
+      overflow: hidden;
     }
-
-    .hero-inner { max-width: 600px; margin: 0 auto; }
-
+    /* Decorative background circles */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -80px;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.045);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 50px; left: -70px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.035);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
     .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      font-size: 0.72rem;
+      display: inline-block;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--blue);
-      margin-bottom: 1.25rem;
+      letter-spacing: 0.15em;
+      color: #93C5FD;
+      margin-bottom: 1.1rem;
     }
-    .hero-eyebrow::before,
-    .hero-eyebrow::after {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: var(--blue);
-      opacity: 0.35;
-    }
-
     .hero h1 {
-      font-size: clamp(1.75rem, 4vw, 2.6rem);
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.2;
-      letter-spacing: -0.025em;
-      margin-bottom: 0.5rem;
+      font-size: clamp(2.1rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.6rem;
     }
-
-    .hero h1 .accent { color: var(--blue); }
-
+    .hero h1 em {
+      font-style: normal;
+      color: #FCD34D;
+    }
     .hero-he {
       display: block;
       font-family: 'Noto Sans Hebrew', sans-serif;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.7);
       direction: rtl;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    .hero-desc {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      line-height: 1.75;
-      max-width: 440px;
-      margin: 0 auto 1.5rem;
+    /* Stats pills row */
+    .hero-stats {
+      display: inline-flex;
+      align-items: stretch;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 1.75rem;
+    }
+    .hero-stat {
+      padding: 0.55rem 1.4rem;
+      text-align: center;
+    }
+    .hero-stat + .hero-stat {
+      border-left: 1px solid rgba(255,255,255,0.2);
+    }
+    .stat-n {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #FCD34D;
+      line-height: 1;
+    }
+    .stat-l {
+      display: block;
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 3px;
+      white-space: nowrap;
     }
 
-    .teacher-tag {
+    /* Teacher tag */
+    .teacher-chip {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: var(--blue-light);
-      border: 1px solid var(--blue-mid);
-      color: var(--blue-dark);
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.26);
+      color: #fff;
       font-size: 0.82rem;
       font-weight: 600;
-      padding: 7px 16px;
+      padding: 8px 18px;
       border-radius: 999px;
     }
-
-    .teacher-tag-he {
+    .teacher-chip-he {
       font-family: 'Noto Sans Hebrew', sans-serif;
       font-weight: 400;
-      color: var(--blue);
-      opacity: 0.75;
-      font-size: 0.78rem;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.75rem;
       direction: rtl;
     }
+
+    /* Wave between hero and content */
+    .hero-wave {
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      line-height: 0;
+    }
+    .hero-wave svg { display: block; width: 100%; }
 
     /* ── MAIN ────────────────────────────────────────────── */
     .main {
@@ -210,45 +241,43 @@
       padding: 3rem 1.5rem 5rem;
     }
 
-    /* ── TOOL SECTION ────────────────────────────────────── */
+    /* ── SECTION ─────────────────────────────────────────── */
     .tool-section { margin-bottom: 3rem; }
 
     .section-head {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding-bottom: 0.9rem;
+      gap: 0.85rem;
       margin-bottom: 1.25rem;
-      border-bottom: 2px solid var(--border);
     }
-
-    .section-icon { font-size: 1.2rem; }
-
+    .section-bar {
+      width: 5px;
+      height: 40px;
+      border-radius: 999px;
+      background: var(--sc, var(--blue));
+      flex-shrink: 0;
+    }
     .section-labels { flex: 1; }
-
     .section-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.01em;
       line-height: 1.2;
     }
-
-    .section-title-he {
+    .section-he {
       font-family: 'Noto Sans Hebrew', sans-serif;
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 0.76rem;
+      color: var(--text-mu);
       font-weight: 400;
       direction: rtl;
       line-height: 1.4;
     }
-
-    .section-tag {
-      font-size: 0.68rem;
-      font-weight: 600;
+    .section-badge {
+      font-size: 0.67rem;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 3px 10px;
+      padding: 4px 12px;
       border-radius: 999px;
       white-space: nowrap;
     }
@@ -256,164 +285,172 @@
     /* ── CARD GRID ───────────────────────────────────────── */
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
       gap: 1rem;
     }
 
     /* ── TOOL CARD ───────────────────────────────────────── */
     /*
       HOW TO ADD A NEW CARD:
-      1. Copy one <a class="tool-card"> block below
-      2. Paste it before the closing </div> of .card-grid
-      3. Update: href, card-icon, card-type, card-title, card-desc
-      4. Set --card-accent to the right section colour variable
-      5. Save & upload to GitHub — done!
+      Copy one .tool-card block, paste inside the right .card-grid,
+      update: href, icon emoji, card-type, card-title, card-desc,
+              card-tags, and the three CSS custom props on the element.
     */
     .tool-card {
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
       text-decoration: none;
       color: inherit;
       position: relative;
       overflow: hidden;
-      transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
-      box-shadow: var(--shadow);
+      box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 14px rgba(0,0,0,.04);
+      transition: box-shadow 0.22s ease, transform 0.22s ease, border-color 0.2s ease;
     }
-
-    /* Coloured top stripe */
-    .tool-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--card-accent, var(--blue));
-    }
-
     .tool-card:hover {
-      box-shadow: var(--shadow-up);
-      transform: translateY(-3px);
-      border-color: var(--border-hover);
+      box-shadow: 0 10px 40px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
+      transform: translateY(-5px);
+      border-color: var(--ca-border, var(--border-h));
       color: inherit;
     }
 
-    .card-icon {
-      font-size: 1.9rem;
-      display: block;
-      margin-bottom: 0.3rem;
+    /* Coloured icon badge */
+    .card-icon-wrap {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      background: var(--ca-bg, var(--blue-l));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      flex-shrink: 0;
     }
 
     .card-type {
-      font-size: 0.66rem;
-      font-weight: 600;
+      font-size: 0.63rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--card-accent, var(--blue));
+      letter-spacing: 0.12em;
+      color: var(--ca, var(--blue));
+      margin-bottom: 0.2rem;
     }
-
     .card-title {
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--text);
       line-height: 1.3;
-      margin-top: 0.1rem;
+      margin-bottom: 0.5rem;
     }
-
     .card-desc {
       font-size: 0.81rem;
-      color: var(--text-muted);
-      line-height: 1.65;
+      color: var(--text-mu);
+      line-height: 1.7;
       flex: 1;
-      margin-top: 0.25rem;
     }
-
-    .card-btn {
-      display: inline-flex;
+    .card-footer {
+      display: flex;
       align-items: center;
-      gap: 0.25rem;
-      margin-top: 1rem;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--card-accent, var(--blue));
+      justify-content: space-between;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      gap: 0.5rem;
     }
-
-    .card-btn::after {
-      content: '→';
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+    .card-tag {
+      font-size: 0.58rem;
+      font-weight: 600;
+      background: var(--ca-bg, var(--blue-l));
+      color: var(--ca, var(--blue));
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .card-open {
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--ca, var(--blue));
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .card-open svg {
+      width: 14px; height: 14px;
       transition: transform 0.15s ease;
     }
+    .tool-card:hover .card-open svg { transform: translateX(3px); }
 
-    .tool-card:hover .card-btn::after {
-      transform: translateX(4px);
-    }
-
-    /* Coming-soon state */
+    /* Coming soon */
     .tool-card.soon {
-      opacity: 0.45;
+      opacity: 0.48;
       pointer-events: none;
       box-shadow: none;
     }
-
     .soon-label {
       position: absolute;
-      top: 10px; right: 10px;
-      font-size: 0.6rem;
+      top: 12px; right: 12px;
+      font-size: 0.58rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       background: var(--bg);
-      color: var(--text-muted);
-      padding: 2px 8px;
+      color: var(--text-mu);
+      padding: 3px 9px;
       border-radius: 999px;
       border: 1px solid var(--border);
     }
 
     /* ── FOOTER ──────────────────────────────────────────── */
     .site-footer {
-      background: var(--white);
-      border-top: 1px solid var(--border);
-      padding: 2rem 1.5rem;
+      background: var(--blue-d);
+      padding: 2.25rem 1.5rem;
+      text-align: center;
     }
-
     .footer-inner {
       max-width: 1100px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.35rem;
-      text-align: center;
+      gap: 0.4rem;
     }
-
     .footer-brand {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-mid);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
     }
-
     .footer-brand-he {
       font-family: 'Noto Sans Hebrew', sans-serif;
       direction: rtl;
       font-weight: 400;
-      color: var(--text-muted);
+      color: rgba(255,255,255,0.55);
     }
-
     .footer-note {
-      font-size: 0.73rem;
-      color: var(--text-muted);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
     }
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 640px) {
-      .hero            { padding: 2.5rem 1rem 2rem; }
-      .main            { padding: 2rem 1rem 4rem; }
-      .header-pill     { display: none; }
+      .hero           { padding: 3.5rem 1rem 7rem; }
+      .main           { padding: 2rem 1rem 4rem; }
       .brand-sep,
-      .brand-he        { display: none; }
-      .card-grid       { grid-template-columns: 1fr; }
+      .brand-he       { display: none; }
+      .header-pill    { display: none; }
+      .card-grid      { grid-template-columns: 1fr; }
+      .hero-stats     { width: 100%; }
+      .hero-stat      { flex: 1; padding: 0.5rem 0.75rem; }
     }
   </style>
 </head>
@@ -427,7 +464,7 @@
     <div class="header-inner">
 
       <div class="brand">
-        <div class="brand-dot" aria-hidden="true"></div>
+        <span class="brand-icon" aria-hidden="true">🏫</span>
         <span class="brand-en">Eliran's House of Teaching</span>
         <div class="brand-sep" aria-hidden="true"></div>
         <span class="brand-he" lang="he">בית הלימוד של אלירן</span>
@@ -440,26 +477,45 @@
 
 
   <!-- ══════════════════════════════════════════
-       HERO — edit the welcome text here
+       HERO
+       Edit the headline, subtitle, and stats here.
   ══════════════════════════════════════════ -->
   <section class="hero">
     <div class="hero-inner">
 
-      <div class="hero-eyebrow">Your Learning Space</div>
+      <span class="hero-eyebrow">English as a Second Language · מרחב הלמידה שלכם</span>
 
-      <h1>Welcome to<br><span class="accent">Mr. Eliran's classroom</span></h1>
+      <h1>Welcome to<br><em>Mr. Eliran's</em><br>classroom</h1>
       <span class="hero-he" lang="he">ברוכים הבאים לכיתה של מר אלירן</span>
 
-      <p class="hero-desc">
-        Pick a tool below and get started. Every activity is designed to
-        help you grow your English — one step at a time.
-      </p>
-
-      <div class="teacher-tag">
-        👨‍🏫 Mr. Eliran
-        <span class="teacher-tag-he" lang="he">· מר אלירן</span>
+      <!-- Stats — update numbers as you add more tools -->
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-n">2</span>
+          <span class="stat-l">Tools</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-n">70</span>
+          <span class="stat-l">Vocab Words</span>
+        </div>
+        <div class="hero-stat">
+          <span class="stat-n" lang="he" style="font-family:'Noto Sans Hebrew',sans-serif;font-size:1rem;">עב</span>
+          <span class="stat-l">Hebrew Support</span>
+        </div>
       </div>
 
+      <div class="teacher-chip">
+        👨‍🏫 Your teacher: Mr. Eliran
+        <span class="teacher-chip-he" lang="he">מר אלירן</span>
+      </div>
+
+    </div>
+
+    <!-- Wave transition into page background -->
+    <div class="hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 90" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0,45 C360,90 1080,0 1440,45 L1440,90 L0,90 Z" fill="#EEF2FF"/>
+      </svg>
     </div>
   </section>
 
@@ -471,47 +527,52 @@
 
 
     <!-- ════════════════════════════════════════
-         SECTION: STUDY GUIDES
-         Accent colour: --c-literature (purple)
+         STUDY GUIDES  (purple — --c-lit)
     ════════════════════════════════════════ -->
     <section class="tool-section">
-
       <div class="section-head">
-        <span class="section-icon">📖</span>
+        <div class="section-bar" style="--sc: var(--c-lit);"></div>
         <div class="section-labels">
           <div class="section-title">Study Guides</div>
-          <div class="section-title-he" lang="he">מדריכי לימוד</div>
+          <div class="section-he" lang="he">מדריכי לימוד</div>
         </div>
-        <span class="section-tag"
-              style="background:#F3F0FF; color:var(--c-literature);">
-          Literature
-        </span>
+        <span class="section-badge" style="background:var(--c-lit-bg); color:var(--c-lit);">Literature</span>
       </div>
 
       <div class="card-grid">
 
         <!-- ▼ CARD: Little Prince -->
         <a class="tool-card" href="little-prince/index.html"
-           style="--card-accent: var(--c-literature);">
-          <span class="card-icon" role="img" aria-label="rose">🌹</span>
-          <span class="card-type">English Literature</span>
-          <h2 class="card-title">The Little Prince</h2>
+           style="--ca:var(--c-lit); --ca-bg:var(--c-lit-bg); --ca-border:var(--c-lit-bdr);">
+          <div class="card-icon-wrap">🌹</div>
+          <div class="card-type">English Literature</div>
+          <h2 class="card-title">The Little Prince<br>Study Guide</h2>
           <p class="card-desc">
-            Chapters 1–12 · Summaries, comprehension questions,
-            vocabulary with Hebrew, and themes. Answers are saved
-            between sessions.
+            Interactive guide for chapters 1–12. Summaries, comprehension
+            questions, vocabulary with Hebrew translations, themes, and
+            model answers. Your progress saves between sessions.
           </p>
-          <span class="card-btn">Open</span>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="card-tag">Chapters 1–12</span>
+              <span class="card-tag">Saves Progress</span>
+              <span class="card-tag">Hebrew Vocab</span>
+            </div>
+            <span class="card-open">Open <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg></span>
+          </div>
         </a>
 
-        <!-- ▼ PASTE NEW STUDY GUIDE CARDS ABOVE THIS LINE
+        <!-- ▼ PASTE NEXT STUDY GUIDE CARD HERE
         <a class="tool-card" href="FOLDER/index.html"
-           style="--card-accent: var(--c-literature);">
-          <span class="card-icon" role="img" aria-label="">📗</span>
-          <span class="card-type">English Literature</span>
+           style="--ca:var(--c-lit); --ca-bg:var(--c-lit-bg); --ca-border:var(--c-lit-bdr);">
+          <div class="card-icon-wrap">📗</div>
+          <div class="card-type">English Literature</div>
           <h2 class="card-title">Book Title</h2>
-          <p class="card-desc">Short description of the tool.</p>
-          <span class="card-btn">Open</span>
+          <p class="card-desc">Description of the tool.</p>
+          <div class="card-footer">
+            <div class="card-tags"><span class="card-tag">Tag</span></div>
+            <span class="card-open">Open <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg></span>
+          </div>
         </a>
         -->
 
@@ -520,46 +581,52 @@
 
 
     <!-- ════════════════════════════════════════
-         SECTION: VOCABULARY
-         Accent colour: --c-vocab (green)
+         VOCABULARY  (green — --c-voc)
     ════════════════════════════════════════ -->
     <section class="tool-section">
-
       <div class="section-head">
-        <span class="section-icon">📚</span>
+        <div class="section-bar" style="--sc: var(--c-voc);"></div>
         <div class="section-labels">
           <div class="section-title">Vocabulary</div>
-          <div class="section-title-he" lang="he">אוצר מילים</div>
+          <div class="section-he" lang="he">אוצר מילים</div>
         </div>
-        <span class="section-tag"
-              style="background:#ECFDF5; color:var(--c-vocab);">
-          ESL
-        </span>
+        <span class="section-badge" style="background:var(--c-voc-bg); color:var(--c-voc);">ESL</span>
       </div>
 
       <div class="card-grid">
 
         <!-- ▼ CARD: Vocab Flashcards -->
         <a class="tool-card" href="vocabulary/index.html"
-           style="--card-accent: var(--c-vocab);">
-          <span class="card-icon" role="img" aria-label="cards">🃏</span>
-          <span class="card-type">ESL · Hebrew Speakers · 4th Grade</span>
-          <h2 class="card-title">English Vocab Flashcards</h2>
+           style="--ca:var(--c-voc); --ca-bg:var(--c-voc-bg); --ca-border:var(--c-voc-bdr);">
+          <div class="card-icon-wrap">🃏</div>
+          <div class="card-type">ESL · Hebrew Speakers</div>
+          <h2 class="card-title">English Vocab<br>Flashcards</h2>
           <p class="card-desc">
-            70 words across 7 categories. Flip cards to see Hebrew
-            translations, then test yourself with the quiz.
+            70 words across 7 categories. Flip each card to reveal the
+            Hebrew translation on the back, then switch to quiz mode to
+            test yourself.
           </p>
-          <span class="card-btn">Open</span>
+          <div class="card-footer">
+            <div class="card-tags">
+              <span class="card-tag">70 Words</span>
+              <span class="card-tag">7 Categories</span>
+              <span class="card-tag">4th Grade</span>
+            </div>
+            <span class="card-open">Open <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg></span>
+          </div>
         </a>
 
-        <!-- ▼ PASTE NEW VOCABULARY CARDS ABOVE THIS LINE
+        <!-- ▼ PASTE NEXT VOCABULARY CARD HERE
         <a class="tool-card" href="FOLDER/index.html"
-           style="--card-accent: var(--c-vocab);">
-          <span class="card-icon" role="img" aria-label="">📝</span>
-          <span class="card-type">ESL · Level</span>
+           style="--ca:var(--c-voc); --ca-bg:var(--c-voc-bg); --ca-border:var(--c-voc-bdr);">
+          <div class="card-icon-wrap">📝</div>
+          <div class="card-type">ESL · Level</div>
           <h2 class="card-title">Tool Name</h2>
-          <p class="card-desc">Short description.</p>
-          <span class="card-btn">Open</span>
+          <p class="card-desc">Description.</p>
+          <div class="card-footer">
+            <div class="card-tags"><span class="card-tag">Tag</span></div>
+            <span class="card-open">Open <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg></span>
+          </div>
         </a>
         -->
 
@@ -568,34 +635,32 @@
 
 
     <!-- ════════════════════════════════════════
-         SECTION: ACTIVITIES
-         Accent colour: --c-activity (teal)
-         Remove "soon" class from a card to activate it.
+         ACTIVITIES  (teal — --c-act)
+         Remove class="soon" from a card to activate it.
     ════════════════════════════════════════ -->
     <section class="tool-section">
-
       <div class="section-head">
-        <span class="section-icon">✏️</span>
+        <div class="section-bar" style="--sc: var(--c-act);"></div>
         <div class="section-labels">
           <div class="section-title">Activities</div>
-          <div class="section-title-he" lang="he">פעילויות</div>
+          <div class="section-he" lang="he">פעילויות</div>
         </div>
-        <span class="section-tag"
-              style="background:#ECFEFF; color:var(--c-activity);">
-          Interactive
-        </span>
+        <span class="section-badge" style="background:var(--c-act-bg); color:var(--c-act);">Interactive</span>
       </div>
 
       <div class="card-grid">
 
         <div class="tool-card soon"
-             style="--card-accent: var(--c-activity);">
+             style="--ca:var(--c-act); --ca-bg:var(--c-act-bg); --ca-border:var(--c-act-bdr);">
           <span class="soon-label">Coming Soon</span>
-          <span class="card-icon" role="img" aria-label="target">🎯</span>
-          <span class="card-type">Interactive Activity</span>
+          <div class="card-icon-wrap">🎯</div>
+          <div class="card-type">Interactive Activity</div>
           <h2 class="card-title">First Activity</h2>
           <p class="card-desc">Your next tool will appear here.</p>
-          <span class="card-btn">Open</span>
+          <div class="card-footer">
+            <div class="card-tags"></div>
+            <span class="card-open">Open <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg></span>
+          </div>
         </div>
 
       </div>
@@ -604,27 +669,29 @@
 
     <!-- ════════════════════════════════════════
          HOW TO ADD A NEW SECTION (e.g. Maths):
-         Copy the block below, uncomment it,
-         and fill in the section details.
+         Copy the block below, remove the comment
+         markers, and fill in the details.
 
     <section class="tool-section">
       <div class="section-head">
-        <span class="section-icon">🔢</span>
+        <div class="section-bar" style="--sc: var(--c-mat);"></div>
         <div class="section-labels">
           <div class="section-title">Maths</div>
-          <div class="section-title-he" lang="he">מתמטיקה</div>
+          <div class="section-he" lang="he">מתמטיקה</div>
         </div>
-        <span class="section-tag"
-              style="background:#FFF1F2; color:var(--c-maths);">Maths</span>
+        <span class="section-badge" style="background:var(--c-mat-bg); color:var(--c-mat);">Maths</span>
       </div>
       <div class="card-grid">
         <a class="tool-card" href="FOLDER/index.html"
-           style="--card-accent: var(--c-maths);">
-          <span class="card-icon">📐</span>
-          <span class="card-type">Maths · Level</span>
+           style="--ca:var(--c-mat); --ca-bg:var(--c-mat-bg); --ca-border:var(--c-mat-bdr);">
+          <div class="card-icon-wrap">📐</div>
+          <div class="card-type">Maths · Level</div>
           <h2 class="card-title">Tool Name</h2>
-          <p class="card-desc">Short description.</p>
-          <span class="card-btn">Open</span>
+          <p class="card-desc">Description.</p>
+          <div class="card-footer">
+            <div class="card-tags"><span class="card-tag">Tag</span></div>
+            <span class="card-open">Open <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg></span>
+          </div>
         </a>
       </div>
     </section>
@@ -640,11 +707,12 @@
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        Eliran's House of Teaching
+        🏫 Eliran's House of Teaching
         <span class="footer-brand-he" lang="he"> · בית הלימוד של אלירן</span>
       </div>
       <div class="footer-note">
-        Built for curious learners · <span lang="he" style="font-family:'Noto Sans Hebrew',sans-serif;direction:rtl;">נבנה ללומדים סקרנים</span>
+        Built for curious learners ·
+        <span lang="he" style="font-family:'Noto Sans Hebrew',sans-serif;">נבנה ללומדים סקרנים</span>
       </div>
     </div>
   </footer>
