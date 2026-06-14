@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Hub — Mr. Eliran</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Sans+Hebrew:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --sb:      #0F172A;
+      --sb-h:    #1E293B;
+      --sb-act:  #2563EB;
+      --sb-txt:  #94A3B8;
+      --sb-txt-a:#F1F5F9;
+      --bg:      #F8FAFC;
+      --white:   #FFFFFF;
+      --border:  #E2E8F0;
+      --text:    #0F172A;
+      --muted:   #64748B;
+      --blue:    #2563EB;
+      --blue-lt: #EFF6FF;
+      --green:   #16A34A;
+      --green-lt:#DCFCE7;
+      --red:     #DC2626;
+      --red-lt:  #FEE2E2;
+      --gold:    #D97706;
+      --gold-lt: #FEF3C7;
+      --purple:  #7C3AED;
+      --purple-lt:#EDE9FE;
+      --shadow:  0 2px 10px rgba(0,0,0,0.07);
+      --shadow-lg:0 8px 32px rgba(0,0,0,0.12);
+    }
+    body { font-family:'Poppins',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+    [lang="he"],.he { font-family:'Noto Sans Hebrew',sans-serif; direction:rtl; unicode-bidi:embed; }
+
+    /* ════ AUTH SCREENS ════ */
+    .auth-wrap {
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%);
+    }
+    .auth-box {
+      background:var(--white);
+      border-radius:20px;
+      padding:2.5rem 2rem;
+      width:100%;
+      max-width:380px;
+      box-shadow:var(--shadow-lg);
+      text-align:center;
+    }
+    .auth-logo { font-size:2.5rem; margin-bottom:0.5rem; }
+    .auth-title { font-size:1.3rem; font-weight:800; margin-bottom:0.25rem; }
+    .auth-sub { font-size:0.82rem; color:var(--muted); margin-bottom:2rem; }
+    .auth-field {
+      display:flex;
+      flex-direction:column;
+      gap:0.4rem;
+      margin-bottom:1rem;
+      text-align:left;
+    }
+    .auth-field label { font-size:0.78rem; font-weight:600; color:var(--muted); }
+    .auth-input {
+      padding:0.7rem 1rem;
+      border:2px solid var(--border);
+      border-radius:10px;
+      font-family:inherit;
+      font-size:0.95rem;
+      outline:none;
+      transition:border-color 0.15s;
+    }
+    .auth-input:focus { border-color:var(--blue); }
+    .auth-btn {
+      width:100%;
+      padding:0.85rem;
+      background:var(--blue);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      font-family:inherit;
+      font-size:0.95rem;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:0.5rem;
+      transition:background 0.15s;
+    }
+    .auth-btn:hover { background:#1D4ED8; }
+    .auth-err {
+      margin-top:0.75rem;
+      padding:0.6rem;
+      background:var(--red-lt);
+      color:var(--red);
+      border-radius:8px;
+      font-size:0.82rem;
+      font-weight:600;
+      display:none;
+    }
+    .auth-note { margin-top:1.25rem; font-size:0.72rem; color:var(--muted); }
+
+    /* ════ APP LAYOUT ════ */
+    #app { display:none; height:100vh; overflow:hidden; }
+    .app-layout { display:flex; height:100vh; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width:220px;
+      background:var(--sb);
+      display:flex;
+      flex-direction:column;
+      flex-shrink:0;
+      overflow-y:auto;
+    }
+    .sb-brand {
+      padding:1.25rem 1rem;
+      border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .sb-brand-name {
+      font-size:0.95rem;
+      font-weight:800;
+      color:var(--sb-txt-a);
+      display:block;
+    }
+    .sb-brand-sub { font-size:0.68rem; color:var(--sb-txt); }
+    .sb-nav { padding:0.75rem 0; flex:1; }
+    .sb-section {
+      font-size:0.62rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.1em;
+      color:rgba(148,163,184,0.5);
+      padding:0.9rem 1rem 0.4rem;
+    }
+    .sb-item {
+      display:flex;
+      align-items:center;
+      gap:0.6rem;
+      padding:0.6rem 1rem;
+      color:var(--sb-txt);
+      font-size:0.82rem;
+      font-weight:500;
+      cursor:pointer;
+      border-radius:0;
+      transition:all 0.15s;
+      border-left:3px solid transparent;
+      user-select:none;
+    }
+    .sb-item:hover { background:var(--sb-h); color:var(--sb-txt-a); }
+    .sb-item.active { background:var(--sb-h); color:#fff; border-left-color:var(--sb-act); }
+    .sb-item .sb-icon { font-size:1rem; width:20px; text-align:center; flex-shrink:0; }
+    .sb-footer {
+      padding:1rem;
+      border-top:1px solid rgba(255,255,255,0.07);
+    }
+    .sb-user {
+      font-size:0.75rem;
+      color:var(--sb-txt);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .sb-lock {
+      background:none;
+      border:none;
+      color:var(--sb-txt);
+      cursor:pointer;
+      font-size:0.75rem;
+      padding:0.25rem 0.5rem;
+      border-radius:6px;
+    }
+    .sb-lock:hover { background:var(--sb-h); color:var(--sb-txt-a); }
+
+    /* ── Main area ── */
+    .main-area { flex:1; overflow-y:auto; display:flex; flex-direction:column; }
+    .panel { display:none; flex:1; flex-direction:column; }
+    .panel.active { display:flex; }
+    .panel-header {
+      background:var(--white);
+      border-bottom:1px solid var(--border);
+      padding:1.25rem 1.5rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-shrink:0;
+    }
+    .panel-title { font-size:1.1rem; font-weight:800; }
+    .panel-sub { font-size:0.78rem; color:var(--muted); margin-top:0.1rem; }
+    .panel-body { padding:1.5rem; flex:1; overflow-y:auto; }
+
+    /* ════ STUDENTS PANEL ════ */
+    .students-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
+    .student-card {
+      background:var(--white);
+      border-radius:14px;
+      border:2px solid var(--border);
+      padding:1.25rem;
+      cursor:pointer;
+      transition:all 0.15s;
+    }
+    .student-card:hover { border-color:var(--blue); box-shadow:var(--shadow); }
+    .student-card.add-new {
+      border-style:dashed;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:0.5rem;
+      color:var(--muted);
+      min-height:120px;
+    }
+    .student-card.add-new:hover { color:var(--blue); border-color:var(--blue); }
+    .student-avatar {
+      width:42px; height:42px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1.3rem;
+      margin-bottom:0.75rem;
+    }
+    .student-name { font-weight:700; font-size:0.95rem; margin-bottom:0.2rem; }
+    .student-meta { font-size:0.72rem; color:var(--muted); }
+    .level-pill {
+      display:inline-block;
+      padding:0.15rem 0.6rem;
+      border-radius:999px;
+      font-size:0.68rem;
+      font-weight:700;
+      margin-right:0.3rem;
+    }
+    .lvl-a1 { background:var(--blue-lt); color:var(--blue); }
+    .lvl-a2 { background:var(--purple-lt); color:var(--purple); }
+    .lvl-b1 { background:var(--green-lt); color:var(--green); }
+
+    /* Student modal */
+    .modal-overlay {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.45);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:200;
+      display:none;
+    }
+    .modal-overlay.open { display:flex; }
+    .modal-box {
+      background:var(--white);
+      border-radius:16px;
+      padding:2rem;
+      width:100%;
+      max-width:440px;
+      box-shadow:var(--shadow-lg);
+    }
+    .modal-title { font-size:1.1rem; font-weight:800; margin-bottom:1.5rem; }
+    .form-row { margin-bottom:1rem; }
+    .form-label { display:block; font-size:0.75rem; font-weight:600; color:var(--muted); margin-bottom:0.4rem; }
+    .form-input, .form-select, .form-textarea {
+      width:100%;
+      padding:0.65rem 0.85rem;
+      border:2px solid var(--border);
+      border-radius:10px;
+      font-family:inherit;
+      font-size:0.88rem;
+      outline:none;
+      transition:border-color 0.15s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--blue); }
+    .form-textarea { resize:vertical; min-height:80px; }
+    .modal-actions { display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1.5rem; }
+    .btn-secondary {
+      padding:0.65rem 1.25rem;
+      background:var(--white);
+      color:var(--muted);
+      border:2px solid var(--border);
+      border-radius:10px;
+      font-family:inherit;
+      font-size:0.85rem;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .btn-primary {
+      padding:0.65rem 1.25rem;
+      background:var(--blue);
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      font-family:inherit;
+      font-size:0.85rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .btn-primary:hover { background:#1D4ED8; }
+    .btn-danger {
+      padding:0.65rem 1.25rem;
+      background:var(--red-lt);
+      color:var(--red);
+      border:2px solid var(--red);
+      border-radius:10px;
+      font-family:inherit;
+      font-size:0.85rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    /* ════ GENERATE PANEL ════ */
+    .gen-layout { display:grid; grid-template-columns:320px 1fr; gap:1.5rem; min-height:100%; }
+    .gen-sidebar {
+      background:var(--white);
+      border-radius:16px;
+      border:1px solid var(--border);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      height:fit-content;
+      position:sticky;
+      top:0;
+    }
+    .gen-sb-section {
+      padding:1rem 1.25rem;
+      border-bottom:1px solid var(--border);
+      font-size:0.72rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.07em;
+      color:var(--muted);
+    }
+    .gen-sb-body { padding:1.25rem; display:flex; flex-direction:column; gap:1rem; }
+    .type-tabs { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
+    .type-tab {
+      padding:0.6rem 0.5rem;
+      border:2px solid var(--border);
+      border-radius:10px;
+      background:var(--white);
+      font-family:inherit;
+      font-size:0.72rem;
+      font-weight:700;
+      cursor:pointer;
+      text-align:center;
+      transition:all 0.15s;
+      color:var(--muted);
+      line-height:1.4;
+    }
+    .type-tab:hover { border-color:var(--blue); color:var(--blue); }
+    .type-tab.active { border-color:var(--blue); background:var(--blue); color:#fff; }
+    .type-tab .tab-icon { font-size:1.2rem; display:block; margin-bottom:0.2rem; }
+
+    .gen-btn {
+      width:100%;
+      padding:0.9rem;
+      background: linear-gradient(135deg, #2563EB, #4F46E5);
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      font-family:inherit;
+      font-size:0.95rem;
+      font-weight:800;
+      cursor:pointer;
+      transition:all 0.2s;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.5rem;
+    }
+    .gen-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(37,99,235,0.4); }
+    .gen-btn:disabled { background:#94A3B8; transform:none; box-shadow:none; cursor:not-allowed; }
+    .gen-btn .spinner { display:none; width:16px; height:16px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin 0.8s linear infinite; }
+    .gen-btn.loading .spinner { display:block; }
+    .gen-btn.loading .btn-label { opacity:0.7; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* Output area */
+    .gen-output {
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+    .output-card {
+      background:var(--white);
+      border-radius:16px;
+      border:1px solid var(--border);
+      overflow:hidden;
+    }
+    .output-card-header {
+      padding:0.85rem 1.25rem;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:#FAFAFA;
+    }
+    .output-card-title { font-size:0.78rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+    .output-card-body { padding:1.25rem; }
+
+    /* Streaming text */
+    .stream-box {
+      font-family:'JetBrains Mono',monospace;
+      font-size:0.8rem;
+      color:var(--text);
+      white-space:pre-wrap;
+      min-height:120px;
+      line-height:1.7;
+    }
+    .stream-cursor { display:inline-block; width:8px; height:14px; background:var(--blue); animation:blink 0.8s ease-in-out infinite; vertical-align:text-bottom; margin-left:1px; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* Parsed output sections */
+    .parsed-section { margin-bottom:1.5rem; }
+    .parsed-section:last-child { margin-bottom:0; }
+    .parsed-label {
+      font-size:0.7rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      color:var(--muted);
+      margin-bottom:0.6rem;
+      display:flex;
+      align-items:center;
+      gap:0.4rem;
+    }
+    .parsed-reading {
+      font-size:0.95rem;
+      line-height:1.85;
+      color:var(--text);
+    }
+    .parsed-reading .vocab-hl {
+      font-weight:700;
+      color:var(--blue);
+      border-bottom:2px solid var(--blue-lt);
+    }
+    .parsed-title { font-size:1.4rem; font-weight:800; margin-bottom:0.75rem; }
+    .vocab-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+    .vocab-table th {
+      text-align:left;
+      padding:0.5rem 0.75rem;
+      font-size:0.72rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+      color:var(--muted);
+      border-bottom:2px solid var(--border);
+    }
+    .vocab-table td {
+      padding:0.6rem 0.75rem;
+      border-bottom:1px solid var(--border);
+      vertical-align:middle;
+    }
+    .vocab-table tr:last-child td { border-bottom:none; }
+    .vocab-table .he-cell { font-family:'Noto Sans Hebrew',sans-serif; direction:rtl; font-size:0.95rem; }
+    .questions-list { list-style:none; }
+    .questions-list li {
+      padding:0.65rem 0.75rem;
+      border-radius:8px;
+      font-size:0.88rem;
+      display:flex;
+      gap:0.75rem;
+      margin-bottom:0.5rem;
+    }
+    .questions-list li:nth-child(odd) { background:#F8FAFC; }
+    .q-num { font-weight:800; color:var(--blue); flex-shrink:0; min-width:24px; }
+    .bloom-badge {
+      font-size:0.62rem;
+      font-weight:700;
+      padding:0.1rem 0.5rem;
+      border-radius:999px;
+      margin-left:auto;
+      flex-shrink:0;
+      align-self:center;
+    }
+    .bloom-remember   { background:#FEF3C7; color:#92400E; }
+    .bloom-understand { background:#EDE9FE; color:#5B21B6; }
+    .bloom-apply      { background:#D1FAE5; color:#065F46; }
+    .bloom-analyze    { background:#DBEAFE; color:#1E40AF; }
+    .bloom-evaluate   { background:#FCE7F3; color:#9D174D; }
+    .bloom-create     { background:#FEE2E2; color:#991B1B; }
+
+    /* Push actions bar */
+    .push-bar {
+      background:var(--white);
+      border-radius:16px;
+      border:1px solid var(--border);
+      padding:1rem 1.25rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:0.75rem;
+    }
+    .push-info { font-size:0.82rem; color:var(--muted); }
+    .push-info strong { color:var(--text); }
+    .push-actions { display:flex; gap:0.5rem; }
+    .push-btn {
+      padding:0.55rem 1rem;
+      border-radius:8px;
+      border:none;
+      font-family:inherit;
+      font-size:0.8rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:all 0.15s;
+    }
+    .push-btn.copy { background:var(--border); color:var(--text); }
+    .push-btn.copy:hover { background:#CBD5E1; }
+    .push-btn.push { background:var(--green); color:#fff; }
+    .push-btn.push:hover { background:#15803D; }
+    .push-btn.push:disabled { background:var(--muted); cursor:default; }
+    .push-status {
+      padding:0.5rem 0.75rem;
+      border-radius:8px;
+      font-size:0.78rem;
+      font-weight:600;
+      display:none;
+    }
+    .push-status.ok  { background:var(--green-lt); color:var(--green); }
+    .push-status.err { background:var(--red-lt); color:var(--red); }
+
+    /* ════ HISTORY PANEL ════ */
+    .history-list { display:flex; flex-direction:column; gap:0.75rem; }
+    .history-item {
+      background:var(--white);
+      border-radius:12px;
+      border:1px solid var(--border);
+      padding:1rem 1.25rem;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:1rem;
+    }
+    .history-type-badge {
+      padding:0.2rem 0.65rem;
+      border-radius:999px;
+      font-size:0.68rem;
+      font-weight:700;
+    }
+    .htype-reading  { background:var(--blue-lt); color:var(--blue); }
+    .htype-vocab    { background:var(--purple-lt); color:var(--purple); }
+    .htype-lesson   { background:var(--green-lt); color:var(--green); }
+    .htype-questions{ background:var(--gold-lt); color:var(--gold); }
+    .history-meta { font-size:0.72rem; color:var(--muted); margin-top:0.3rem; }
+    .history-title { font-weight:700; font-size:0.88rem; }
+    .btn-tiny {
+      padding:0.3rem 0.65rem;
+      border-radius:6px;
+      border:1.5px solid var(--border);
+      background:var(--white);
+      font-family:inherit;
+      font-size:0.72rem;
+      font-weight:600;
+      cursor:pointer;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .btn-tiny:hover { border-color:var(--blue); color:var(--blue); }
+
+    /* ════ SETTINGS PANEL ════ */
+    .settings-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.25rem; }
+    .settings-card {
+      background:var(--white);
+      border-radius:14px;
+      border:1px solid var(--border);
+      overflow:hidden;
+    }
+    .settings-card-header {
+      padding:0.9rem 1.25rem;
+      border-bottom:1px solid var(--border);
+      background:#FAFAFA;
+      font-size:0.78rem;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:0.5rem;
+    }
+    .settings-card-body { padding:1.25rem; display:flex; flex-direction:column; gap:0.85rem; }
+    .key-display {
+      font-family:'JetBrains Mono',monospace;
+      font-size:0.8rem;
+      padding:0.5rem 0.75rem;
+      background:#F8FAFC;
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--muted);
+      letter-spacing:0.05em;
+    }
+
+    /* ════ EMPTY STATE ════ */
+    .empty-state {
+      text-align:center;
+      padding:3rem 1rem;
+      color:var(--muted);
+    }
+    .empty-state .empty-icon { font-size:3rem; margin-bottom:1rem; }
+    .empty-state h3 { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:0.4rem; }
+    .empty-state p { font-size:0.82rem; }
+
+    /* TOAST */
+    #toast {
+      position:fixed;
+      bottom:1.5rem;
+      right:1.5rem;
+      padding:0.75rem 1.25rem;
+      border-radius:10px;
+      font-size:0.85rem;
+      font-weight:600;
+      display:none;
+      z-index:999;
+      box-shadow:var(--shadow-lg);
+    }
+    #toast.ok  { background:var(--green); color:#fff; }
+    #toast.err { background:var(--red);   color:#fff; }
+    #toast.info{ background:var(--sb);    color:#fff; }
+
+    /* RESPONSIVE */
+    @media (max-width:780px) {
+      .sidebar { width:56px; }
+      .sb-brand-name, .sb-brand-sub, .sb-section, .sb-item span, .sb-user span, .sb-lock { display:none; }
+      .sb-item { justify-content:center; padding:0.7rem; }
+      .gen-layout { grid-template-columns:1fr; }
+      .gen-sidebar { position:static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ AUTH SCREENS ═══════════════ -->
+<div class="auth-wrap" id="auth-screen">
+  <!-- Setup (first time) -->
+  <div class="auth-box" id="auth-setup" style="display:none">
+    <div class="auth-logo">🔐</div>
+    <div class="auth-title">Set Up Teacher Hub</div>
+    <div class="auth-sub">Create your password to secure this workspace.</div>
+    <div class="auth-field">
+      <label>New Password</label>
+      <input class="auth-input" type="password" id="setup-pw1" placeholder="Choose a password" />
+    </div>
+    <div class="auth-field">
+      <label>Confirm Password</label>
+      <input class="auth-input" type="password" id="setup-pw2" placeholder="Confirm password" />
+    </div>
+    <button class="auth-btn" onclick="setupPassword()">Create Password →</button>
+    <div class="auth-err" id="setup-err"></div>
+    <div class="auth-note">Password is hashed and stored locally in your browser. If you clear site data, you'll need to set it up again.</div>
+  </div>
+
+  <!-- Login -->
+  <div class="auth-box" id="auth-login" style="display:none">
+    <div class="auth-logo">🏫</div>
+    <div class="auth-title">Teacher Hub</div>
+    <div class="auth-sub">Mr. Eliran's Lesson Workspace</div>
+    <div class="auth-field">
+      <label>Password</label>
+      <input class="auth-input" type="password" id="login-pw" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <button class="auth-btn" onclick="doLogin()">Enter Workspace →</button>
+    <div class="auth-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app">
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-brand">
+        <span class="sb-brand-name">🏫 Teacher Hub</span>
+        <span class="sb-brand-sub">Mr. Eliran</span>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-section">Content</div>
+        <div class="sb-item active" onclick="showPanel('generate')" id="nav-generate">
+          <span class="sb-icon">✏️</span><span>Lesson Generator</span>
+        </div>
+        <div class="sb-item" onclick="showPanel('history')" id="nav-history">
+          <span class="sb-icon">📁</span><span>History</span>
+        </div>
+        <div class="sb-section">Management</div>
+        <div class="sb-item" onclick="showPanel('students')" id="nav-students">
+          <span class="sb-icon">👥</span><span>Students</span>
+        </div>
+        <div class="sb-section">System</div>
+        <div class="sb-item" onclick="showPanel('settings')" id="nav-settings">
+          <span class="sb-icon">⚙️</span><span>Settings</span>
+        </div>
+      </nav>
+      <div class="sb-footer">
+        <div class="sb-user">
+          <span>Logged in</span>
+          <button class="sb-lock" onclick="doLogout()">🔒 Lock</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+      <!-- ──── GENERATE PANEL ──── -->
+      <div class="panel active" id="panel-generate">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Lesson Generator</div>
+            <div class="panel-sub">Generate reading texts, vocabulary lists, and full lesson packages using AI</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="gen-layout">
+
+            <!-- Controls sidebar -->
+            <div class="gen-sidebar">
+              <div class="gen-sb-section">Content Type</div>
+              <div class="gen-sb-body">
+                <div class="type-tabs">
+                  <button class="type-tab active" onclick="setGenType('reading')" id="gtype-reading">
+                    <span class="tab-icon">📄</span>Reading Passage
+                  </button>
+                  <button class="type-tab" onclick="setGenType('vocab')" id="gtype-vocab">
+                    <span class="tab-icon">📚</span>Vocabulary List
+                  </button>
+                  <button class="type-tab" onclick="setGenType('lesson')" id="gtype-lesson">
+                    <span class="tab-icon">📦</span>Full Lesson
+                  </button>
+                  <button class="type-tab" onclick="setGenType('questions')" id="gtype-questions">
+                    <span class="tab-icon">❓</span>Questions
+                  </button>
+                </div>
+              </div>
+
+              <div class="gen-sb-section">Student (Optional)</div>
+              <div class="gen-sb-body">
+                <select class="form-select" id="gen-student">
+                  <option value="">— Quick generate (no profile) —</option>
+                </select>
+              </div>
+
+              <div class="gen-sb-section">Options</div>
+              <div class="gen-sb-body" id="gen-options-area">
+                <!-- Dynamically filled per type -->
+              </div>
+
+              <div style="padding:1.25rem; border-top:1px solid var(--border);">
+                <button class="gen-btn" id="gen-btn" onclick="generate()">
+                  <div class="spinner"></div>
+                  <span class="btn-label">✨ Generate</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Output area -->
+            <div class="gen-output" id="gen-output">
+              <div class="empty-state" style="background:var(--white);border-radius:16px;border:1px solid var(--border);">
+                <div class="empty-icon">✨</div>
+                <h3>Ready to generate</h3>
+                <p>Choose a content type, fill in the options, and click Generate.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ──── STUDENTS PANEL ──── -->
+      <div class="panel" id="panel-students">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Students</div>
+            <div class="panel-sub">Manage student profiles — level, notes, and focus areas</div>
+          </div>
+          <button class="btn-primary" onclick="openStudentModal(null)">+ Add Student</button>
+        </div>
+        <div class="panel-body">
+          <div class="students-grid" id="students-grid">
+            <!-- dynamically filled -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ──── HISTORY PANEL ──── -->
+      <div class="panel" id="panel-history">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Generation History</div>
+            <div class="panel-sub">All previously generated content — click to reload</div>
+          </div>
+          <button class="btn-secondary" onclick="clearHistory()" style="font-size:0.78rem;">Clear All</button>
+        </div>
+        <div class="panel-body">
+          <div class="history-list" id="history-list"></div>
+        </div>
+      </div>
+
+      <!-- ──── SETTINGS PANEL ──── -->
+      <div class="panel" id="panel-settings">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Settings</div>
+            <div class="panel-sub">API keys, GitHub token, and password management</div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="settings-grid">
+
+            <div class="settings-card">
+              <div class="settings-card-header">🤖 Anthropic API Key</div>
+              <div class="settings-card-body">
+                <p style="font-size:0.78rem;color:var(--muted)">Required for content generation. Get yours at console.anthropic.com. Stored locally — never sent anywhere except Anthropic's API.</p>
+                <div class="form-row">
+                  <label class="form-label">API Key</label>
+                  <input class="form-input" type="password" id="set-api-key" placeholder="sk-ant-..." />
+                </div>
+                <div id="api-key-status" class="key-display">Not configured</div>
+                <button class="btn-primary" onclick="saveApiKey()">Save Key</button>
+              </div>
+            </div>
+
+            <div class="settings-card">
+              <div class="settings-card-header">🐙 GitHub Token</div>
+              <div class="settings-card-body">
+                <p style="font-size:0.78rem;color:var(--muted)">Required to push content to your site. Create a <strong>Classic</strong> token with <strong>repo</strong> scope at github.com → Settings → Developer settings → Personal access tokens. <strong>Remember to revoke after session.</strong></p>
+                <div class="form-row">
+                  <label class="form-label">Personal Access Token</label>
+                  <input class="form-input" type="password" id="set-gh-token" placeholder="ghp_..." />
+                </div>
+                <div id="gh-token-status" class="key-display">Not configured</div>
+                <button class="btn-primary" onclick="saveGhToken()">Save Token</button>
+              </div>
+            </div>
+
+            <div class="settings-card">
+              <div class="settings-card-header">🔐 Change Password</div>
+              <div class="settings-card-body">
+                <div class="form-row">
+                  <label class="form-label">New Password</label>
+                  <input class="form-input" type="password" id="chpw-new" placeholder="New password" />
+                </div>
+                <div class="form-row">
+                  <label class="form-label">Confirm</label>
+                  <input class="form-input" type="password" id="chpw-confirm" placeholder="Confirm" />
+                </div>
+                <button class="btn-primary" onclick="changePassword()">Update Password</button>
+              </div>
+            </div>
+
+            <div class="settings-card">
+              <div class="settings-card-header">🌐 Site Configuration</div>
+              <div class="settings-card-body">
+                <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem;">GitHub repository where content gets published.</p>
+                <div class="key-display">Nameless121/Nameless121.github.io</div>
+                <p style="font-size:0.72rem;color:var(--muted);margin-top:0.5rem;">Live site: https://nameless121.github.io</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-area -->
+  </div><!-- /app-layout -->
+</div><!-- /app -->
+
+<!-- Student modal -->
+<div class="modal-overlay" id="student-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="student-modal-title">Add Student</div>
+    <input type="hidden" id="student-edit-id" value="" />
+    <div class="form-row">
+      <label class="form-label">Full Name</label>
+      <input class="form-input" id="s-name" placeholder="e.g. Yael Cohen" />
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+      <div class="form-row">
+        <label class="form-label">English Level</label>
+        <select class="form-select" id="s-level">
+          <option value="A1">A1 – Beginner</option>
+          <option value="A2">A2 – Elementary</option>
+          <option value="B1">B1 – Intermediate</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Age</label>
+        <input class="form-input" id="s-age" type="number" min="5" max="20" placeholder="e.g. 12" />
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Topics of Interest</label>
+      <input class="form-input" id="s-interests" placeholder="e.g. sports, animals, history" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">Strengths</label>
+      <input class="form-input" id="s-strengths" placeholder="e.g. good vocabulary, reads well" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">Areas to Improve</label>
+      <input class="form-input" id="s-weaknesses" placeholder="e.g. grammar, writing, listening" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">Additional Notes</label>
+      <textarea class="form-textarea" id="s-notes" placeholder="Any other notes about this student..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeStudentModal()">Cancel</button>
+      <button class="btn-danger" id="student-delete-btn" onclick="deleteStudent()" style="display:none">Delete</button>
+      <button class="btn-primary" onclick="saveStudent()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════ */
+const REPO    = 'Nameless121/Nameless121.github.io';
+const GH_API  = `https://api.github.com/repos/${REPO}/contents`;
+const ANT_API = 'https://api.anthropic.com/v1/messages';
+const MODEL   = 'claude-sonnet-4-6';
+
+const SK = {
+  pwHash:   'th-pw-hash',
+  apiKey:   'th-api-key',
+  ghToken:  'th-gh-token',
+  students: 'th-students',
+  history:  'th-history',
+};
+
+/* ══════════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════════ */
+async function sha256(str) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function setupPassword() {
+  const p1 = document.getElementById('setup-pw1').value.trim();
+  const p2 = document.getElementById('setup-pw2').value.trim();
+  const err = document.getElementById('setup-err');
+  if (!p1) { showErr(err, 'Password cannot be empty.'); return; }
+  if (p1 !== p2) { showErr(err, 'Passwords do not match.'); return; }
+  if (p1.length < 6) { showErr(err, 'Minimum 6 characters.'); return; }
+  localStorage.setItem(SK.pwHash, await sha256(p1));
+  launchApp();
+}
+
+async function doLogin() {
+  const pw  = document.getElementById('login-pw').value;
+  const err = document.getElementById('login-err');
+  const h   = await sha256(pw);
+  if (h !== localStorage.getItem(SK.pwHash)) { showErr(err, 'Incorrect password.'); return; }
+  sessionStorage.setItem('th-authed', '1');
+  launchApp();
+}
+
+function doLogout() {
+  sessionStorage.removeItem('th-authed');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('login-pw').value = '';
+  document.getElementById('auth-setup').style.display = 'none';
+  document.getElementById('auth-login').style.display = 'block';
+}
+
+function showErr(el, msg) {
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+
+function launchApp() {
+  sessionStorage.setItem('th-authed', '1');
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  appInit();
+}
+
+function bootAuth() {
+  const hash = localStorage.getItem(SK.pwHash);
+  if (sessionStorage.getItem('th-authed') === '1' && hash) {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    appInit();
+  } else if (!hash) {
+    document.getElementById('auth-setup').style.display = 'block';
+  } else {
+    document.getElementById('auth-login').style.display = 'block';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   APP INIT
+══════════════════════════════════════════════ */
+function appInit() {
+  renderStudentsGrid();
+  renderStudentDropdown();
+  renderHistory();
+  updateSettingsDisplay();
+  setGenType('reading');
+  showPanel('generate');
+}
+
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+}
+
+function toast(msg, type='ok', duration=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = type;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', duration);
+}
+
+/* ══════════════════════════════════════════════
+   STUDENTS
+══════════════════════════════════════════════ */
+function getStudents() {
+  try { return JSON.parse(localStorage.getItem(SK.students) || '[]'); } catch { return []; }
+}
+function saveStudents(arr) { localStorage.setItem(SK.students, JSON.stringify(arr)); }
+
+const AVATARS = ['🧒','👦','👧','🧑','👩','👨','🎓'];
+const BG_COLORS = ['#EFF6FF','#EDE9FE','#DCFCE7','#FEF3C7','#CFFAFE','#FCE7F3'];
+
+function renderStudentsGrid() {
+  const students = getStudents();
+  const grid = document.getElementById('students-grid');
+  grid.innerHTML = '';
+  students.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'student-card';
+    div.onclick = () => openStudentModal(i);
+    div.innerHTML = `
+      <div class="student-avatar" style="background:${BG_COLORS[i % BG_COLORS.length]}">${AVATARS[i % AVATARS.length]}</div>
+      <div class="student-name">${s.name}</div>
+      <div class="student-meta">
+        <span class="level-pill lvl-${s.level.toLowerCase()}">${s.level}</span>
+        ${s.age ? `Age ${s.age}` : ''}
+        ${s.interests ? `· ${s.interests.split(',')[0].trim()}` : ''}
+      </div>
+    `;
+    grid.appendChild(div);
+  });
+  const add = document.createElement('div');
+  add.className = 'student-card add-new';
+  add.onclick = () => openStudentModal(null);
+  add.innerHTML = '<span style="font-size:1.5rem">+</span><span style="font-size:0.8rem;font-weight:600">Add Student</span>';
+  grid.appendChild(add);
+}
+
+function renderStudentDropdown() {
+  const students = getStudents();
+  const sel = document.getElementById('gen-student');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">— Quick generate (no student profile) —</option>';
+  students.forEach((s, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = `${s.name} (${s.level})`;
+    sel.appendChild(opt);
+  });
+  sel.value = cur;
+}
+
+function openStudentModal(idx) {
+  const modal = document.getElementById('student-modal');
+  const isNew = idx === null;
+  document.getElementById('student-modal-title').textContent = isNew ? 'Add Student' : 'Edit Student';
+  document.getElementById('student-edit-id').value = isNew ? '' : idx;
+  document.getElementById('student-delete-btn').style.display = isNew ? 'none' : 'block';
+  const s = isNew ? {} : getStudents()[idx];
+  document.getElementById('s-name').value       = s.name || '';
+  document.getElementById('s-level').value      = s.level || 'A1';
+  document.getElementById('s-age').value        = s.age || '';
+  document.getElementById('s-interests').value  = s.interests || '';
+  document.getElementById('s-strengths').value  = s.strengths || '';
+  document.getElementById('s-weaknesses').value = s.weaknesses || '';
+  document.getElementById('s-notes').value      = s.notes || '';
+  modal.classList.add('open');
+}
+function closeStudentModal() { document.getElementById('student-modal').classList.remove('open'); }
+
+function saveStudent() {
+  const name = document.getElementById('s-name').value.trim();
+  if (!name) { toast('Name is required', 'err'); return; }
+  const s = {
+    name, level: document.getElementById('s-level').value,
+    age:        document.getElementById('s-age').value,
+    interests:  document.getElementById('s-interests').value.trim(),
+    strengths:  document.getElementById('s-strengths').value.trim(),
+    weaknesses: document.getElementById('s-weaknesses').value.trim(),
+    notes:      document.getElementById('s-notes').value.trim(),
+  };
+  const students = getStudents();
+  const idxStr   = document.getElementById('student-edit-id').value;
+  if (idxStr === '') students.push(s); else students[parseInt(idxStr)] = s;
+  saveStudents(students);
+  closeStudentModal();
+  renderStudentsGrid();
+  renderStudentDropdown();
+  toast('Student saved ✓');
+}
+
+function deleteStudent() {
+  const idx      = parseInt(document.getElementById('student-edit-id').value);
+  const students = getStudents();
+  students.splice(idx, 1);
+  saveStudents(students);
+  closeStudentModal();
+  renderStudentsGrid();
+  renderStudentDropdown();
+  toast('Student removed', 'info');
+}
+
+/* ══════════════════════════════════════════════
+   GENERATOR — Options UI
+══════════════════════════════════════════════ */
+let G = { type: 'reading', parsed: null, raw: '' };
+
+function setGenType(type) {
+  G.type = type;
+  document.querySelectorAll('.type-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('gtype-' + type).classList.add('active');
+  renderGenOptions();
+}
+
+function renderGenOptions() {
+  const area = document.getElementById('gen-options-area');
+  const tmpl = {
+    reading: `
+      <div class="form-row">
+        <label class="form-label">Topic / Theme</label>
+        <input class="form-input" id="opt-topic" placeholder="e.g. animals, family, school, Israel" />
+      </div>
+      <div class="form-row">
+        <label class="form-label">Level</label>
+        <select class="form-select" id="opt-level">
+          <option value="A1">A1 – Very basic</option>
+          <option value="A2">A2 – Elementary</option>
+          <option value="B1">B1 – Intermediate</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Length</label>
+        <select class="form-select" id="opt-length">
+          <option value="short">Short (~80 words)</option>
+          <option value="medium" selected>Medium (~180 words)</option>
+          <option value="long">Long (~300 words)</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Vocabulary to include (optional)</label>
+        <input class="form-input" id="opt-vocab" placeholder="e.g. brave, journey, hope, trust" />
+      </div>`,
+    vocab: `
+      <div class="form-row">
+        <label class="form-label">Theme / Topic</label>
+        <input class="form-input" id="opt-topic" placeholder="e.g. emotions, movement, nature" />
+      </div>
+      <div class="form-row">
+        <label class="form-label">Level</label>
+        <select class="form-select" id="opt-level">
+          <option value="A1">A1 – Very basic</option>
+          <option value="A2">A2 – Elementary</option>
+          <option value="B1">B1 – Intermediate</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Number of Words</label>
+        <select class="form-select" id="opt-count">
+          <option value="8">8 words</option>
+          <option value="12" selected>12 words</option>
+          <option value="16">16 words</option>
+          <option value="20">20 words</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Words to avoid (known vocab, optional)</label>
+        <input class="form-input" id="opt-avoid" placeholder="e.g. happy, sad, big, small" />
+      </div>`,
+    lesson: `
+      <div class="form-row">
+        <label class="form-label">Lesson Topic</label>
+        <input class="form-input" id="opt-topic" placeholder="e.g. The story of Joseph, animals at the farm" />
+      </div>
+      <div class="form-row">
+        <label class="form-label">Level</label>
+        <select class="form-select" id="opt-level">
+          <option value="A1">A1 – Very basic</option>
+          <option value="A2">A2 – Elementary</option>
+          <option value="B1">B1 – Intermediate</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Reading Length</label>
+        <select class="form-select" id="opt-length">
+          <option value="short">Short (~100 words)</option>
+          <option value="medium" selected>Medium (~200 words)</option>
+          <option value="long">Long (~300 words)</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Special Focus</label>
+        <input class="form-input" id="opt-focus" placeholder="e.g. past tense, adjectives, comparatives" />
+      </div>`,
+    questions: `
+      <div class="form-row">
+        <label class="form-label">Paste Reading Text</label>
+        <textarea class="form-textarea" id="opt-text" rows="6" placeholder="Paste the text you want questions about..."></textarea>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Level</label>
+        <select class="form-select" id="opt-level">
+          <option value="A1">A1 – Very basic</option>
+          <option value="A2">A2 – Elementary</option>
+          <option value="B1">B1 – Intermediate</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Number of Questions</label>
+        <select class="form-select" id="opt-qcount">
+          <option value="3">3 questions</option>
+          <option value="5" selected>5 questions</option>
+          <option value="7">7 questions</option>
+          <option value="10">10 questions</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label">Bloom's Range</label>
+        <select class="form-select" id="opt-bloom">
+          <option value="basic">Basic (remember + understand)</option>
+          <option value="mixed" selected>Mixed (remember → analyze)</option>
+          <option value="deep">Deep (apply → evaluate → create)</option>
+        </select>
+      </div>`
+  };
+  area.innerHTML = tmpl[G.type] || '';
+  // Auto-fill level from selected student
+  prefillFromStudent();
+}
+
+function prefillFromStudent() {
+  const idx  = document.getElementById('gen-student').value;
+  if (!idx) return;
+  const s = getStudents()[parseInt(idx)];
+  if (!s) return;
+  const lvlSel = document.getElementById('opt-level');
+  if (lvlSel) lvlSel.value = s.level;
+  const topicEl = document.getElementById('opt-topic');
+  if (topicEl && !topicEl.value && s.interests)
+    topicEl.placeholder = `Try: ${s.interests.split(',')[0].trim()}`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('gen-student').addEventListener('change', prefillFromStudent);
+});
+
+/* ══════════════════════════════════════════════
+   GENERATOR — Prompts
+══════════════════════════════════════════════ */
+const SYSTEM_PROMPT = `You are an expert ESL curriculum designer for Israeli students learning English as a second language. You create pedagogically-sound, engaging lesson materials aligned with the CEFR framework.
+
+Your materials follow the Mind pedagogical approach:
+- Retrieval practice and spaced repetition principles
+- Bloom's Taxonomy alignment (from Remember through Create)
+- Hebrew-speaker awareness (common interference patterns, cognates, false friends)
+- Clear, precise language matched to the level
+- Culturally relevant content that resonates with Israeli students
+- Vocabulary in context (form-meaning-use framework)
+
+A1 level: Very simple sentences, high-frequency words, present tense focus, 1-2 syllable words preferred.
+A2 level: Short paragraphs, familiar topics, some past tense, vocabulary expanding to less common but useful words.
+B1 level: Longer passages, range of tenses, idiomatic expressions, vocabulary building for academic/real-world use.
+
+Always output EXACTLY in the format requested. Do not add commentary before or after the format markers.`;
+
+function buildPrompt() {
+  const type    = G.type;
+  const level   = document.getElementById('opt-level')?.value || 'A1';
+  const topic   = document.getElementById('opt-topic')?.value?.trim() || 'everyday life';
+  const idx     = document.getElementById('gen-student').value;
+  const student = idx !== '' ? getStudents()[parseInt(idx)] : null;
+
+  const lenMap  = { short: '80-100', medium: '170-200', long: '280-320' };
+  const length  = document.getElementById('opt-length')?.value || 'medium';
+  const wordTarget = lenMap[length] || '170-200';
+
+  let studentCtx = '';
+  if (student) {
+    studentCtx = `
+Student Profile:
+- Name: ${student.name}
+- Age: ${student.age || 'unknown'}
+- Level: ${student.level}
+- Interests: ${student.interests || 'general'}
+- Strengths: ${student.strengths || 'general'}
+- Areas to improve: ${student.weaknesses || 'general'}
+- Notes: ${student.notes || 'none'}`;
+  }
+
+  if (type === 'reading') {
+    const vocab = document.getElementById('opt-vocab')?.value?.trim() || '';
+    return `Generate a ${level} English reading passage for an Israeli student.
+${studentCtx}
+Topic: ${topic}
+Target length: ${wordTarget} words
+${vocab ? `Vocabulary to incorporate: ${vocab}` : ''}
+
+Requirements:
+- Strictly controlled vocabulary for ${level}
+- Bold key vocabulary words using **word** format
+- Engaging, relevant content for Hebrew-speaking student
+- Natural, clear language
+
+Output EXACTLY in this format (include the === markers):
+===TITLE===
+[lesson title here]
+===TEXT===
+[reading passage with **bold** key vocabulary]
+===VOCAB===
+english | hebrew | example sentence
+[one per line for each bolded word, 5-8 words]
+===END===`;
+  }
+
+  if (type === 'vocab') {
+    const count = document.getElementById('opt-count')?.value || '12';
+    const avoid = document.getElementById('opt-avoid')?.value?.trim() || '';
+    return `Generate a ${level} English vocabulary list for an Israeli student.
+${studentCtx}
+Theme: ${topic}
+Number of words: ${count}
+${avoid ? `Do NOT include these already-known words: ${avoid}` : ''}
+
+Requirements:
+- High-frequency, useful words for the level and theme
+- Accurate Hebrew translations
+- Example sentences at the ${level} level
+- Order from simplest to most complex
+
+Output EXACTLY in this format (include the === markers):
+===VOCAB===
+english | hebrew | example sentence | category
+[one per line, ${count} words total]
+===END===`;
+  }
+
+  if (type === 'lesson') {
+    const focus   = document.getElementById('opt-focus')?.value?.trim() || '';
+    return `Generate a complete ${level} English lesson package for an Israeli student.
+${studentCtx}
+Topic: ${topic}
+Reading length: ${wordTarget} words
+${focus ? `Grammar/language focus: ${focus}` : ''}
+
+Create a full, self-contained lesson with:
+1. An engaging reading passage with bold key vocabulary
+2. A vocabulary spotlight (8-10 key words from the text)
+3. Comprehension questions at varying Bloom's levels
+4. A short writing prompt
+
+Output EXACTLY in this format (include all === markers):
+===TITLE===
+[lesson title]
+===TEXT===
+[reading passage with **bold** key vocabulary, ${wordTarget} words]
+===VOCAB===
+english | hebrew | example sentence
+[8-10 key words from the text]
+===QUESTIONS===
+[REMEMBER] [question here]
+[UNDERSTAND] [question here]
+[APPLY] [question here]
+[ANALYZE] [question here]
+[EVALUATE] [question here]
+===WRITING===
+[one engaging writing prompt for the student, 1-3 sentences]
+===END===`;
+  }
+
+  if (type === 'questions') {
+    const text   = document.getElementById('opt-text')?.value?.trim() || '';
+    const qcount = document.getElementById('opt-qcount')?.value || '5';
+    const bloom  = document.getElementById('opt-bloom')?.value || 'mixed';
+    const bloomMap = {
+      basic:  'Use only REMEMBER and UNDERSTAND level questions.',
+      mixed:  'Mix REMEMBER, UNDERSTAND, APPLY, and ANALYZE level questions.',
+      deep:   'Focus on APPLY, ANALYZE, EVALUATE, and CREATE level questions.',
+    };
+    return `Generate ${qcount} comprehension questions for this ${level} English reading text.
+${studentCtx}
+Text:
+---
+${text || '[No text provided — generate questions for a general passage on the topic of ' + topic + ']'}
+---
+${bloomMap[bloom]}
+
+Requirements:
+- Questions appropriate for ${level} student
+- Use simple, clear English in the questions
+- Progress from lower to higher order thinking
+
+Output EXACTLY in this format:
+===QUESTIONS===
+[BLOOM_LEVEL] [question text]
+[one per line, ${qcount} questions]
+===END===`;
+  }
+
+  return '';
+}
+
+/* ══════════════════════════════════════════════
+   GENERATOR — API Call + Streaming
+══════════════════════════════════════════════ */
+async function generate() {
+  const apiKey = localStorage.getItem(SK.apiKey);
+  if (!apiKey) {
+    toast('No API key — go to Settings to add your Anthropic key', 'err', 4000);
+    return;
+  }
+
+  const prompt = buildPrompt();
+  if (!prompt) { toast('Please fill in the required fields', 'err'); return; }
+
+  const btn = document.getElementById('gen-btn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  G.raw    = '';
+  G.parsed = null;
+
+  // Show streaming output area
+  const out = document.getElementById('gen-output');
+  out.innerHTML = `
+    <div class="output-card">
+      <div class="output-card-header">
+        <span class="output-card-title">🤖 Generating...</span>
+        <span style="font-size:0.72rem;color:var(--muted)">Streaming from Claude</span>
+      </div>
+      <div class="output-card-body">
+        <div class="stream-box" id="stream-box"></div>
+      </div>
+    </div>`;
+  const box = document.getElementById('stream-box');
+
+  try {
+    const res = await fetch(ANT_API, {
+      method: 'POST',
+      headers: {
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 2500,
+        stream: true,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `API error ${res.status}`);
+    }
+
+    const reader  = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split('\n');
+      buf = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const ev = JSON.parse(data);
+          if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') {
+            G.raw += ev.delta.text;
+            box.textContent = G.raw;
+            box.scrollIntoView({ block: 'end', behavior: 'smooth' });
+          }
+        } catch {}
+      }
+    }
+
+    // Done — parse and render
+    G.parsed = parseOutput(G.type, G.raw);
+    renderParsedOutput();
+    saveToHistory();
+
+  } catch (err) {
+    out.innerHTML = `
+      <div class="output-card">
+        <div class="output-card-body">
+          <div style="color:var(--red);font-weight:600;padding:1rem;">
+            ⚠️ Generation failed: ${err.message}
+          </div>
+        </div>
+      </div>`;
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   GENERATOR — Parsing
+══════════════════════════════════════════════ */
+function extractSection(raw, tag) {
+  const re = new RegExp(`===\\s*${tag}\\s*===([\\s\\S]*?)(?====|$)`, 'i');
+  const m  = raw.match(re);
+  return m ? m[1].trim() : '';
+}
+
+function parseOutput(type, raw) {
+  const p = {};
+  p.title     = extractSection(raw, 'TITLE');
+  p.text      = extractSection(raw, 'TEXT');
+  p.vocabRaw  = extractSection(raw, 'VOCAB');
+  p.qRaw      = extractSection(raw, 'QUESTIONS');
+  p.writing   = extractSection(raw, 'WRITING');
+
+  // Parse vocab table
+  p.vocab = p.vocabRaw.split('\n').filter(l => l.includes('|')).map(l => {
+    const [en, he, ex, cat] = l.split('|').map(s => s.trim());
+    return { en, he, ex, cat };
+  }).filter(r => r.en && r.he);
+
+  // Parse questions
+  const bloomLevels = ['REMEMBER','UNDERSTAND','APPLY','ANALYZE','EVALUATE','CREATE'];
+  p.questions = p.qRaw.split('\n').filter(l => l.trim()).map(l => {
+    const bl = bloomLevels.find(b => l.toUpperCase().startsWith('[' + b));
+    const text = l.replace(/^\[[\w]+\]\s*/i, '').trim();
+    return { bloom: bl || 'UNDERSTAND', text };
+  }).filter(q => q.text);
+
+  return p;
+}
+
+function renderParsedOutput() {
+  const p    = G.parsed;
+  const type = G.type;
+  const idx  = document.getElementById('gen-student').value;
+  const sName = idx !== '' ? (getStudents()[parseInt(idx)]?.name || '') : '';
+  const level = document.getElementById('opt-level')?.value || 'A1';
+
+  let html = '';
+
+  if (p.title) {
+    html += `<div class="output-card">
+      <div class="output-card-header"><span class="output-card-title">📄 Title</span></div>
+      <div class="output-card-body"><div class="parsed-title">${p.title}</div></div>
+    </div>`;
+  }
+
+  if (p.text) {
+    const formatted = p.text.replace(/\*\*(.+?)\*\*/g, '<span class="vocab-hl">$1</span>');
+    html += `<div class="output-card">
+      <div class="output-card-header">
+        <span class="output-card-title">📖 Reading Text</span>
+        <span class="level-pill lvl-${level.toLowerCase()}">${level}</span>
+      </div>
+      <div class="output-card-body"><div class="parsed-reading">${formatted}</div></div>
+    </div>`;
+  }
+
+  if (p.vocab.length > 0) {
+    const rows = p.vocab.map(v => `
+      <tr>
+        <td><strong>${v.en || ''}</strong></td>
+        <td class="he-cell">${v.he || ''}</td>
+        <td style="color:var(--muted);font-size:0.82rem">${v.ex || ''}</td>
+        ${v.cat ? `<td><span class="level-pill lvl-a1" style="background:#F1F5F9;color:var(--muted)">${v.cat}</span></td>` : '<td></td>'}
+      </tr>`).join('');
+    html += `<div class="output-card">
+      <div class="output-card-header"><span class="output-card-title">📚 Vocabulary</span></div>
+      <div class="output-card-body">
+        <table class="vocab-table">
+          <tr><th>English</th><th>עברית</th><th>Example</th><th>Category</th></tr>
+          ${rows}
+        </table>
+      </div>
+    </div>`;
+  }
+
+  if (p.questions.length > 0) {
+    const bloomClass = { REMEMBER:'bloom-remember', UNDERSTAND:'bloom-understand', APPLY:'bloom-apply', ANALYZE:'bloom-analyze', EVALUATE:'bloom-evaluate', CREATE:'bloom-create' };
+    const qs = p.questions.map((q, i) => `
+      <li>
+        <span class="q-num">${i+1}.</span>
+        <span>${q.text}</span>
+        <span class="bloom-badge ${bloomClass[q.bloom] || 'bloom-understand'}">${q.bloom}</span>
+      </li>`).join('');
+    html += `<div class="output-card">
+      <div class="output-card-header"><span class="output-card-title">❓ Comprehension Questions</span></div>
+      <div class="output-card-body"><ul class="questions-list">${qs}</ul></div>
+    </div>`;
+  }
+
+  if (p.writing) {
+    html += `<div class="output-card">
+      <div class="output-card-header"><span class="output-card-title">✍️ Writing Prompt</span></div>
+      <div class="output-card-body">
+        <div style="background:var(--blue-lt);border-left:4px solid var(--blue);padding:1rem;border-radius:8px;font-size:0.9rem;line-height:1.6;">
+          ${p.writing}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Push bar
+  const slug    = slugify(p.title || G.type + '-' + Date.now());
+  const canPush = (type !== 'questions');
+  html += `<div class="push-bar">
+    <div>
+      <div class="push-info">Ready to publish as <strong>/readings/${slug}.html</strong></div>
+    </div>
+    <div class="push-actions">
+      <button class="push-btn copy" onclick="copyRaw()">📋 Copy Raw</button>
+      ${canPush
+        ? `<button class="push-btn push" id="push-to-site-btn" onclick="pushToSite('${slug}')">🚀 Push to Site</button>`
+        : '<button class="push-btn copy" onclick="copyRaw()">📋 Copy HTML</button>'}
+    </div>
+  </div>
+  <div class="push-status" id="push-status"></div>`;
+
+  document.getElementById('gen-output').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════
+   GENERATOR — Push to Site
+══════════════════════════════════════════════ */
+function slugify(str) {
+  return (str || 'lesson').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'lesson';
+}
+
+function buildReadingHTML(p, level, studentName) {
+  const formatted = (p.text || '').replace(/\*\*(.+?)\*\*/g, '<span class="hl">$1</span>');
+  const vocabRows = (p.vocab || []).map(v =>
+    `<tr><td><strong>${v.en}</strong></td><td class="he">${v.he}</td><td>${v.ex || ''}</td></tr>`
+  ).join('');
+  const questions = (p.questions || []).map((q, i) =>
+    `<li><span class="qn">${i+1}.</span> ${q.text}</li>`
+  ).join('');
+  const writing = p.writing ? `<div class="writing-section"><h2>✍️ Writing</h2><div class="writing-box">${p.writing}</div></div>` : '';
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>${p.title || 'Reading'} — Mr. Eliran</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Noto+Sans+Hebrew:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:#F1F5F9;color:#0F172A;min-height:100vh}
+    .he{font-family:'Noto Sans Hebrew',sans-serif;direction:rtl}
+    nav{background:#1E3A8A;color:#fff;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+    .nav-back{color:#93C5FD;text-decoration:none;font-size:0.82rem;font-weight:600}
+    .nav-back:hover{color:#fff}
+    .nav-brand{font-size:0.85rem;font-weight:700}
+    article{max-width:720px;margin:2rem auto;padding:0 1.5rem 3rem}
+    .level-pill{display:inline-block;padding:.2rem .75rem;border-radius:999px;font-size:.7rem;font-weight:700;background:#EFF6FF;color:#2563EB;margin-bottom:1rem}
+    h1{font-size:1.75rem;font-weight:800;margin-bottom:.5rem}
+    .reading-text{font-size:1rem;line-height:1.9;background:#fff;border-radius:14px;padding:2rem;box-shadow:0 2px 12px rgba(0,0,0,.07);margin:1.25rem 0}
+    .reading-text .hl{font-weight:700;color:#2563EB;border-bottom:2px solid #DBEAFE}
+    .section-title{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#64748B;margin:1.75rem 0 .75rem}
+    table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+    th{padding:.6rem .85rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#64748B;border-bottom:2px solid #E2E8F0;text-align:left}
+    td{padding:.65rem .85rem;border-bottom:1px solid #F1F5F9;font-size:.88rem}
+    tr:last-child td{border-bottom:none}
+    .questions-list{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+    .questions-list li{background:#fff;border-radius:10px;padding:.75rem 1rem;font-size:.9rem;display:flex;gap:.65rem;box-shadow:0 1px 6px rgba(0,0,0,.05)}
+    .qn{font-weight:800;color:#2563EB;flex-shrink:0}
+    .writing-section{margin-top:1.75rem}
+    h2{font-size:.95rem;font-weight:800;margin-bottom:.75rem}
+    .writing-box{background:#fff;border-left:4px solid #2563EB;border-radius:10px;padding:1rem 1.25rem;font-size:.9rem;line-height:1.7;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+    footer{text-align:center;padding:2rem;font-size:.72rem;color:#94A3B8}
+  </style>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="../index.html">← All Tools</a>
+  <span class="nav-brand">🏫 Eliran's House of Teaching</span>
+</nav>
+<article>
+  <span class="level-pill">${level}</span>
+  ${studentName ? `<span class="level-pill" style="background:#EDE9FE;color:#7C3AED;margin-left:.4rem">For ${studentName}</span>` : ''}
+  <h1>${p.title || 'Reading Lesson'}</h1>
+
+  ${p.text ? `<div class="reading-text">${formatted}</div>` : ''}
+
+  ${p.vocab.length ? `
+  <div class="section-title">📚 Vocabulary</div>
+  <table>
+    <tr><th>English</th><th>עברית</th><th>Example</th></tr>
+    ${vocabRows}
+  </table>` : ''}
+
+  ${p.questions.length ? `
+  <div class="section-title">❓ Comprehension Questions</div>
+  <ul class="questions-list">${questions}</ul>` : ''}
+
+  ${writing}
+</article>
+<footer>Created with Mr. Eliran's Teacher Hub · Eliran's House of Teaching</footer>
+</body>
+</html>`;
+}
+
+async function pushToSite(slug) {
+  const ghToken = localStorage.getItem(SK.ghToken);
+  if (!ghToken) {
+    toast('No GitHub token — go to Settings', 'err', 4000);
+    return;
+  }
+  const btn    = document.getElementById('push-to-site-btn');
+  const status = document.getElementById('push-status');
+  if (btn) btn.disabled = true;
+
+  const p      = G.parsed;
+  const idx    = document.getElementById('gen-student').value;
+  const sName  = idx !== '' ? (getStudents()[parseInt(idx)]?.name || '') : '';
+  const level  = document.getElementById('opt-level')?.value || 'A1';
+  const path   = `readings/${slug}.html`;
+  const html   = buildReadingHTML(p, level, sName);
+
+  status.textContent = '⏳ Pushing to GitHub...';
+  status.className   = 'push-status ok';
+  status.style.display = 'block';
+
+  try {
+    // Check if file exists (for SHA)
+    let sha = null;
+    try {
+      const check = await fetch(`${GH_API}/${path}`, {
+        headers: { Authorization: `token ${ghToken}`, Accept: 'application/vnd.github.v3+json' }
+      });
+      if (check.ok) { const d = await check.json(); sha = d.sha; }
+    } catch {}
+
+    const body = {
+      message: `add reading: ${p.title || slug}`,
+      content: btoa(unescape(encodeURIComponent(html))),
+    };
+    if (sha) body.sha = sha;
+
+    const res = await fetch(`${GH_API}/${path}`, {
+      method:  'PUT',
+      headers: {
+        Authorization: `token ${ghToken}`,
+        Accept:        'application/vnd.github.v3+json',
+        'Content-Type':'application/json',
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || `GitHub error ${res.status}`);
+    }
+    const commit = await res.json();
+    const url = `https://nameless121.github.io/${path}`;
+    status.innerHTML = `✅ Published! <a href="${url}" target="_blank" style="color:var(--green);text-decoration:underline">${url}</a>`;
+    toast('Pushed to site! ✓');
+    // Update history with URL
+    updateHistoryWithUrl(G.raw.slice(0, 30), url);
+  } catch (err) {
+    status.textContent = `⚠️ Push failed: ${err.message}`;
+    status.className   = 'push-status err';
+    status.style.display = 'block';
+    if (btn) btn.disabled = false;
+  }
+}
+
+function copyRaw() {
+  navigator.clipboard.writeText(G.raw).then(() => toast('Copied to clipboard ✓'));
+}
+
+/* ══════════════════════════════════════════════
+   HISTORY
+══════════════════════════════════════════════ */
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem(SK.history) || '[]'); } catch { return []; }
+}
+function saveToHistory() {
+  const p    = G.parsed;
+  const type = G.type;
+  const idx  = document.getElementById('gen-student').value;
+  const sName = idx !== '' ? (getStudents()[parseInt(idx)]?.name || '') : '';
+  const item = {
+    id:      Date.now(),
+    type,
+    title:   p.title || document.getElementById('opt-topic')?.value || type,
+    student: sName,
+    level:   document.getElementById('opt-level')?.value || 'A1',
+    raw:     G.raw,
+    parsed:  G.parsed,
+    url:     '',
+    date:    new Date().toLocaleDateString('en-GB'),
+  };
+  const h = getHistory();
+  h.unshift(item);
+  localStorage.setItem(SK.history, JSON.stringify(h.slice(0, 50)));
+  renderHistory();
+}
+function updateHistoryWithUrl(prefix, url) {
+  const h = getHistory();
+  const item = h.find(i => i.raw.slice(0,30) === prefix);
+  if (item) { item.url = url; localStorage.setItem(SK.history, JSON.stringify(h)); renderHistory(); }
+}
+
+const TYPE_LABELS = { reading:'Reading', vocab:'Vocabulary', lesson:'Full Lesson', questions:'Questions' };
+const TYPE_CLASSES= { reading:'htype-reading', vocab:'htype-vocab', lesson:'htype-lesson', questions:'htype-questions' };
+
+function renderHistory() {
+  const items = getHistory();
+  const list  = document.getElementById('history-list');
+  if (!list) return;
+  if (!items.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><h3>No history yet</h3><p>Generated content will appear here.</p></div>';
+    return;
+  }
+  list.innerHTML = items.map((item, i) => `
+    <div class="history-item">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">
+          <span class="history-type-badge ${TYPE_CLASSES[item.type] || ''}">${TYPE_LABELS[item.type] || item.type}</span>
+          <span class="level-pill lvl-${(item.level||'a1').toLowerCase()}">${item.level}</span>
+          ${item.student ? `<span style="font-size:.7rem;color:var(--muted)">→ ${item.student}</span>` : ''}
+        </div>
+        <div class="history-title">${item.title}</div>
+        <div class="history-meta">${item.date}${item.url ? ` · <a href="${item.url}" target="_blank" style="color:var(--blue)">${item.url}</a>` : ''}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.4rem">
+        <button class="btn-tiny" onclick="reloadHistory(${i})">↩ Reload</button>
+        <button class="btn-tiny" onclick="deleteHistory(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function reloadHistory(i) {
+  const item = getHistory()[i];
+  G.raw    = item.raw;
+  G.parsed = item.parsed;
+  G.type   = item.type;
+  setGenType(item.type);
+  showPanel('generate');
+  setTimeout(() => { renderParsedOutput(); }, 100);
+}
+
+function deleteHistory(i) {
+  const h = getHistory(); h.splice(i, 1);
+  localStorage.setItem(SK.history, JSON.stringify(h));
+  renderHistory();
+}
+
+function clearHistory() {
+  if (!confirm('Clear all history?')) return;
+  localStorage.removeItem(SK.history);
+  renderHistory();
+  toast('History cleared', 'info');
+}
+
+/* ══════════════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════════════ */
+function saveApiKey() {
+  const key = document.getElementById('set-api-key').value.trim();
+  if (!key) { toast('Enter an API key', 'err'); return; }
+  localStorage.setItem(SK.apiKey, key);
+  updateSettingsDisplay();
+  toast('API key saved ✓');
+}
+function saveGhToken() {
+  const tok = document.getElementById('set-gh-token').value.trim();
+  if (!tok) { toast('Enter a token', 'err'); return; }
+  localStorage.setItem(SK.ghToken, tok);
+  updateSettingsDisplay();
+  toast('GitHub token saved ✓');
+}
+async function changePassword() {
+  const n1 = document.getElementById('chpw-new').value;
+  const n2 = document.getElementById('chpw-confirm').value;
+  if (!n1 || n1.length < 6) { toast('Minimum 6 characters', 'err'); return; }
+  if (n1 !== n2) { toast('Passwords do not match', 'err'); return; }
+  localStorage.setItem(SK.pwHash, await sha256(n1));
+  toast('Password updated ✓');
+  document.getElementById('chpw-new').value    = '';
+  document.getElementById('chpw-confirm').value= '';
+}
+function updateSettingsDisplay() {
+  const apiKey  = localStorage.getItem(SK.apiKey);
+  const ghToken = localStorage.getItem(SK.ghToken);
+  const akEl    = document.getElementById('api-key-status');
+  const ghEl    = document.getElementById('gh-token-status');
+  if (akEl)  akEl.textContent  = apiKey  ? `sk-ant-...${apiKey.slice(-6)}` : 'Not configured';
+  if (ghEl)  ghEl.textContent  = ghToken ? `ghp_...${ghToken.slice(-6)}`   : 'Not configured';
+}
+
+/* ══════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════ */
+bootAuth();
+</script>
+</body>
+</html>
